@@ -122,10 +122,10 @@ A solução proposta deverá permitir maior visibilidade sobre as entradas e sa�
 * **RF01 — Cadastrar produtos:** O sistema deve permitir o cadastro dos produtos comercializados pelo estabelecimento, incluindo refeições, porções, lanches, pratos especiais e bebidas.
 * **RF02 — Registrar pedidos:** O sistema deve permitir registrar os pedidos realizados pelos clientes.
 * **RF03 — Registrar os itens de um pedido:** O sistema deve permitir associar um ou mais produtos a cada pedido.
-* **RF04 — Registrar a forma de pagamento:** O sistema deve permitir registrar a forma de pagamento utilizada em uma operação, considerando dinheiro, crédito, débito e Pix.
+* **RF04 — Registrar a forma de pagamento:** O sistema deve permitir registrar a forma de pagamento utilizada em uma operação, considerando dinheiro, crédito, débito, vale refeição e Pix.
 * **RF05 — Registrar vendas:** O sistema deve permitir registrar as vendas realizadas, possibilitando posteriormente consultar a movimentação financeira.
 * **RF06 — Consultar movimentação diária:** O sistema deve permitir consultar o valor movimentado em determinado dia.
-* **RF07 — Registrar compras:** O sistema deve permitir registrar compras de produtos comercializados e de ingredientes utilizados na preparação dos alimentos.
+* **RF07 — Registrar compras:** O sistema deve permitir registrar compras de produtos comercializados.
 * **RF08 — Registrar fornecedores:** O sistema deve permitir cadastrar e identificar fornecedores de produtos.
 * **RF09 — Registrar necessidades de reposição:** O sistema deve permitir registrar quais produtos precisam ser repostos, incluindo a quantidade necessária.
 * **RF10 — Registrar recebimento de produtos:** O sistema deve permitir registrar o recebimento dos produtos adquiridos.
@@ -141,14 +141,15 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 * **RNF02 — Disponibilidade:** O sistema deve estar disponível durante o período de funcionamento do estabelecimento para permitir o registro das operações.
 * **RNF03 — Integridade dos dados:** Os registros devem manter consistência entre pedidos, produtos, pagamentos, compras, estoque e movimentações financeiras.
 * **RNF04 — Segurança:** O acesso aos dados administrativos e financeiros deve ser restrito a usuários autorizados.
-* **RNF05 — Desempenho:** O sistema deve permitir o registro e a consulta das operações cotidianas sem exigir procedimentos complexos ou demorados.
+* **RNF05 — Desempenho:** O sistema deve responder às operações de cadastro, consulta e registro das operações cotidianas em até 3 segundos em condições normais de uso.
+* **RNF06 — Manutenibilidade:** O sistema deve ser estruturado de forma organizada, permitindo a manutenção e evolução de suas funcionalidades sem comprometer os dados já registrados.
 
 ---
 
 ## 4. Regras de Negócio
 
 **Regras operacionais**
-* **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito ou Pix.
+* **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito, vale refeição ou Pix.
 * **RN02 — Funcionários:** Não existem funções rigidamente separadas entre os quatro funcionários, incluindo o proprietário. Todos podem executar as atividades necessárias de acordo com a demanda.
 * **RN03 — Entrega:** As entregas realizadas pelo estabelecimento são limitadas às proximidades do restaurante.
 * **RN04 — Entrega a pé:** Qualquer funcionário pode realizar uma entrega a pé.
@@ -199,7 +200,7 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 |----------|-----------|------------------------------|
 | id_pagamento | Identificador único do pagamento | Deve identificar exclusivamente o pagamento |
 | preco_total_pagamento | Preço/montante pago | Deve corresponder ao montante da operação |
-| forma_pagamento | Forma utilizada no pagamento | Dinheiro, crédito, débito ou Pix |
+| forma_pagamento | Forma utilizada no pagamento | Dinheiro, crédito, débito, vale refeição ou Pix |
 | data_hora_pagamento | Momento em que o pagamento foi realizado | Obrigatório |
 
 ### 5.5 Fornecedor
@@ -279,15 +280,21 @@ A separação entre Compra e Item_Compra permite representar uma compra contendo
 **Relacionamentos pertinentes**
 A modelagem proposta considera inicialmente os seguintes relacionamentos:
 * Um Pedido possui um ou mais Itens_Pedido.
+* Cada Item_Pedido pertence a um único Pedido.
 * Um Produto pode aparecer em diversos Itens_Pedido.
+* Cada Item_Pedido referencia um único Produto.
 * Um Pedido está associado a um Pagamento.
 * Um Fornecedor pode estar relacionado a diversas Compras.
+* Cada Compra está relacionada a um único Fornecedor.
 * Uma Compra possui um ou mais Itens_Compra.
+* Cada Item_Compra pertence a uma única Compra.
 * Um Produto pode aparecer em diversas Compras, por meio de Item_Compra.
-* Um Produto pode possuir registros de Reposição.
-* Um Produto pode possuir diversas Movimentações_Estoque associadas a ele.
+* Cada Item_Compra referencia um único Produto.
+* Um Produto pode possuir diversos registros de Reposição.
+* Cada Reposição está relacionada a um único Produto.
+* Um Produto pode possuir diversas Movimentações_Estoque.
+* Cada Movimentacao_Estoque está relacionada a um único Produto.
 * As Despesas são registradas independentemente dos pedidos e compras.
-* As movimentações de estoque registram entradas e saídas dos produtos controlados.
 
 **Restrições e políticas organizacionais aplicadas ao modelo**
 O modelo deve considerar que:
