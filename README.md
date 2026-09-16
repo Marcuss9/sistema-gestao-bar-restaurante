@@ -36,6 +36,10 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
 
 **Evidências da organização**
 * [ADICIONAR FOTOS DA VISITA]
+  ![Fotos da visita](docs/imagens/Image01.jpeg)
+  ![Fotos da visita](docs/imagens/Image02.jpeg)
+  ![Fotos da visita](docs/imagens/Image03.jpeg)
+  ![Fotos da visita](docs/imagens/Image04.jpeg)
 * [ADICIONAR LINK DO ESTABELECIMENTO]
 * [ADICIONAR ENDEREÇO]
 * [ADICIONAR FORMA DE CONTATO]
