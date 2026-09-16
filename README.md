@@ -110,9 +110,7 @@ Atualmente, os registros financeiros são realizados manualmente e posteriorment
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
 **Fluxogramas**
-* [ADICIONAR FLUXOGRAMA DO PROCESSO DE PEDIDO]
-* [ADICIONAR FLUXOGRAMA DO PROCESSO DE ESTOQUE/REPOSIÇÃO]
-* [ADICIONAR FLUXOGRAMA DO PROCESSO FINANCEIRO]
+* ![Fotos da visita](docs/imagens/fluxograma.jpeg)
 
 ---
 
