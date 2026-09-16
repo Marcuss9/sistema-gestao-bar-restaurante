@@ -35,15 +35,14 @@ Apesar de a operação funcionar atualmente com base na experiência dos funcion
 Esse cenário permite modelar uma solução que não pretende substituir a experiência dos funcionários, mas transformar informações atualmente dispersas ou não registradas em dados estruturados, possibilitando consultas e acompanhamento da operação.
 
 **Evidências da organização**
-* [ADICIONAR FOTOS DA VISITA]
+* Fotos da Visita
   ![Fotos da visita](docs/imagens/Image01.jpeg)
   ![Fotos da visita](docs/imagens/Image02.jpeg)
   ![Fotos da visita](docs/imagens/Image03.jpeg)
   ![Fotos da visita](docs/imagens/Image04.jpeg)
-* [ADICIONAR LINK DO ESTABELECIMENTO]
-* [ADICIONAR ENDEREÇO]
-* [ADICIONAR FORMA DE CONTATO]
-* [ADICIONAR RESPONSÁVEL ENTREVISTADO]
+* Endereço: R. Inês Monteiro, 157 - Artur Alvim, São Paulo - SP, 03568-030
+* Telefone: (11) 98109-1622
+* Responsável identificado como "Ceará"
 
 ---
 
@@ -77,6 +76,7 @@ O estabelecimento aceita:
 * dinheiro;
 * cartão de crédito;
 * cartão de débito;
+* vale refeição.
 * Pix.
 
 Atualmente, as vendas não são registradas individualmente em um sistema.
@@ -87,6 +87,7 @@ O estabelecimento realiza entregas apenas nas proximidades.
 Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário.
 Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente.
 Não existe um funcionário exclusivamente responsável pelas entregas.
+Não é cobrado frete para as entregas.
 
 **2.5 Controle de produtos em estoque**
 Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema.
@@ -166,8 +167,6 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 ---
 
 ## 5. Dicionário de Dados Conceitual
-
-*Observação: os atributos abaixo representam uma proposta inicial de modelagem. Os atributos definitivos e as cardinalidades deverão ser consolidados pelo grupo durante a elaboração do DER. Os exemplos utilizados no projeto devem ser fictícios.*
 
 ### 5.1 Produto
 | Atributo | Descrição | Regra de negócio associada |
@@ -349,10 +348,10 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Item | Registro |
 |------|-----------|
 | **Ferramenta e etapa** | ChatGPT — organização das informações levantadas durante a entrevista e estruturação da Entrega 1 |
-| **Motivação** | Organizar as informações coletadas, identificar processos, requisitos, regras de negócio e possíveis entidades para o modelo conceitual |
+| **Motivação** | Organizar as informações coletadas, identificar processos, requisitos, regras de negócio e possíveis entidades para o modelo conceitual de forma prática |
 | **Prompt(s) utilizados** | [REGISTRAR OS PROMPTS REAIS UTILIZADOS PELO GRUPO] |
 | **Resposta recebida** | Organização das informações da entrevista em processos, requisitos, regras de negócio e entidades candidatas |
-| **Fontes consultadas e verificadas** | As informações referentes à operação foram obtidas a partir da entrevista/pesquisa de campo realizada pelo grupo |
+| **Fontes consultadas e verificadas** | As informações referentes à operação foram obtidas a partir da entrevista/pesquisa de campo realizada pelo grupo. Os conteúdos teóricos das aulas também foram utilizados como material de apoio |
 | **Trechos rejeitados ou corrigidos** | Sugestões de entidades ou processos que não correspondessem à realidade observada foram rejeitadas ou ajustadas pelo grupo após a validação com o responsável |
 | **Justificativa da escolha final** | A decisão final sobre processos, entidades, atributos e regras foi tomada pelo grupo com base na realidade observada na organização e nas informações validadas durante a entrevista |
 | **Reflexão crítica** | A IA pode propor estruturas de dados plausíveis que não necessariamente correspondem ao funcionamento real do estabelecimento. Por isso, suas sugestões foram utilizadas como apoio à modelagem e confrontadas com as informações obtidas em campo. |
