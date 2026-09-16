@@ -311,7 +311,7 @@ O modelo deve considerar que:
 
 ## 7. Diagrama Entidade-Relacionamento (DER)
 
-[ANEXAR DER FINAL AQUI]
+![DER](docs/imagens/DER_esquina_dos_amigos.jpg)
 
 O DER deverá representar:
 * entidades;
