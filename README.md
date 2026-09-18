@@ -192,14 +192,7 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 | observacao_pedido | Informações adicionais do pedido | Opcional |
 | endereco_entrega_pedido | Local informado para pedidos de entrega | Obrigatório quando o pedido for destinado à entrega |
 
-### 5.3 Item_Pedido
-| Atributo | Descrição | Regra de negócio associada |
-|----------|-----------|------------------------------|
-| id_item_pedido | Identificador único do item no pedido | Deve identificar o registro do item |
-| quantidade_item_pedido | Quantidade do produto solicitada | Deve ser positiva |
-| preco_unitario_item_pedido | Preço do produto no momento do pedido | Permite preservar o preço praticado na venda |
-
-### 5.4 Pagamento
+### 5.3 Pagamento
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_pagamento | Identificador único do pagamento | Deve identificar exclusivamente o pagamento |
@@ -207,14 +200,14 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 | forma_pagamento | Forma utilizada no pagamento | Dinheiro, crédito, débito, vale refeição ou Pix |
 | data_hora_pagamento | Momento em que o pagamento foi realizado | Obrigatório |
 
-### 5.5 Fornecedor
+### 5.4 Fornecedor
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_fornecedor | Identificador único do fornecedor | Deve identificar exclusivamente o fornecedor |
 | nome_fornecedor | Nome do fornecedor | Obrigatório |
 | tipo_fornecedor | Classificação do fornecedor | Pode distinguir fornecedor recorrente de supermercado |
 
-### 5.6 Compra
+### 5.5 Compra
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_compra | Identificador único da compra | Deve identificar exclusivamente a compra |
@@ -222,31 +215,7 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 | preco_total_compra | Preço total da compra | Deve corresponder à soma dos itens adquiridos |
 | id_fornecedor_compra | Fornecedor relacionado à compra | Deve permitir identificar a origem da compra |
 
-### 5.7 Item_Compra
-| Atributo | Descrição | Regra de negócio associada |
-|----------|-----------|------------------------------|
-| id_item_compra | Identificador único do item comprado | Deve identificar o registro |
-| quantidade_item_compra | Quantidade adquirida do produto/ingrediente | Deve ser positiva |
-| preco_unitario_item_compra | Preço unitário de aquisição | Deve ser compatível com a compra registrada |
-
-### 5.8 Despesa
-| Atributo | Descrição | Regra de negócio associada |
-|----------|-----------|------------------------------|
-| id_despesa | Identificador único da despesa | Deve identificar exclusivamente a despesa |
-| descricao_despesa | Descrição clara da despesa | Obrigatório |
-| preco_despesa | Preço/montante da despesa | Deve ser positivo |
-| data_despesa | Data associada à despesa | Obrigatório |
-| categoria_despesa | Classificação da despesa | Deve permitir distinguir diferentes tipos de gastos |
-
-### 5.9 Reposição
-| Atributo | Descrição | Regra de negócio associada |
-|----------|-----------|------------------------------|
-| id_reposicao | Identificador único da reposição | Deve identificar o registro de reposição |
-| data_solicitacao_reposicao| Data da solicitação de reposição | Obrigatório |
-| quantidade_necessaria_reposicao| Quantidade necessária para repor o estoque | Deve ser positiva |
-| status_reposicao | Situação da solicitação de reposição | Deve permitir identificar se está pendente ou concluída |
-
-### 5.10 Movimentacao_Estoque
+### 5.6 Movimentacao_Estoque
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_movimentacao | Identificador único da movimentação | Deve identificar exclusivamente o registro |
@@ -260,45 +229,51 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 ## 6. Modelagem Conceitual (Entidades, Atributos, Relacionamentos)
 
 **Entidades reconhecidas**
-A partir dos processos levantados e das validações realizadas, foram identificadas inicialmente as seguintes entidades:
+
+A partir dos processos levantados e das validações realizadas, foram identificadas as seguintes entidades:
+
 * **Produto:** representa os produtos comercializados pelo estabelecimento e controlados em estoque.
 * **Pedido:** representa uma solicitação de produtos realizada por um cliente.
-* **Item_Pedido:** representa os produtos que compõem cada pedido.
 * **Pagamento:** representa o recebimento associado a um pedido.
 * **Fornecedor:** representa empresas ou estabelecimentos responsáveis pelo fornecimento de produtos.
 * **Compra:** representa uma aquisição realizada pelo estabelecimento.
-* **Item_Compra:** representa os itens que compõem uma compra.
-* **Despesa:** representa gastos do estabelecimento que não correspondem diretamente às compras.
-* **Reposição:** representa uma necessidade registrada de reposição de produtos em estoque.
 * **Movimentacao_Estoque:** representa os registros de entrada e saída dos produtos no estoque, permitindo o acompanhamento detalhado de suas quantidades e motivos.
 
 *Nota:* A entidade **Funcionário** não será incluída no modelo, pois a identificação do responsável por cada operação não constitui uma necessidade do sistema. Todos os quatro funcionários, incluindo o proprietário, podem desempenhar diferentes atividades conforme a demanda.
+
 A entidade **Cliente** não será incluída como cadastro independente, pois o estabelecimento não mantém atualmente um cadastro estruturado de clientes. Para pedidos destinados à entrega, as informações necessárias para realização da entrega serão associadas ao próprio pedido.
+
 Também não será criada uma entidade **Venda** separada, pois o pedido representa a operação comercial que será registrada e relacionada ao respectivo pagamento.
 
+As entidades **Item_Pedido**, **Item_Compra**, **Reposição** e **Despesa** não fazem parte do modelo conceitual. Os relacionamentos entre pedidos, compras e produtos são representados diretamente no modelo conceitual, enquanto a resolução desses relacionamentos e a estrutura necessária para sua implementação serão tratadas posteriormente no modelo lógico.
+
 **Atributos e classificações**
+
 Cada entidade possui atributos destinados a representar as informações necessárias para identificar, descrever e relacionar os elementos da operação.
-A entidade Produto concentra informações sobre os itens comercializados e seu saldo de estoque, enquanto Pedido representa a ocorrência da venda e Item_Pedido permite representar os diferentes produtos existentes dentro de um mesmo pedido.
-A separação entre Compra e Item_Compra permite representar uma compra contendo diversos itens sem armazenar múltiplos produtos dentro de um único atributo. A entidade Movimentacao_Estoque atua garantindo o rastreamento preciso da disponibilidade dos produtos.
+
+A entidade **Produto** concentra informações sobre os itens comercializados e seu saldo de estoque, enquanto **Pedido** representa a ocorrência da venda. O relacionamento entre Pedido e Produto permite representar os produtos que compõem cada pedido.
+
+A entidade **Compra** representa uma aquisição realizada pelo estabelecimento, enquanto seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra.
+
+A entidade **Pagamento** representa o recebimento associado a um pedido, enquanto **Fornecedor** permite identificar a origem das compras realizadas pelo estabelecimento.
+
+A entidade **Movimentacao_Estoque** permite registrar as entradas e saídas dos produtos, possibilitando o acompanhamento das alterações realizadas no estoque.
 
 **Relacionamentos pertinentes**
-A modelagem proposta considera inicialmente os seguintes relacionamentos:
-* Um Pedido possui um ou mais Itens_Pedido.
-* Cada Item_Pedido pertence a um único Pedido.
-* Um Produto pode aparecer em diversos Itens_Pedido.
-* Cada Item_Pedido referencia um único Produto.
-* Um Pedido está associado a um Pagamento.
-* Um Fornecedor pode estar relacionado a diversas Compras.
-* Cada Compra está relacionada a um único Fornecedor.
-* Uma Compra possui um ou mais Itens_Compra.
-* Cada Item_Compra pertence a uma única Compra.
-* Um Produto pode aparecer em diversas Compras, por meio de Item_Compra.
-* Cada Item_Compra referencia um único Produto.
-* Um Produto pode possuir diversos registros de Reposição.
-* Cada Reposição está relacionada a um único Produto.
-* Um Produto pode possuir diversas Movimentações_Estoque.
-* Cada Movimentacao_Estoque está relacionada a um único Produto.
-* As Despesas são registradas independentemente dos pedidos e compras.
+
+A modelagem proposta considera os seguintes relacionamentos:
+
+* Um **Pedido** contém um ou mais **Produtos**.
+* Um **Produto** pode estar presente em diversos **Pedidos**.
+* Um **Pedido** está associado a um **Pagamento**.
+* Um **Fornecedor** pode estar relacionado a diversas **Compras**.
+* Cada **Compra** está relacionada a um único **Fornecedor**.
+* Uma **Compra** adquire um ou mais **Produtos**.
+* Um **Produto** pode estar presente em diversas **Compras**.
+* Um **Produto** pode possuir diversas **Movimentações_Estoque**.
+* Cada **Movimentacao_Estoque** está relacionada a um único **Produto**.
+
+Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** possuem cardinalidade **N:N**, sendo representados diretamente no modelo conceitual. A resolução desses relacionamentos em estruturas intermediárias será realizada no modelo lógico.
 
 **Restrições e políticas organizacionais aplicadas ao modelo**
 O modelo deve considerar que:
@@ -335,18 +310,28 @@ O modelo deverá ser construído de maneira que possa posteriormente ser convert
 ## 8. Justificativa Técnica
 
 A modelagem proposta busca transformar os principais processos atualmente executados de maneira manual e informal em estruturas de dados organizadas.
+
 A entidade **Produto** é necessária porque os produtos comercializados representam elementos centrais das vendas e do controle de estoque.
-A separação entre **Pedido** e **Item_Pedido** permite que um pedido contenha diversos produtos sem criar atributos repetitivos dentro da entidade Pedido. Além disso, permite registrar a quantidade e o preço praticado de cada item.
+
+A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N será mantida no modelo conceitual, sendo sua resolução estrutural realizada posteriormente no modelo lógico.
+
 A entidade **Pagamento** foi separada do pedido para representar explicitamente a forma pela qual uma operação comercial foi recebida, contemplando dinheiro, cartão de crédito, cartão de débito e Pix.
+
 Não foi criada uma entidade **Venda** separada porque não existe uma necessidade identificada de distinguir uma venda de seu pedido. O pedido representa a operação comercial e pode ser associado ao pagamento correspondente.
-A separação entre **Compra** e **Item_Compra** permite representar uma única compra contendo diversos itens.
+
+A entidade **Compra** representa uma aquisição realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra. A cardinalidade N:N entre Compra e Produto será resolvida posteriormente no modelo lógico.
+
 A entidade **Fornecedor** permite registrar a origem das compras e representar fornecedores recorrentes, como Ambev, Heineken e Coca-Cola, além de outros estabelecimentos utilizados para aquisição de produtos e ingredientes.
-A entidade **Despesa** representa gastos do estabelecimento que não correspondem diretamente à aquisição de produtos ou ingredientes. Essa separação permite distinguir compras de outras obrigações financeiras e atende à necessidade de compreender o que entra e o que sai financeiramente.
-A entidade **Reposição** representa a necessidade de reposição de produtos comercializados, permitindo registrar o produto, a quantidade necessária e a situação da reposição.
-O controle de estoque foi incluído como uma necessidade da solução proposta para os produtos comercializados, embora atualmente seja realizado de maneira informal. A entidade **Movimentacao_Estoque** permite rastrear cada entrada e saída individual, garantindo que o saldo seja sempre justificável com base em motivos reais (vendas, compras, quebras, etc).
+
+O controle de estoque foi incluído como uma necessidade da solução proposta para os produtos comercializados, embora atualmente seja realizado de maneira informal. A entidade **Movimentacao_Estoque** permite rastrear cada entrada e saída individual, garantindo que o saldo seja justificável com base em motivos reais, como vendas, compras e quebras.
+
+As entidades **Item_Pedido**, **Item_Compra**, **Reposição** e **Despesa** não foram incluídas nesta etapa por fazerem parte da estrutura que será definida no modelo lógico, conforme a orientação adotada para o trabalho. Dessa forma, o modelo conceitual permanece focado na identificação das principais entidades e de seus relacionamentos, sem antecipar estruturas específicas de implementação.
+
 A entidade **Funcionário** não foi incluída porque a organização não necessita identificar qual funcionário executou determinada operação. Todos os funcionários podem desempenhar diferentes tarefas.
+
 A entidade **Cliente** não foi incluída como cadastro independente porque não existe uma necessidade identificada de manter um cadastro permanente de clientes. Para pedidos destinados à entrega, as informações necessárias podem ser associadas diretamente ao pedido.
-A estrutura proposta busca solucionar uma das principais dores identificadas: a dificuldade de visualizar de maneira simples quanto foi movimentado em determinado dia. Com pedidos e pagamentos estruturados, juntamente com compras e despesas registradas, torna-se possível realizar consultas sobre a movimentação financeira.
+
+A estrutura proposta busca solucionar uma das principais dores identificadas: a dificuldade de visualizar de maneira simples quanto foi movimentado em determinado dia. Com pedidos e pagamentos estruturados, juntamente com compras e movimentações de estoque, torna-se possível organizar e consultar as informações necessárias para o acompanhamento das operações do estabelecimento.
 
 ---
 
