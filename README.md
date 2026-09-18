@@ -136,8 +136,7 @@ A solução proposta deverá permitir maior visibilidade sobre as entradas e sa�
 * **RF11 — Registrar movimentações de estoque:** O sistema deve permitir registrar entradas e saídas dos produtos controlados em estoque.
 * **RF12 — Consultar informações de estoque:** O sistema deve permitir visualizar a situação registrada dos produtos em estoque.
 * **RF13 — Registrar pedidos para entrega:** O sistema deve permitir identificar pedidos destinados à entrega e registrar as informações necessárias para sua realização.
-* **RF14 — Registrar despesas:** O sistema deve permitir registrar despesas do estabelecimento que não correspondam diretamente às compras de produtos ou ingredientes.
-* **RF15 — Consultar entradas e saídas financeiras:** O sistema deve permitir consultar os valores registrados como entradas e saídas financeiras.
+* **RF14 — Consultar entradas e saídas financeiras:** O sistema deve permitir consultar os valores registrados como entradas e saídas financeiras.
 
 ### 3.2 Requisitos Não Funcionais
 Os seguintes requisitos são propostos para a solução, não constituindo características atualmente observadas na organização:
@@ -280,7 +279,7 @@ O modelo deve considerar que:
 * existem diferentes formas de pagamento;
 * qualquer funcionário pode participar da operação, sem necessidade de identificação individual no sistema;
 * as vendas podem ocorrer presencialmente ou por entrega;
-* produtos e ingredientes podem ser adquiridos de fornecedores ou de supermercados;
+* produtos podem ser adquiridos de fornecedores ou de supermercados;
 * somente os produtos comercializados serão controlados no estoque estruturado da solução;
 * compras e despesas representam saídas financeiras;
 * pedidos de entrega possuem informações de localização fornecidas pelo cliente;
@@ -300,7 +299,6 @@ O DER deverá representar:
 * identificação das entidades;
 * relações entre pedidos, produtos e pagamentos;
 * relações entre compras, fornecedores e produtos;
-* estrutura necessária para representar despesas e reposições;
 * estrutura necessária para representar as movimentações de estoque.
 
 O modelo deverá ser construído de maneira que possa posteriormente ser convertido para um modelo lógico relacional e implementado em SQL.
