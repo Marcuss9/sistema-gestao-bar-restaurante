@@ -3,7 +3,7 @@
 - **Cauã Francisco Gomes da Silva** **- RGM: 47485990**
 - **João Pedro Liberato de Oliveira** **- RGM: 46801375**
 - **Marcus Vinicius dos Santos Cruz** **- RGM: 46690069**
--**João Vitor Gonçalves De Oliveira** **- RGM: 47391111** 
+- **João Vitor Gonçalves De Oliveira** **- RGM: 47391111** 
 
 # Entrega 1 — Modelo Conceitual (DER)
 ### Modelagem de um sistema de gestão de informações para uma organização de pequeno porte
