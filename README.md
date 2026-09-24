@@ -38,7 +38,7 @@ Entre as principais necessidades identificadas estão:
 
 **Justificativa da escolha**
 O estabelecimento foi escolhido por apresentar uma operação real, de pequeno porte e com processos suficientemente definidos para a elaboração de um modelo conceitual de banco de dados.
-Apesar de a operação funcionar atualmente com base na experiência dos funcionários e em controles manuais, existem diversos dados relacionados a pedidos, produtos, estoque, fornecedores, compras, despesas, pagamentos e entregas que podem ser estruturados em um sistema de gestão.
+Apesar de a operação funcionar atualmente com base na experiência dos funcionários e em controles manuais, existem diversos dados relacionados a pedidos, produtos, estoque, fornecedores, compras, pagamentos e entregas que podem ser estruturados em um sistema de gestão.
 Esse cenário permite modelar uma solução que não pretende substituir a experiência dos funcionários, mas transformar informações atualmente dispersas ou não registradas em dados estruturados, possibilitando consultas e acompanhamento da operação.
 
 **Evidências da organização**
@@ -64,7 +64,6 @@ A partir do levantamento realizado, foram identificados os seguintes processos p
 * Controle de produtos em estoque
 * Reposição de produtos
 * Registro de compras
-* Registro de despesas
 * Acompanhamento financeiro
 
 **2.1 Atendimento e registro de pedidos**
@@ -108,11 +107,7 @@ Os produtos comercializados podem ser adquiridos de fornecedores recorrentes, co
 Ingredientes utilizados na preparação dos alimentos também podem ser adquiridos diretamente em supermercados.
 As compras são registradas manualmente e representam saídas financeiras do estabelecimento.
 
-**2.7 Despesas**
-Além das compras, o estabelecimento possui outras contas e despesas, que também são registradas manualmente.
-As despesas representam gastos que não correspondem diretamente à aquisição de produtos ou ingredientes.
-
-**2.8 Acompanhamento financeiro**
+**2.7__ Acompanhamento financeiro**
 Atualmente, os registros financeiros são realizados manualmente e posteriormente comparados com os extratos financeiros.
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
@@ -132,7 +127,7 @@ A solução proposta deverá permitir maior visibilidade sobre as entradas e sa�
 * **RF06 — Consultar movimentação diária:** O sistema deve permitir consultar o valor movimentado em determinado dia.
 * **RF07 — Registrar compras:** O sistema deve permitir registrar compras de produtos comercializados.
 * **RF08 — Registrar fornecedores:** O sistema deve permitir cadastrar e identificar fornecedores de produtos.
-* **RF09 — Registrar necessidades de reposição:** O sistema deve permitir registrar quais produtos precisam ser repostos, incluindo a quantidade necessária.
+* **RF09 — Acompanhar necessidade de abastecimento:** O sistema deve permitir consultar a quantidade disponível dos produtos em estoque, auxiliando os funcionários na identificação dos produtos que precisam ser repostos.
 * **RF10 — Registrar recebimento de produtos:** O sistema deve permitir registrar o recebimento dos produtos adquiridos.
 * **RF11 — Registrar movimentações de estoque:** O sistema deve permitir registrar entradas e saídas dos produtos controlados em estoque.
 * **RF12 — Consultar informações de estoque:** O sistema deve permitir visualizar a situação registrada dos produtos em estoque.
@@ -159,7 +154,7 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 * **RN04 — Entrega a pé:** Qualquer funcionário pode realizar uma entrega a pé.
 * **RN05 — Transporte por aplicativo:** Quando um cliente solicita Uber para retirar ou receber um pedido, o custo do transporte é pago pelo próprio cliente.
 * **RN06 — Fornecedores:** Ambev, Heineken e Coca-Cola estão entre os fornecedores recorrentes do estabelecimento. Outros produtos e ingredientes podem ser adquiridos diretamente em supermercados.
-* **RN07 — Reposição:** A necessidade de reposição de produtos comercializados é identificada conforme a quantidade disponível e deverá poder ser registrada no sistema, incluindo o produto e a quantidade necessária.
+* **RN07 — Controle de estoque:** A necessidade de reposição dos produtos é identificada pelos funcionários a partir da quantidade disponível registrada no estoque, sem a criação de um registro específico de reposição.
 * **RN08 — Conferência de recebimento:** Os produtos recebidos dos fornecedores são comparados com a nota do fornecedor.
 * **RN09 — Ausência de comanda:** Atualmente, os pedidos não possuem identificação por mesa, nome do cliente ou número de comanda.
 * **RN10 — Controle de estoque:** O controle estruturado de estoque proposto é destinado aos produtos comercializados pelo estabelecimento. Os ingredientes utilizados na preparação dos alimentos não fazem parte do controle de estoque da solução.
@@ -226,66 +221,137 @@ Outra restrição é o pequeno porte do estabelecimento e a ausência de registr
 
 ---
 
-## 6. Modelagem Conceitual (Entidades, Atributos, Relacionamentos)
+## 6. Modelagem Conceitual (Entidades, Atributos e Relacionamentos)
 
-**Entidades reconhecidas**
+A modelagem conceitual foi elaborada a partir dos processos de negócio, requisitos, regras de negócio e do Dicionário de Dados Conceitual definidos para o **Bar e Restaurante Esquina dos Amigos**.
 
-A partir dos processos levantados e das validações realizadas, foram identificadas as seguintes entidades:
+O objetivo desta etapa é representar, de forma independente da implementação física do banco de dados, as principais entidades necessárias ao sistema, seus atributos, relacionamentos, cardinalidades e restrições organizacionais.
 
-* **Produto:** representa os produtos comercializados pelo estabelecimento e controlados em estoque.
-* **Pedido:** representa uma solicitação de produtos realizada por um cliente.
-* **Pagamento:** representa o recebimento associado a um pedido.
-* **Fornecedor:** representa empresas ou estabelecimentos responsáveis pelo fornecimento de produtos.
-* **Compra:** representa uma aquisição realizada pelo estabelecimento.
-* **Movimentacao_Estoque:** representa os registros de entrada e saída dos produtos no estoque, permitindo o acompanhamento detalhado de suas quantidades e motivos.
+### 6.1 Entidades reconhecidas
 
-*Nota:* A entidade **Funcionário** não será incluída no modelo, pois a identificação do responsável por cada operação não constitui uma necessidade do sistema. Todos os quatro funcionários, incluindo o proprietário, podem desempenhar diferentes atividades conforme a demanda.
+A partir do levantamento realizado e das necessidades identificadas no estabelecimento, foram reconhecidas as seguintes entidades:
 
-A entidade **Cliente** não será incluída como cadastro independente, pois o estabelecimento não mantém atualmente um cadastro estruturado de clientes. Para pedidos destinados à entrega, as informações necessárias para realização da entrega serão associadas ao próprio pedido.
+- **Produto:** representa os produtos comercializados pelo estabelecimento e controlados em estoque.
 
-Também não será criada uma entidade **Venda** separada, pois o pedido representa a operação comercial que será registrada e relacionada ao respectivo pagamento.
+- **Pedido:** representa uma solicitação de produtos realizada por um cliente. No modelo proposto, o Pedido corresponde à operação comercial registrada pelo sistema, não sendo necessária uma entidade Venda separada.
 
-As entidades **Item_Pedido**, **Item_Compra**, **Reposição** e **Despesa** não fazem parte do modelo conceitual. Os relacionamentos entre pedidos, compras e produtos são representados diretamente no modelo conceitual, enquanto a resolução desses relacionamentos e a estrutura necessária para sua implementação serão tratadas posteriormente no modelo lógico.
+- **Pagamento:** representa o recebimento associado a um pedido, armazenando as informações referentes ao valor, forma e momento do pagamento.
 
-**Atributos e classificações**
+- **Fornecedor:** representa empresas, supermercados ou outros estabelecimentos responsáveis pelo fornecimento de produtos ao restaurante.
 
-Cada entidade possui atributos destinados a representar as informações necessárias para identificar, descrever e relacionar os elementos da operação.
+- **Compra:** representa uma aquisição de produtos realizada pelo estabelecimento junto a um fornecedor.
 
-A entidade **Produto** concentra informações sobre os itens comercializados e seu saldo de estoque, enquanto **Pedido** representa a ocorrência da venda. O relacionamento entre Pedido e Produto permite representar os produtos que compõem cada pedido.
+- **Movimentacao_Estoque:** representa os registros de entrada e saída dos produtos, permitindo acompanhar e justificar as alterações ocorridas no estoque.
 
-A entidade **Compra** representa uma aquisição realizada pelo estabelecimento, enquanto seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra.
+As entidades **Cliente** e **Funcionario** não foram incluídas no modelo conceitual. O estabelecimento não necessita manter um cadastro individual de clientes e também não necessita identificar qual funcionário realizou cada operação. Nos pedidos destinados à entrega, as informações necessárias são registradas diretamente no próprio Pedido.
 
-A entidade **Pagamento** representa o recebimento associado a um pedido, enquanto **Fornecedor** permite identificar a origem das compras realizadas pelo estabelecimento.
+Também não foi criada uma entidade **Venda**, pois o Pedido já representa a operação comercial realizada pelo estabelecimento.
 
-A entidade **Movimentacao_Estoque** permite registrar as entradas e saídas dos produtos, possibilitando o acompanhamento das alterações realizadas no estoque.
+As estruturas **Item_Pedido** e **Item_Compra** não fazem parte desta etapa conceitual. Os relacionamentos entre Pedido e Produto e entre Compra e Produto permanecem como relacionamentos N:N, conforme definido para esta etapa da modelagem. Sua transformação em estruturas intermediárias ocorrerá posteriormente no modelo lógico.
 
-**Relacionamentos pertinentes**
+### 6.2 Atributos e classificações
 
-A modelagem proposta considera os seguintes relacionamentos:
+Os atributos definidos para cada entidade são:
 
-* Um **Pedido** contém um ou mais **Produtos**.
-* Um **Produto** pode estar presente em diversos **Pedidos**.
-* Um **Pedido** está associado a um **Pagamento**.
-* Um **Fornecedor** pode estar relacionado a diversas **Compras**.
-* Cada **Compra** está relacionada a um único **Fornecedor**.
-* Uma **Compra** adquire um ou mais **Produtos**.
-* Um **Produto** pode estar presente em diversas **Compras**.
-* Um **Produto** pode possuir diversas **Movimentações_Estoque**.
-* Cada **Movimentacao_Estoque** está relacionada a um único **Produto**.
+| Entidade | Atributos |
+|---|---|
+| **Produto** | `id_produto`, `nome_produto`, `categoria_produto`, `preco_venda_produto`, `quantidade_estoque_produto` |
+| **Pedido** | `id_pedido`, `data_hora_pedido`, `tipo_atendimento_pedido`, `status_pedido`, `observacao_pedido`, `endereco_entrega_pedido` |
+| **Pagamento** | `id_pagamento`, `preco_total_pagamento`, `forma_pagamento`, `data_hora_pagamento` |
+| **Fornecedor** | `id_fornecedor`, `nome_fornecedor`, `tipo_fornecedor` |
+| **Compra** | `id_compra`, `data_compra`, `preco_total_compra`, `id_fornecedor_compra` |
+| **Movimentacao_Estoque** | `id_movimentacao`, `tipo_movimentacao`, `quantidade_movimentada`, `data_hora_movimentacao`, `motivo_movimentacao` |
 
-Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** possuem cardinalidade **N:N**, sendo representados diretamente no modelo conceitual. A resolução desses relacionamentos em estruturas intermediárias será realizada no modelo lógico.
+Os atributos iniciados por `id_` atuam como identificadores ou referências relacionadas às respectivas entidades.
 
-**Restrições e políticas organizacionais aplicadas ao modelo**
-O modelo deve considerar que:
-* existem diferentes formas de pagamento;
-* qualquer funcionário pode participar da operação, sem necessidade de identificação individual no sistema;
-* as vendas podem ocorrer presencialmente ou por entrega;
-* produtos podem ser adquiridos de fornecedores ou de supermercados;
-* somente os produtos comercializados serão controlados no estoque estruturado da solução;
-* compras e despesas representam saídas financeiras;
-* pedidos de entrega possuem informações de localização fornecidas pelo cliente;
-* não existe uma pessoa exclusivamente responsável pelas entregas.
+No Pedido, `observacao_pedido` é opcional, pois nem todo pedido necessita de uma observação adicional. O atributo `endereco_entrega_pedido` também é opcional, sendo necessário apenas quando o tipo de atendimento corresponder a uma entrega.
 
+Os demais atributos representam informações necessárias para caracterizar e acompanhar cada ocorrência das entidades dentro dos processos do estabelecimento.
+
+### 6.3 Relacionamentos pertinentes
+
+As entidades estão conectadas pelos seguintes relacionamentos:
+
+#### Produto — Movimentacao_Estoque
+
+Um **Produto pode possuir nenhuma ou várias Movimentações de Estoque**, enquanto cada **Movimentacao_Estoque está relacionada a exatamente um Produto**.
+
+**Cardinalidade:**
+
+- Produto: `(0,n)`
+- Movimentacao_Estoque: `(1,1)`
+
+Esse relacionamento permite registrar e acompanhar as entradas e saídas relacionadas a cada produto.
+
+#### Pedido — Produto
+
+Um **Pedido contém um ou vários Produtos**, enquanto um Produto pode estar presente em nenhum ou em vários Pedidos.
+
+**Cardinalidade:**
+
+- Pedido: `(1,n)`
+- Produto: `(0,n)`
+
+Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
+
+#### Pedido — Pagamento
+
+Um **Pedido gera exatamente um Pagamento**, e cada Pagamento está relacionado a exatamente um Pedido.
+
+**Cardinalidade:**
+
+- Pedido: `(1,1)`
+- Pagamento: `(1,1)`
+
+Esse relacionamento representa o pagamento correspondente à operação comercial registrada pelo pedido.
+
+#### Compra — Produto
+
+Uma **Compra adquire um ou vários Produtos**, enquanto um Produto pode estar presente em nenhuma ou em várias Compras.
+
+**Cardinalidade:**
+
+- Compra: `(1,n)`
+- Produto: `(0,n)`
+
+Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
+
+#### Fornecedor — Compra
+
+Um **Fornecedor pode estar relacionado a nenhuma ou várias Compras**, enquanto cada Compra está relacionada a exatamente um Fornecedor.
+
+**Cardinalidade:**
+
+- Fornecedor: `(0,n)`
+- Compra: `(1,1)`
+
+Esse relacionamento permite identificar o fornecedor responsável por cada aquisição realizada pelo estabelecimento.
+
+### 6.4 Restrições e políticas organizacionais aplicadas ao modelo
+
+As seguintes regras e características observadas no estabelecimento influenciaram diretamente a construção do modelo conceitual:
+
+- As vendas podem ocorrer de forma **presencial ou por entrega**.
+
+- Pedidos destinados à entrega devem possuir as informações de localização necessárias para que o atendimento seja realizado.
+
+- O pagamento pode ser realizado em **dinheiro, cartão de crédito, cartão de débito, vale-refeição ou Pix**.
+
+- Cada pedido está relacionado ao respectivo pagamento da operação.
+
+- Não é necessária a identificação individual do funcionário responsável pela realização de cada operação.
+
+- O estabelecimento não mantém cadastro individual de clientes, portanto os dados necessários para pedidos de entrega são armazenados diretamente no Pedido.
+
+- Os produtos podem ser adquiridos tanto de **fornecedores recorrentes quanto de supermercados**.
+
+- Somente os produtos comercializados pelo estabelecimento fazem parte do controle estruturado de estoque. Ingredientes utilizados na preparação dos alimentos ficam fora desse controle.
+
+- Toda movimentação de estoque deve estar relacionada a um Produto e deve permitir identificar se ocorreu uma **entrada ou saída**, a quantidade movimentada, a data e hora e o motivo da movimentação.
+
+- A necessidade de reposição não é representada por uma entidade específica. O acompanhamento é realizado por meio da quantidade disponível de cada Produto e dos registros existentes em `Movimentacao_Estoque`.
+
+- Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no modelo conceitual. As estruturas necessárias para representar esses relacionamentos no banco de dados serão definidas somente na etapa de modelagem lógica.
 ---
 
 ## 7. Diagrama Entidade-Relacionamento (DER)
@@ -353,5 +419,22 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ---
 
-## Critérios Atitudinais
-Os critérios atitudinais são avaliados por meio da participação, comprometimento, colaboração e autonomia dos integrantes do grupo, incluindo o histórico de commits no GitHub.
+## Critérios Atitudinais (20%)
+**Estes critérios NÃO constam explicitamente como item de entrega no README.** Eles são avaliados por meio de **Avaliação 360º entre os integrantes do grupo** (cada membro avalia os colegas de equipe) e, no caso da Colaboração, também pela **colaboração equilibrada no histórico de commits** do repositório GitHub — não pela leitura do restante do repositório nem pela apresentação:
+
+- **Participação (5%):** envolvimento nas discussões técnicas e nas decisões do grupo.
+- **Comprometimento (5%):** cumprimento de prazos e responsabilidades assumidas.
+- **Colaboração (5%):** respeito às contribuições dos colegas, cooperação na construção do projeto e colaboração equilibrada no histórico de commits do repositório GitHub.
+- **Autonomia (5%):** busca independente de soluções e proposta de melhorias.
+
+---
+
+## Resumo dos Pesos
+
+| Dimensão | Peso total |
+|----------|-----------|
+| Conceitual (contexto, requisitos/regras, modelagem, justificativa técnica) | 30% |
+| Procedimental (requisitos, fluxogramas, dicionário de dados, DER) | 50% |
+| Atitudinal (participação, comprometimento, colaboração, autonomia) | 20% |
+
+**Entrega final:** README.md completo + DER + Dicionário de Dados em HTML (com exceção dos cursos GTI) anexado no repositório GitHub do grupo.
