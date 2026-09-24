@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dicionário de Dados Conceitual - Esquina dos Amigos</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;margin:40px;line-height:1.5;color:#222}
+h1{margin-bottom:8px} h2{margin-top:32px;border-bottom:2px solid #ccc;padding-bottom:6px}
+table{width:100%;border-collapse:collapse;margin:12px 0 28px}
+th,td{border:1px solid #999;padding:10px;text-align:left;vertical-align:top}
+th{background:#f2f2f2} code{font-family:Consolas,'Courier New',monospace}
+</style></head><body>
+<h1>Dicionário de Dados Conceitual</h1>
+<p><strong>Projeto:</strong> Sistema de Gestão - Bar e Restaurante Esquina dos Amigos</p>
+<h2>1. Produto</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_produto</code></td><td>Identificador único do produto</td><td>Deve identificar exclusivamente cada produto</td></tr>
+<tr><td><code>nome_produto</code></td><td>Nome do produto</td><td>Obrigatório</td></tr>
+<tr><td><code>categoria_produto</code></td><td>Categoria do produto</td><td>Deve permitir classificar o produto</td></tr>
+<tr><td><code>preco_venda_produto</code></td><td>Preço praticado na venda do produto</td><td>Deve representar o preço atual</td></tr>
+<tr><td><code>quantidade_estoque_produto</code></td><td>Quantidade atualmente disponível em estoque</td><td>Deve representar o saldo atualizado do produto</td></tr>
+</tbody></table>
+<h2>2. Pedido</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_pedido</code></td><td>Identificador único do pedido</td><td>Deve identificar exclusivamente cada pedido</td></tr>
+<tr><td><code>data_hora_pedido</code></td><td>Data e horário em que o pedido foi feito</td><td>Obrigatório</td></tr>
+<tr><td><code>tipo_atendimento_pedido</code></td><td>Identifica atendimento presencial ou entrega</td><td>Deve permitir diferenciar os tipos de atendimento</td></tr>
+<tr><td><code>status_pedido</code></td><td>Situação atual do pedido</td><td>Deve representar o andamento do pedido</td></tr>
+<tr><td><code>observacao_pedido</code></td><td>Informações adicionais do pedido</td><td>Opcional</td></tr>
+<tr><td><code>endereco_entrega_pedido</code></td><td>Local informado para pedidos de entrega</td><td>Obrigatório quando o pedido for destinado à entrega</td></tr>
+</tbody></table>
+<h2>3. Pagamento</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_pagamento</code></td><td>Identificador único do pagamento</td><td>Deve identificar exclusivamente o pagamento</td></tr>
+<tr><td><code>preco_total_pagamento</code></td><td>Preço/montante pago</td><td>Deve corresponder ao montante da operação</td></tr>
+<tr><td><code>forma_pagamento</code></td><td>Forma utilizada no pagamento</td><td>Dinheiro, crédito, débito, vale refeição ou Pix</td></tr>
+<tr><td><code>data_hora_pagamento</code></td><td>Momento em que o pagamento foi realizado</td><td>Obrigatório</td></tr>
+</tbody></table>
+<h2>4. Fornecedor</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_fornecedor</code></td><td>Identificador único do fornecedor</td><td>Deve identificar exclusivamente o fornecedor</td></tr>
+<tr><td><code>nome_fornecedor</code></td><td>Nome do fornecedor</td><td>Obrigatório</td></tr>
+<tr><td><code>tipo_fornecedor</code></td><td>Classificação do fornecedor</td><td>Pode distinguir fornecedor recorrente de supermercado</td></tr>
+</tbody></table>
+<h2>5. Compra</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_compra</code></td><td>Identificador único da compra</td><td>Deve identificar exclusivamente a compra</td></tr>
+<tr><td><code>data_compra</code></td><td>Data de realização da compra</td><td>Obrigatório</td></tr>
+<tr><td><code>preco_total_compra</code></td><td>Preço total da compra</td><td>Deve corresponder à soma dos itens adquiridos</td></tr>
+<tr><td><code>id_fornecedor_compra</code></td><td>Fornecedor relacionado à compra</td><td>Deve permitir identificar a origem da compra</td></tr>
+</tbody></table>
+<h2>6. Movimentacao_Estoque</h2>
+<table><thead><tr><th>Atributo</th><th>Descrição</th><th>Regra de negócio associada</th></tr></thead><tbody>
+<tr><td><code>id_movimentacao</code></td><td>Identificador único da movimentação</td><td>Deve identificar exclusivamente o registro</td></tr>
+<tr><td><code>tipo_movimentacao</code></td><td>Tipo de movimentação (Entrada ou Saída)</td><td>Deve especificar se o estoque aumentou ou diminuiu</td></tr>
+<tr><td><code>quantidade_movimentada</code></td><td>Quantidade de itens movimentados</td><td>Deve ser positiva</td></tr>
+<tr><td><code>data_hora_movimentacao</code></td><td>Data e horário da movimentação</td><td>Obrigatório</td></tr>
+<tr><td><code>motivo_movimentacao</code></td><td>Motivo da entrada ou saída</td><td>Ex: Compra, Venda, Perda, Ajuste</td></tr>
+</tbody></table>
+</body></html>
