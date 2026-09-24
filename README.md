@@ -107,7 +107,7 @@ Os produtos comercializados podem ser adquiridos de fornecedores recorrentes, co
 Ingredientes utilizados na preparação dos alimentos também podem ser adquiridos diretamente em supermercados.
 As compras são registradas manualmente e representam saídas financeiras do estabelecimento.
 
-**2.7__ Acompanhamento financeiro**
+**2.7 Acompanhamento financeiro**
 Atualmente, os registros financeiros são realizados manualmente e posteriormente comparados com os extratos financeiros.
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
@@ -358,7 +358,7 @@ As seguintes regras e características observadas no estabelecimento influenciar
 
 ![DER](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
 
-O DER deverá representar:
+O DER representa:
 * entidades;
 * atributos;
 * relacionamentos;
@@ -380,7 +380,7 @@ A entidade **Produto** é necessária porque os produtos comercializados represe
 
 A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N será mantida no modelo conceitual, sendo sua resolução estrutural realizada posteriormente no modelo lógico.
 
-A entidade **Pagamento** foi separada do pedido para representar explicitamente a forma pela qual uma operação comercial foi recebida, contemplando dinheiro, cartão de crédito, cartão de débito e Pix.
+A entidade **Pagamento** foi separada do pedido para representar explicitamente a forma pela qual uma operação comercial foi recebida, contemplando dinheiro, cartão de crédito, cartão de débito, vale refeição e Pix.
 
 Não foi criada uma entidade **Venda** separada porque não existe uma necessidade identificada de distinguir uma venda de seu pedido. O pedido representa a operação comercial e pode ser associado ao pagamento correspondente.
 
