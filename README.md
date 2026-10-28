@@ -147,22 +147,55 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 
 ## 4. Regras de Negócio
 
-**Regras operacionais**
-* **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito, vale refeição ou Pix.
-* **RN02 — Funcionários:** Não existem funções rigidamente separadas entre os quatro funcionários, incluindo o proprietário. Todos podem executar as atividades necessárias de acordo com a demanda.
-* **RN03 — Entrega:** As entregas realizadas pelo estabelecimento são limitadas às proximidades do restaurante.
-* **RN04 — Entrega a pé:** Qualquer funcionário pode realizar uma entrega a pé.
-* **RN05 — Transporte por aplicativo:** Quando um cliente solicita Uber para retirar ou receber um pedido, o custo do transporte é pago pelo próprio cliente.
-* **RN06 — Fornecedores:** Ambev, Heineken e Coca-Cola estão entre os fornecedores recorrentes do estabelecimento. Outros produtos e ingredientes podem ser adquiridos diretamente em supermercados.
-* **RN07 — Controle de estoque:** A necessidade de reposição dos produtos é identificada pelos funcionários a partir da quantidade disponível registrada no estoque, sem a criação de um registro específico de reposição.
-* **RN08 — Conferência de recebimento:** Os produtos recebidos dos fornecedores são comparados com a nota do fornecedor.
-* **RN09 — Ausência de comanda:** Atualmente, os pedidos não possuem identificação por mesa, nome do cliente ou número de comanda.
-* **RN10 — Controle de estoque:** O controle estruturado de estoque proposto é destinado aos produtos comercializados pelo estabelecimento. Os ingredientes utilizados na preparação dos alimentos não fazem parte do controle de estoque da solução.
-* **RN11 — Funcionários:** O sistema não precisa identificar qual funcionário realizou determinada operação, pois todos os funcionários podem desempenhar diferentes atividades do estabelecimento.
+As regras a seguir estão separadas em **regras operacionais**, **regras propostas que dependem de validação** e **restrições legais, sanitárias, fiscais e de privacidade**. Propostas não devem ser confundidas com práticas confirmadas na entrevista. A modelagem do DER não é alterada nesta correção.
 
-**Restrições organizacionais**
-A principal restrição identificada é a forte dependência da operação em relação à experiência dos funcionários. Como o estabelecimento funciona há aproximadamente 20 anos, muitos procedimentos são executados com base na familiaridade com o comércio e seus clientes.
-Outra restrição é o pequeno porte do estabelecimento e a ausência de registros estruturados de vendas e estoque. A solução deve, portanto, priorizar simplicidade e facilidade de uso, evitando controles que não sejam necessários à realidade observada.
+### 4.1 Regras operacionais e de escopo
+
+* **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito, vale-refeição ou Pix. O registro de cada pagamento deve indicar uma das modalidades aceitas.
+* **RN02 — Execução das atividades:** As atividades de atendimento, preparo, compras, reposição e entregas podem ser desempenhadas pelos funcionários conforme a demanda, sem exigência de cargo fixo para cada operação.
+* **RN03 — Área de entrega:** O restaurante realiza entregas próprias apenas nas proximidades do estabelecimento. O limite geográfico deve ser confirmado antes de ser utilizado como validação automática.
+* **RN04 — Entrega a pé:** As entregas locais podem ser realizadas a pé por qualquer funcionário, sem a designação obrigatória de um entregador exclusivo.
+* **RN05 — Transporte por aplicativo:** Quando o cliente solicita transporte por aplicativo para retirada ou recebimento do pedido, o custo do serviço é de responsabilidade do cliente.
+* **RN06 — Identificação do fornecedor:** Toda compra registrada deve identificar seu fornecedor, inclusive quando realizada em supermercado, sem limitar o cadastro a uma lista fixa de empresas.
+* **RN07 — Reposição de estoque:** A necessidade de reposição deve ser identificada pela quantidade disponível dos produtos controlados em estoque, sem exigir uma entidade ou registro próprio de reposição.
+* **RN08 — Conferência do recebimento:** Os itens e as quantidades recebidas devem ser conferidos com a nota ou documento do fornecedor; divergências devem ser verificadas antes da confirmação da entrada no estoque. O procedimento de registro dessas divergências será definido em evolução posterior.
+* **RN09 — Identificação do pedido:** Cada pedido registrado deve possuir identificador único, sem exigir identificação de mesa, comanda ou cadastro de cliente, pois tais controles não integram a operação modelada.
+* **RN10 — Limite do controle de estoque:** O estoque estruturado compreende apenas os produtos comercializados pelo estabelecimento. Ingredientes empregados no preparo de alimentos permanecem fora do controle estruturado previsto nesta entrega.
+* **RN11 — Identificação do funcionário:** Os registros de pedidos, compras e movimentações de estoque não exigem vínculo com uma entidade Funcionário na modelagem atual. Essa decisão não elimina a necessidade de controle de acesso às informações sensíveis.
+* **RN12 — Cobrança de entrega:** O restaurante não cobra frete próprio nas entregas locais. O custo do transporte por aplicativo solicitado pelo cliente, previsto na RN05, não corresponde a frete cobrado pelo estabelecimento.
+
+### 4.2 Regras adicionais e decisões pendentes de validação
+
+As regras RN13 a RN15 são propostas para as lacunas identificadas na avaliação. Não foram confirmadas na entrevista. A RN16 deriva da informação de que o restaurante oferece pratos especiais em dias determinados, mas sua programação específica também precisa ser confirmada.
+
+* **RN13 — Venda com estoque insuficiente (proposta):** Para produtos controlados em estoque, a confirmação de uma venda não deverá gerar saldo negativo. Quantidades insuficientes deverão ser revisadas; o tratamento de exceções e diferenças entre saldo físico e registrado depende de validação com o estabelecimento.
+* **RN14 — Cancelamento ou troca (proposta):** Cancelamentos e alterações de pedidos deverão preservar o histórico e, quando aplicável, atualizar a situação do pedido, as movimentações de estoque e os registros financeiros. Condições de troca, cancelamento e eventual devolução de valores precisam ser confirmadas.
+* **RN15 — Venda fiada ou pagamento posterior (decisão pendente):** Deve ser confirmado se o estabelecimento permite pagamento após o consumo ou a entrega. Não se presume que a prática seja aceita nem proibida. Se for permitida, serão necessárias regras para acompanhamento dos valores pendentes e revisão da adequação da modelagem de Pagamento.
+* **RN16 — Pratos especiais por dia:** A oferta de pratos especiais deverá respeitar os dias da semana definidos pelo restaurante. Os dias específicos e o modo de atualizar essa disponibilidade devem ser confirmados antes de criar uma validação automática.
+
+### 4.3 Restrições legais, sanitárias, fiscais e de privacidade
+
+As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua documentação não significa que as funcionalidades correspondentes já estejam implementadas.
+
+* **RN17 — Proibição de venda de bebidas alcoólicas a menores:** É proibido vender, fornecer ou servir bebidas alcoólicas a crianças ou adolescentes, nos termos dos arts. 81, II, e 243 do Estatuto da Criança e do Adolescente (Lei nº 8.069/1990).
+* **RN18 — Boas práticas sanitárias:** A manipulação, preparação, conservação, armazenamento e validade dos alimentos devem observar as normas sanitárias aplicáveis a serviços de alimentação, incluindo a RDC Anvisa nº 216/2004 e regras locais pertinentes. A ausência de controle informatizado dos ingredientes não afasta essas obrigações.
+* **RN19 — Documentação fiscal:** As vendas devem cumprir as obrigações de documentação fiscal aplicáveis, incluindo a emissão de NFC-e no varejo paulista quando exigida, e as compras devem respeitar a documentação fiscal pertinente. Esta regra não pressupõe a implementação de um módulo fiscal nesta entrega.
+* **RN20 — Proteção de dados e controle de acesso:** As informações pessoais necessárias para entregas devem ser tratadas somente para finalidades legítimas, com coleta limitada ao necessário e acesso autorizado. Informações administrativas e financeiras devem ter acesso restrito, em consonância com a LGPD (Lei nº 13.709/2018) e o RNF04.
+
+**Referências normativas:**
+
+- [Estatuto da Criança e do Adolescente — Lei nº 8.069/1990](https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-normaatualizada-pl.html).
+- [RDC Anvisa nº 216/2004 — Boas práticas para serviços de alimentação](https://anvisalegis.datalegis.net/action/ActionDatalegis.php?acao=abrirTextoAto&cod_menu=1696&cod_modulo=134&numeroAto=00000216&orgao=RDC%2FDC%2FANVISA%2FMS&pesquisa=true&seqAto=000&tipo=RDC&valorAno=2004).
+- [Secretaria da Fazenda de São Paulo — NFC-e](https://portal.fazenda.sp.gov.br/servicos/nfce/).
+- [LGPD — Lei nº 13.709/2018](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html).
+
+### 4.4 Restrições organizacionais e decisões de escopo
+
+O estabelecimento possui quatro funcionários, incluindo o proprietário, e utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
+
+Para adequar a solução ao levantamento, a modelagem desta entrega não prevê cadastro independente de Cliente ou Funcionário, identificação por mesa ou comanda, controle estruturado de ingredientes nem entidade própria de Reposição. Pedido representa a operação comercial, mantendo o escopo de registros de pedidos, pagamentos, compras, fornecedores e movimentações dos produtos controlados em estoque.
+
+**Validações pendentes:** limite objetivo da área de entrega (RN03), política de venda com estoque insuficiente (RN13), cancelamentos/trocas (RN14), aceitação ou não de fiado (RN15) e dias dos pratos especiais (RN16). Esses pontos não devem ser apresentados como procedimentos confirmados antes de nova validação com o responsável.
 
 ---
 
