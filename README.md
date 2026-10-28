@@ -188,8 +188,6 @@ O estabelecimento possui quatro funcionários, incluindo o proprietário, e util
 
 Para adequar a solução ao levantamento, a modelagem desta entrega não prevê cadastro independente de Cliente ou Funcionário, identificação por mesa ou comanda, controle estruturado de ingredientes nem entidade própria de Reposição. Pedido representa a operação comercial, mantendo o escopo de registros de pedidos, pagamentos, compras, fornecedores e movimentações dos produtos controlados em estoque.
 
-**Validações pendentes:** limite objetivo da área de entrega (RN03), política de venda com estoque insuficiente (RN13), cancelamentos/trocas (RN14), aceitação ou não de fiado (RN15) e dias dos pratos especiais (RN16). Esses pontos não devem ser apresentados como procedimentos confirmados antes de nova validação com o responsável.
-
 ---
 
 ## 5. Dicionário de Dados Conceitual
