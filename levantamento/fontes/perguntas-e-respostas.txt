@@ -1,0 +1,57 @@
+20 anos de funcionamento
+3 funcionarios (cada um faz tudo)
+Possuem cardápio fisico com valores e todos os pratos
+Resume-se em muitas operações feitas pela familiaridade com o próprio comércio e clientes, o famoso "no olho"
+
+FLUXO:
+Anotações de pedido no papel (apenas isso) -> gritam o pedido pra cozinha -> Gritam que ficou pronto, pega o prato e entrega (tem uma pessoa em especifico mas tanto faz)
+ -Sem anotação de mesa, nome ou comanda
+
+Funciońarios:
+Cada um faz o que o comércio demandar, sem função específica.
+
+Fornecedores:
+Ambev, Heineken e Coca-Cola. O resto é mercado.
+
+Estoque:
+Visualizam por último pacote restante (como em uma casa);
+Marcam no caderno o que precisa ser recebido pelos fornecedores e compara com a nota do fornecedor.
+
+
+Formas de pagamento:
+Dinheiro cartão(credito e débito) e pix.
+
+Entrega:
+Só entrega ao redor do restaurante, via whatsapp e entrega a pé. Alguns clientes fiéis pedem uber (o cliente paga) pra retirar o pedido
+ -Qualquer funcionário pode fazer a entrega a pé.
+
+Vendas:
+Sem registro de vendas
+MAIOR LUCRO:
+Bebidas alcólicas
+
+Despesas: (anotações manuais)
+Anota os produtos vindo de fornecedores e o gasto em supermercado;
+ -Sem anotação diária do que foi vendido
+Contas do estabelecimento;
+ ->Soma tudo no fim do mês e tira o que foi vendido (pelos extratos)
+
+ Produtos:
+ Vendem PFs, porções, lanches (salgados etc), pratos especiais pra cada dia da semana bebidas alcólicas e refrigerantes.
+
+ Dores:
+ Gostaria de ver o dinheiro feito no dia;
+ As poucas informações anotadas são no papel. (dono não se importa);
+ O que entra e o que sai num geral.
+
+ Exceções:
+ Pedido errado - funcionarios consomem e estabelecimento bancam diferença ou cliente aceita pagar o valor do prato errado
+
+
+ RESUMO DE ANOTAÇÕES(as unicas):
+ Valor gasto com fornecedor e supermercado;
+ Contas do estabelecimento;
+ Produtos que precisam chegar do fornecedor:
+ Pedido no papel, para saber o que gritar pra cozinha.
+
+

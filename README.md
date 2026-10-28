@@ -14,7 +14,7 @@
 Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial do ramo de alimentação, com aproximadamente 20 anos de funcionamento. Sua operação envolve a comercialização de refeições, porções, lanches, bebidas alcoólicas e refrigerantes, incluindo pratos especiais disponibilizados em determinados dias da semana.
 
 **Contexto e porte**
-O estabelecimento possui uma operação de pequeno porte, contando atualmente com 4 funcionários, incluindo o proprietário. Não existem funções rigidamente atribuídas aos funcionários: todos podem desempenhar as atividades necessárias de acordo com a demanda do estabelecimento, incluindo atendimento, cozinha, reposição, compras e entregas.
+O estabelecimento possui uma operação de pequeno porte. O README da Entrega 1 registra 4 pessoas incluindo o proprietário, enquanto as anotações originais informam 3 funcionários. A composição exata da equipe permanece pendente de confirmação; não se presume que os dois números sejam equivalentes. Não existem funções rigidamente atribuídas aos funcionários: todos podem desempenhar as atividades necessárias de acordo com a demanda do estabelecimento, incluindo atendimento, cozinha, reposição, compras e entregas.
 A operação é fortemente baseada na experiência adquirida ao longo dos anos e na familiaridade dos funcionários com o próprio comércio e com seus clientes. Dessa forma, diversas atividades são realizadas de maneira informal e sem registros estruturados, baseando-se principalmente no conhecimento dos funcionários e no acompanhamento visual da operação.
 O estabelecimento trabalha com diferentes fornecedores. Entre os fornecedores recorrentes estão Ambev, Heineken e Coca-Cola, enquanto outros produtos e ingredientes são adquiridos diretamente em supermercados.
 
@@ -29,12 +29,25 @@ Atualmente, as principais informações registradas são:
 Não existe um registro estruturado das vendas realizadas durante o dia. O estabelecimento também não mantém registros de mesa, nome do cliente ou número de comanda.
 O controle dos produtos comercializados também não é realizado por meio de um sistema estruturado. A quantidade disponível é acompanhada de maneira visual e informal.
 
+Os problemas passam a ser identificados para rastreabilidade documental:
+
+| Código | Problema identificado | Requisitos relacionados | Limite atual |
+|---|---|---|---|
+| P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | Quantidade e preço por item dependem da revisão do modelo |
+| P2 | Entradas e saídas financeiras dispersas entre papel e extratos | RF07, RF14 | Contas do estabelecimento e data de pagamento das compras não estão plenamente representadas |
+| P3 | Estoque e necessidade de reposição acompanhados visualmente | RF09–RF12 | Saldo inicial, unidades, ajustes e alcance do controle precisam ser confirmados |
+
+Esses códigos ainda precisam ser vinculados às tabelas finais e consultas Gxx pela equipe responsável pelo modelo lógico e SQL. Não há consultas implementadas nesta revisão.
+
 Entre as principais necessidades identificadas estão:
 * visualizar quanto dinheiro foi movimentado no dia;
 * acompanhar de forma mais clara o que entra e o que sai financeiramente;
 * possuir maior visibilidade sobre a movimentação geral do estabelecimento;
 * controlar a quantidade disponível dos produtos comercializados;
 * registrar movimentações de entrada e saída do estoque.
+
+**Volumes operacionais**
+As fontes disponíveis informam aproximadamente 20 anos de funcionamento, mas não quantificam pedidos por dia/semana, entregas, produtos ativos ou compras por período. Esses volumes devem ser levantados com o responsável antes de justificar a massa fictícia da Entrega 2. A composição da equipe também precisa ser esclarecida.
 
 **Justificativa da escolha**
 O estabelecimento foi escolhido por apresentar uma operação real, de pequeno porte e com processos suficientemente definidos para a elaboração de um modelo conceitual de banco de dados.
@@ -49,7 +62,28 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
   ![Fotos da visita](docs/imagens/Image04.jpeg)
 * Endereço: R. Inês Monteiro, 157 - Artur Alvim, São Paulo - SP, 03568-030
 * Telefone: (11) 98109-1622
-* Responsável identificado como "Ceará"
+* Responsável identificado como "Ceará"; nome completo e função a confirmar.
+* [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
+
+### 1.1 Relato e fontes do levantamento
+
+O [levantamento organizado](levantamento/levantamento.md) sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt) e as [confirmações complementares do integrante responsável pela revisão documental](levantamento/fontes/confirmacoes-documentais.md). A operação relatada utiliza pedidos em papel, comunicação verbal com a cozinha, estoque visual e anotações de gastos; o sistema descrito neste trabalho é uma proposta.
+
+VR, ausência de frete próprio e contratação/pagamento do transporte por aplicativo pelo cliente foram confirmados pelo integrante durante a revisão de 28/10/2026. O limite de dez minutos a pé foi adotado como critério do projeto a partir de estimativa desse integrante.
+
+**Metadados pendentes:** data da entrevista, nome completo e função do entrevistado, integrantes presentes e eventual vínculo com a organização. As fontes não distinguem quais achados foram observados presencialmente e quais foram apenas relatados; essa separação precisa ser validada pelo grupo. As fotos existentes documentam a visita, mas a avaliação da Entrega 1 registra que nenhuma mostra o responsável. A comprovação específica da entrevista permanece pendente.
+
+### 1.2 Tratamento dos apontamentos da Entrega 1
+
+| Apontamento da correção | O que mudou / situação | Por quê |
+|---|---|---|
+| Regras limitadas a constatações e sem restrições legais/fiscais/sanitárias | RN13–RN20 já acrescentadas na main; esta revisão distingue fontes, propostas e pendências e detalha RN03, RN05, RN07, RN08, RN12 e RN14 | Evitar apresentar uma proposta como prática validada |
+| HTML restrito às tabelas de atributos | A main já contém convenções, cardinalidades, fluxos, expressões, tipos, índices, papéis e logs, além da adequação para MySQL; esta revisão corrige a frase sobre DATETIME e explicita a situação dos valores padrão | Responder à correção sem afirmar implementação do banco |
+| N:N Pedido–Produto e Compra–Produto sem quantidade/preço por item | Pendente de revisão do DER pela equipe responsável; o texto deixa de justificar a omissão como mera etapa do modelo lógico | Quantidade e preço praticado são fatos do negócio necessários à totalização |
+| Cardápio, conferência, pagamento de contas e reposição parcialmente descritos | Processos detalhados a partir das fontes, com as informações desconhecidas indicadas | Explicitar dados e exceções sem inventar rotinas |
+| Pedido–Pagamento 1:1 e origem das movimentações limitada a texto | Pendentes de decisão da equipe após validar pagamentos e rastreamento | A documentação não altera cardinalidades ou vínculos técnicos |
+
+Os apontamentos acima são tratados documentalmente; a tabela não declara concluídas as pendências do DER, do modelo lógico ou do SQL.
 
 ---
 
@@ -68,7 +102,7 @@ A partir do levantamento realizado, foram identificados os seguintes processos p
 
 **2.1 Atendimento e registro de pedidos**
 O cliente realiza o pedido diretamente no estabelecimento ou, no caso de entregas, por meio do WhatsApp.
-No atendimento presencial, o funcionário recebe o pedido verbalmente, sem realizar anotações estruturadas. Não são registrados número da mesa, nome do cliente ou número de comanda.
+No atendimento presencial, o funcionário recebe o pedido e faz uma anotação em papel, utilizada para comunicar verbalmente os itens à cozinha. Essa anotação não constitui um registro estruturado de vendas. Não são registrados número da mesa, nome do cliente ou número de comanda.
 Em seguida, o funcionário comunica verbalmente o pedido à cozinha.
 Nos pedidos destinados à entrega, o cliente informa, por meio do WhatsApp, as informações necessárias para que o pedido seja entregue.
 
@@ -93,23 +127,50 @@ O estabelecimento realiza entregas apenas nas proximidades.
 Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário.
 Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente.
 Não existe um funcionário exclusivamente responsável pelas entregas.
-Não é cobrado frete para as entregas.
+Não é cobrado frete próprio para as entregas locais, conforme confirmação complementar do integrante. Para delimitar as proximidades, o projeto adota trajetos de até dez minutos a pé a partir do estabelecimento na R. Inês Monteiro, 157. Esse critério foi estimado e aceito pelo integrante; não resulta de medição em campo.
 
 **2.5 Controle de produtos em estoque**
 Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema.
 A quantidade dos produtos comercializados é acompanhada de maneira informal e visual.
 A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída.
-Os ingredientes utilizados na preparação dos alimentos não farão parte do controle de estoque da solução, pois seu controle não constitui uma necessidade identificada durante o levantamento.
+O modelo atual exclui ingredientes do controle estruturado de estoque. Essa é uma decisão de escopo anterior, cuja adequação à cobertura exigida na Entrega 2 deve ser reavaliada pela equipe; o anexo não confirma que o controle de insumos seja desnecessário.
 
 **2.6 Compras**
 As compras são realizadas pelos próprios funcionários, conforme a necessidade do estabelecimento.
 Os produtos comercializados podem ser adquiridos de fornecedores recorrentes, como Ambev, Heineken e Coca-Cola.
 Ingredientes utilizados na preparação dos alimentos também podem ser adquiridos diretamente em supermercados.
-As compras são registradas manualmente e representam saídas financeiras do estabelecimento.
+Os gastos com fornecedores e supermercados são anotados manualmente. A compra e seu pagamento são fatos distintos: as fontes não informam prazos nem formas de pagamento dos fornecedores, que permanecem pendentes.
 
 **2.7 Acompanhamento financeiro**
 Atualmente, os registros financeiros são realizados manualmente e posteriormente comparados com os extratos financeiros.
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
+
+
+### 2.8 Cardápio e preços
+
+O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. No sistema proposto, o cadastro utiliza identificador, nome, categoria e preço atual do produto. A programação dos pratos e a frequência de atualização de preços não foram informadas. O preço efetivamente praticado em cada item precisa ser preservado na revisão do modelo; o preço atual do cadastro não substitui o histórico.
+
+### 2.9 Reposição, recebimento e conferência
+
+A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. Quantidades, unidades, entregas parciais e tratamento de divergências precisam ser detalhados com o responsável.
+
+Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item de compra e vínculo com o recebimento dependem da revisão técnica. A consulta ao saldo registrado será apoio futuro à reposição, não descrição da prática atual.
+
+### 2.10 Contas e acompanhamento dos gastos
+
+São anotados gastos com fornecedores, supermercado e contas do estabelecimento. O fechamento relatado é mensal, com uso de extratos para comparação com os gastos. Não há registro diário individualizado das vendas.
+
+A necessidade de visualizar entradas e saídas exige distinguir valor vendido, valor recebido, valor comprado e valor efetivamente pago. Datas de vencimento/pagamento, categorias das contas, taxas e controles de dinheiro não foram informados. A cobertura das contas e dos pagamentos das compras precisa ser discutida com a equipe de modelagem; esta revisão não cria entidade Despesa.
+
+### 2.11 Pedido errado
+
+Segundo as anotações originais, quando ocorre pedido errado, os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente pode aceitar o prato e pagar seu valor. O relato não define desconto, estorno, autorização ou procedimento geral de cancelamento. Esses detalhes permanecem pendentes, conforme RN14.
+
+### 2.12 Limites e processos a confirmar
+
+A ausência de mesa/comanda e de cargos fixos está relatada. A exclusão de cadastros permanentes de clientes e funcionários e do controle estruturado de ingredientes é decisão do modelo atual, não prova de inexistência dos respectivos dados ou processos. A equipe deve reavaliar a cobertura diante da Entrega 2.
+
+Escalas, validade de alimentos, rotina fiscal, pagamento posterior, divisão de pagamento e detalhes de fechamento não estão confirmados nas fontes. Não são declarados inexistentes. Não há evidência de necessidade de QR Code, recomendação automática ou outro canal de venda adicional.
 
 **Fluxogramas**
 * ![Fotos da visita](docs/imagens/fluxograma.jpeg)
@@ -119,20 +180,23 @@ A solução proposta deverá permitir maior visibilidade sobre as entradas e sa�
 ## 3. Requisitos do Sistema
 
 ### 3.1 Requisitos Funcionais
-* **RF01 — Cadastrar produtos:** O sistema deve permitir o cadastro dos produtos comercializados pelo estabelecimento, incluindo refeições, porções, lanches, pratos especiais e bebidas.
-* **RF02 — Registrar pedidos:** O sistema deve permitir registrar os pedidos realizados pelos clientes.
-* **RF03 — Registrar os itens de um pedido:** O sistema deve permitir associar um ou mais produtos a cada pedido.
-* **RF04 — Registrar a forma de pagamento:** O sistema deve permitir registrar a forma de pagamento utilizada em uma operação, considerando dinheiro, crédito, débito, vale refeição e Pix.
-* **RF05 — Registrar vendas:** O sistema deve permitir registrar as vendas realizadas, possibilitando posteriormente consultar a movimentação financeira.
-* **RF06 — Consultar movimentação diária:** O sistema deve permitir consultar o valor movimentado em determinado dia.
-* **RF07 — Registrar compras:** O sistema deve permitir registrar compras de produtos comercializados.
-* **RF08 — Registrar fornecedores:** O sistema deve permitir cadastrar e identificar fornecedores de produtos.
-* **RF09 — Acompanhar necessidade de abastecimento:** O sistema deve permitir consultar a quantidade disponível dos produtos em estoque, auxiliando os funcionários na identificação dos produtos que precisam ser repostos.
-* **RF10 — Registrar recebimento de produtos:** O sistema deve permitir registrar o recebimento dos produtos adquiridos.
-* **RF11 — Registrar movimentações de estoque:** O sistema deve permitir registrar entradas e saídas dos produtos controlados em estoque.
-* **RF12 — Consultar informações de estoque:** O sistema deve permitir visualizar a situação registrada dos produtos em estoque.
-* **RF13 — Registrar pedidos para entrega:** O sistema deve permitir identificar pedidos destinados à entrega e registrar as informações necessárias para sua realização.
-* **RF14 — Consultar entradas e saídas financeiras:** O sistema deve permitir consultar os valores registrados como entradas e saídas financeiras.
+
+Os requisitos descrevem a solução proposta, não funcionalidades implantadas. Os códigos são preservados; os campos abaixo usam o vocabulário atual, com dependências do modelo explicitadas.
+
+* **RF01 — Cadastrar produtos:** Registrar identificador, nome, categoria, preço atual de venda e saldo dos produtos abrangidos pelo controle. Categorias e unidades devem ser validadas.
+* **RF02 — Registrar pedidos:** Registrar identificador único, data/hora, tipo de atendimento, situação e observação opcional; para entrega, registrar endereço. O domínio de situações depende de confirmação.
+* **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. Os atributos por item ainda precisam ser incorporados ao modelo revisado.
+* **RF04 — Registrar a forma de pagamento:** Registrar identificador, valor recebido, modalidade (dinheiro, crédito, débito, vale-refeição ou Pix) e data/hora, associado ao pedido. Pagamento dividido e posterior permanecem pendentes.
+* **RF05 — Registrar vendas:** Identificar a operação comercial pelo Pedido e seus itens, preservando quantidade e preço praticado, e relacionar os recebimentos. Não confundir valor vendido com valor recebido.
+* **RF06 — Consultar movimentação diária:** Consultar valores recebidos por data e forma de pagamento, utilizando valor e data/hora de Pagamento. A data de venda utiliza Pedido e deve ser distinguida da data de recebimento.
+* **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. Os atributos por item dependem da revisão do modelo.
+* **RF08 — Registrar fornecedores:** Registrar identificador, nome e classificação do fornecedor, incluindo distribuidores recorrentes e supermercados; o domínio da classificação deve ser validado.
+* **RF09 — Acompanhar necessidade de abastecimento:** Consultar produto, unidade e saldo registrado para apoiar a reposição. O processo atual é visual; não foi confirmado estoque mínimo numérico.
+* **RF10 — Registrar recebimento de produtos:** Registrar os produtos e quantidades efetivamente recebidos, data e referência à compra/documento conferido. Esses dados e vínculos dependem da revisão do modelo e da validação das divergências.
+* **RF11 — Registrar movimentações de estoque:** Registrar identificador, produto, entrada/saída, quantidade positiva, data/hora e motivo. A origem em venda, compra, perda ou ajuste deve ter sua representação definida pela equipe.
+* **RF12 — Consultar informações de estoque:** Consultar saldo por produto e histórico de entradas/saídas com quantidade, data/hora e motivo. A conciliação exige definir saldo inicial e unidades.
+* **RF13 — Registrar pedidos para entrega:** Identificar o tipo de atendimento e o endereço do pedido, respeitando a área adotada na RN03, a entrega local sem frete da RN12 e o transporte contratado pelo cliente da RN05. A representação da modalidade de retirada/entrega precisa ser alinhada ao modelo.
+* **RF14 — Consultar entradas e saídas financeiras:** Consultar recebimentos e gastos por período, distinguindo compras, contas e pagamentos. O modelo atual cobre Pagamento e Compra, mas ainda não representa integralmente as contas nem os desembolsos; essa lacuna precisa ser resolvida pela equipe para atender P2.
 
 ### 3.2 Requisitos Não Funcionais
 Os seguintes requisitos são propostos para a solução, não constituindo características atualmente observadas na organização:
@@ -142,6 +206,17 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 * **RNF04 — Segurança:** O acesso aos dados administrativos e financeiros deve ser restrito a usuários autorizados.
 * **RNF05 — Desempenho:** O sistema deve responder às operações de cadastro, consulta e registro das operações cotidianas em até 3 segundos em condições normais de uso.
 * **RNF06 — Manutenibilidade:** O sistema deve ser estruturado de forma organizada, permitindo a manutenção e evolução de suas funcionalidades sem comprometer os dados já registrados.
+
+**Critérios de conferência dos RNF**
+
+| Código | Como conferir / decisão necessária |
+|---|---|
+| RNF01 | Validar com representante da operação as tarefas de registrar pedido, recebimento e consulta diária; participantes, roteiro e critério de aceitação ainda devem ser definidos |
+| RNF02 | Confirmar dias/horários de funcionamento e meta de disponibilidade antes da avaliação |
+| RNF03 | Conferir referências, obrigatoriedade, domínios, totais e consistência de estoque no modelo e nas consultas de auditoria |
+| RNF04 | Definir perfis e conferir operações permitidas/negadas, especialmente endereço de entrega e informações financeiras |
+| RNF05 | Manter 3 segundos como meta proposta; definir volume, equipamento, concorrência e consultas antes de medir |
+| RNF06 | Conferir consistência entre README, dicionário e modelos, e documentar alterações; resta definir procedimento de evolução do banco |
 
 ---
 
@@ -153,23 +228,23 @@ As regras a seguir estão separadas em **regras operacionais**, **regras propost
 
 * **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito, vale-refeição ou Pix. O registro de cada pagamento deve indicar uma das modalidades aceitas.
 * **RN02 — Execução das atividades:** As atividades de atendimento, preparo, compras, reposição e entregas podem ser desempenhadas pelos funcionários conforme a demanda, sem exigência de cargo fixo para cada operação.
-* **RN03 — Área de entrega:** O restaurante realiza entregas próprias apenas nas proximidades do estabelecimento. O limite geográfico deve ser confirmado antes de ser utilizado como validação automática.
+* **RN03 — Área de entrega:** O restaurante realiza entregas próprias apenas nas proximidades do estabelecimento. Para o projeto, adota-se o limite de até dez minutos de trajeto a pé a partir da R. Inês Monteiro, 157, Parque Arthur Alvim. O critério decorre de estimativa aceita pelo integrante responsável pela revisão em 28/10/2026; não corresponde a um raio medido nem a uma confirmação de campo.
 * **RN04 — Entrega a pé:** As entregas locais podem ser realizadas a pé por qualquer funcionário, sem a designação obrigatória de um entregador exclusivo.
-* **RN05 — Transporte por aplicativo:** Quando o cliente solicita transporte por aplicativo para retirada ou recebimento do pedido, o custo do serviço é de responsabilidade do cliente.
+* **RN05 — Transporte por aplicativo:** Quando houver transporte por aplicativo para retirada do pedido, o próprio cliente solicita o serviço e paga o transporte. O restaurante não é responsável por contratar esse transporte, conforme anotações originais e confirmação complementar do integrante.
 * **RN06 — Identificação do fornecedor:** Toda compra registrada deve identificar seu fornecedor, inclusive quando realizada em supermercado, sem limitar o cadastro a uma lista fixa de empresas.
-* **RN07 — Reposição de estoque:** A necessidade de reposição deve ser identificada pela quantidade disponível dos produtos controlados em estoque, sem exigir uma entidade ou registro próprio de reposição.
-* **RN08 — Conferência do recebimento:** Os itens e as quantidades recebidas devem ser conferidos com a nota ou documento do fornecedor; divergências devem ser verificadas antes da confirmação da entrada no estoque. O procedimento de registro dessas divergências será definido em evolução posterior.
+* **RN07 — Reposição de estoque:** Na rotina atual, os funcionários identificam visualmente a necessidade de reposição, inclusive pelo último pacote restante. Na solução proposta, a consulta à quantidade registrada dos produtos apoiará essa decisão; não há estoque mínimo numérico confirmado nem entidade própria de Reposição no modelo atual.
+* **RN08 — Conferência do recebimento:** A equipe compara o que foi anotado no caderno com a nota do fornecedor no recebimento. A solução deve permitir conferir os produtos e quantidades recebidos com o documento. O procedimento para divergências, entregas parciais e confirmação da entrada ainda depende de validação; não se declara um bloqueio automático já aprovado.
 * **RN09 — Identificação do pedido:** Cada pedido registrado deve possuir identificador único, sem exigir identificação de mesa, comanda ou cadastro de cliente, pois tais controles não integram a operação modelada.
 * **RN10 — Limite do controle de estoque:** O estoque estruturado compreende apenas os produtos comercializados pelo estabelecimento. Ingredientes empregados no preparo de alimentos permanecem fora do controle estruturado previsto nesta entrega.
 * **RN11 — Identificação do funcionário:** Os registros de pedidos, compras e movimentações de estoque não exigem vínculo com uma entidade Funcionário na modelagem atual. Essa decisão não elimina a necessidade de controle de acesso às informações sensíveis.
 * **RN12 — Cobrança de entrega:** O restaurante não cobra frete próprio nas entregas locais. O custo do transporte por aplicativo solicitado pelo cliente, previsto na RN05, não corresponde a frete cobrado pelo estabelecimento.
 
-### 4.2 Regras adicionais e decisões pendentes de validação
+### 4.2 Exceções, regras propostas e decisões pendentes
 
-As regras RN13 a RN15 são propostas para as lacunas identificadas na avaliação. Não foram confirmadas na entrevista. A RN16 deriva da informação de que o restaurante oferece pratos especiais em dias determinados, mas sua programação específica também precisa ser confirmada.
+A RN13 é proposta e a RN15 continua pendente. A RN14 separa a exceção relatada nas anotações da proposta de registro e das condições ainda desconhecidas. A RN16 deriva da oferta de pratos especiais, mas sua programação específica precisa ser confirmada.
 
 * **RN13 — Venda com estoque insuficiente (proposta):** Para produtos controlados em estoque, a confirmação de uma venda não deverá gerar saldo negativo. Quantidades insuficientes deverão ser revisadas; o tratamento de exceções e diferenças entre saldo físico e registrado depende de validação com o estabelecimento.
-* **RN14 — Cancelamento ou troca (proposta):** Cancelamentos e alterações de pedidos deverão preservar o histórico e, quando aplicável, atualizar a situação do pedido, as movimentações de estoque e os registros financeiros. Condições de troca, cancelamento e eventual devolução de valores precisam ser confirmadas.
+* **RN14 — Pedido errado, cancelamento ou troca:** Conforme as anotações originais, em caso de pedido errado os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente aceita o prato e paga seu valor. Como proposta do sistema, o registro da ocorrência deve preservar o histórico e permitir refletir os efeitos sobre pedido, estoque e recebimentos. As condições de cancelamento, estorno, autorização e eventual diferença de valores continuam pendentes; não são inferidas do relato.
 * **RN15 — Venda fiada ou pagamento posterior (decisão pendente):** Deve ser confirmado se o estabelecimento permite pagamento após o consumo ou a entrega. Não se presume que a prática seja aceita nem proibida. Se for permitida, serão necessárias regras para acompanhamento dos valores pendentes e revisão da adequação da modelagem de Pagamento.
 * **RN16 — Pratos especiais por dia:** A oferta de pratos especiais deverá respeitar os dias da semana definidos pelo restaurante. Os dias específicos e o modo de atualizar essa disponibilidade devem ser confirmados antes de criar uma validação automática.
 
@@ -184,13 +259,16 @@ As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua d
 
 ### 4.4 Restrições organizacionais e decisões de escopo
 
-O estabelecimento possui quatro funcionários, incluindo o proprietário, e utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
+A composição da equipe permanece a confirmar (3 funcionários nas anotações; 4 pessoas incluindo o proprietário no README anterior). O estabelecimento utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
 
 Para adequar a solução ao levantamento, a modelagem desta entrega não prevê cadastro independente de Cliente ou Funcionário, identificação por mesa ou comanda, controle estruturado de ingredientes nem entidade própria de Reposição. Pedido representa a operação comercial, mantendo o escopo de registros de pedidos, pagamentos, compras, fornecedores e movimentações dos produtos controlados em estoque.
 
 ---
 
 ## 5. Dicionário de Dados Conceitual
+
+Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com atributos, convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas.
+
 
 ### 5.1 Produto
 | Atributo | Descrição | Regra de negócio associada |
@@ -267,11 +345,11 @@ A partir do levantamento realizado e das necessidades identificadas no estabelec
 
 - **Movimentacao_Estoque:** representa os registros de entrada e saída dos produtos, permitindo acompanhar e justificar as alterações ocorridas no estoque.
 
-As entidades **Cliente** e **Funcionario** não foram incluídas no modelo conceitual. O estabelecimento não necessita manter um cadastro individual de clientes e também não necessita identificar qual funcionário realizou cada operação. Nos pedidos destinados à entrega, as informações necessárias são registradas diretamente no próprio Pedido.
+As entidades **Cliente** e **Funcionario** não foram incluídas no modelo conceitual por decisão de escopo anterior. O anexo relata ausência de nome do cliente nos pedidos e de cargos fixos; a dispensa de cadastro permanente e de identificação de executor precisa ter sua justificativa validada. Nos pedidos destinados à entrega, as informações necessárias são registradas diretamente no próprio Pedido.
 
 Também não foi criada uma entidade **Venda**, pois o Pedido já representa a operação comercial realizada pelo estabelecimento.
 
-As estruturas **Item_Pedido** e **Item_Compra** não fazem parte desta etapa conceitual. Os relacionamentos entre Pedido e Produto e entre Compra e Produto permanecem como relacionamentos N:N, conforme definido para esta etapa da modelagem. Sua transformação em estruturas intermediárias ocorrerá posteriormente no modelo lógico.
+As estruturas **Item_Pedido** e **Item_Compra** não fazem parte desta etapa conceitual. Os relacionamentos entre Pedido e Produto e entre Compra e Produto permanecem como relacionamentos N:N, conforme definido para esta etapa da modelagem. A revisão conceitual ainda precisa representar quantidade e preço praticado nos relacionamentos, antes da conversão em estruturas intermediárias no modelo lógico.
 
 ### 6.2 Atributos e classificações
 
@@ -414,11 +492,11 @@ A entidade **Fornecedor** permite registrar a origem das compras e representar f
 
 O controle de estoque foi incluído como uma necessidade da solução proposta para os produtos comercializados, embora atualmente seja realizado de maneira informal. A entidade **Movimentacao_Estoque** permite rastrear cada entrada e saída individual, garantindo que o saldo seja justificável com base em motivos reais, como vendas, compras e quebras.
 
-As entidades **Item_Pedido**, **Item_Compra**, **Reposição** e **Despesa** não foram incluídas nesta etapa por fazerem parte da estrutura que será definida no modelo lógico, conforme a orientação adotada para o trabalho. Dessa forma, o modelo conceitual permanece focado na identificação das principais entidades e de seus relacionamentos, sem antecipar estruturas específicas de implementação.
+O modelo atual não inclui **Item_Pedido**, **Item_Compra**, **Reposição** ou **Despesa** como entidades. A representação de itens pode usar relacionamentos N:N no conceitual, mas precisa incluir quantidade e preço praticado. Contas e despesas já existem no levantamento e sua ausência de representação é uma lacuna de cobertura, não apenas uma decisão física a adiar para o lógico. A equipe responsável pelo DER deve avaliar esses pontos antes da conversão; esta revisão documental não altera o diagrama.
 
-A entidade **Funcionário** não foi incluída porque a organização não necessita identificar qual funcionário executou determinada operação. Todos os funcionários podem desempenhar diferentes tarefas.
+A entidade **Funcionário** não foi incluída no modelo atual. Todos podem desempenhar diferentes tarefas, mas isso não demonstra, por si só, que a identificação do executor seja desnecessária. A decisão deve ser confirmada com o responsável, sem alterar o DER nesta revisão.
 
-A entidade **Cliente** não foi incluída como cadastro independente porque não existe uma necessidade identificada de manter um cadastro permanente de clientes. Para pedidos destinados à entrega, as informações necessárias podem ser associadas diretamente ao pedido.
+A entidade **Cliente** não foi incluída como cadastro independente por decisão do modelo atual. As anotações relatam ausência de nome nos pedidos, mas a necessidade de cadastro permanente deve ser confirmada. Para pedidos destinados à entrega, as informações necessárias podem ser associadas diretamente ao pedido.
 
 A estrutura proposta busca solucionar uma das principais dores identificadas: a dificuldade de visualizar de maneira simples quanto foi movimentado em determinado dia. Com pedidos e pagamentos estruturados, juntamente com compras e movimentações de estoque, torna-se possível organizar e consultar as informações necessárias para o acompanhamento das operações do estabelecimento.
 
@@ -440,6 +518,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | **Trechos rejeitados ou corrigidos** | Sugestões de entidades ou processos que não correspondessem à realidade observada foram rejeitadas ou ajustadas pelo grupo após a validação com o responsável, como por exemplo as entidades Cliente e Funcionário, que foram retirados do modelo após análise |
 | **Justificativa da escolha final** | A decisão final sobre processos, entidades, atributos e regras foi tomada pelo grupo com base na realidade observada na organização e nas informações validadas durante a entrevista |
 | **Reflexão crítica** | A IA pode propor estruturas de dados plausíveis que não necessariamente correspondem ao funcionamento real do estabelecimento. Por isso, suas sugestões foram utilizadas como apoio à modelagem e confrontadas com as informações obtidas em campo. |
+
+---
+
+### 9.1 Revisão documental de 28/10/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | Codex — auditoria e revisão documental preparatória para a Entrega 2 |
+| Motivação | Confrontar fontes, correção da Entrega 1 e esqueleto da Entrega 2; organizar levantamento/evidências e detalhar processos, RF/RNF e regras |
+| Prompt utilizado (trecho) | “o que ja é certeza do que precisa ser mudado DENTRO DO ESCOPO DAS MINHAS RESPONSABILIDADES, pode executar (faça um PR)” |
+| Resposta e trabalho produzido | Auditoria, síntese do levantamento, identificação das fontes, revisão do README e ajustes documentais no HTML |
+| Fontes consultadas | README e HTML da main; issue #1; anexo de perguntas e respostas; esqueleto da Entrega 2; confirmações do integrante registradas em levantamento/fontes/confirmacoes-documentais.md; manual oficial MySQL para DATETIME |
+| Correções e limites | A proposta de PostgreSQL já havia sido substituída por MySQL na main. Corrigida a frase contraditória sobre DATETIME. O limite de dez minutos foi identificado como estimativa adotada, sem alegar confirmação do restaurante |
+| Escolha final | Incorporar apenas dados apoiados pelas fontes e decisões expressas do integrante; deixar lacunas e dependências técnicas explícitas |
+| Reflexão crítica | A IA não comprova visita, identidade, volumes, conformidade legal ou aceitação humana. Os textos gerados precisam de revisão do grupo; DER, SQL e evidências ausentes não foram produzidos artificialmente |
 
 ---
 
