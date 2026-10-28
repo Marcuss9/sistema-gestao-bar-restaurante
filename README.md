@@ -78,7 +78,7 @@ VR, ausência de frete próprio e contratação/pagamento do transporte por apli
 | Apontamento da correção | O que mudou / situação | Por quê |
 |---|---|---|
 | Regras limitadas a constatações e sem restrições legais/fiscais/sanitárias | RN13–RN20 já acrescentadas na main; esta revisão distingue fontes, propostas e pendências e detalha RN03, RN05, RN07, RN08, RN12 e RN14 | Evitar apresentar uma proposta como prática validada |
-| HTML restrito às tabelas de atributos | A main já contém convenções, cardinalidades, fluxos, expressões, tipos, índices, papéis e logs, além da adequação para MySQL; esta revisão corrige a frase sobre DATETIME e explicita a situação dos valores padrão | Responder à correção sem afirmar implementação do banco |
+| HTML restrito às tabelas de atributos | A main já contém convenções, cardinalidades, fluxos, expressões, tipos, índices, papéis e logs, além da adequação para MySQL; esta revisão corrige a frase sobre DATETIME, reúne campo/tipo/descrição/restrições em uma tabela por entidade conforme o exemplo do professor e explicita a situação dos valores padrão | Responder à correção sem afirmar implementação do banco |
 | N:N Pedido–Produto e Compra–Produto sem quantidade/preço por item | Pendente de revisão do DER pela equipe responsável; o texto deixa de justificar a omissão como mera etapa do modelo lógico | Quantidade e preço praticado são fatos do negócio necessários à totalização |
 | Cardápio, conferência, pagamento de contas e reposição parcialmente descritos | Processos detalhados a partir das fontes, com as informações desconhecidas indicadas | Explicitar dados e exceções sem inventar rotinas |
 | Pedido–Pagamento 1:1 e origem das movimentações limitada a texto | Pendentes de decisão da equipe após validar pagamentos e rastreamento | A documentação não altera cardinalidades ou vínculos técnicos |
@@ -267,7 +267,7 @@ Para adequar a solução ao levantamento, a modelagem desta entrega não prevê 
 
 ## 5. Dicionário de Dados Conceitual
 
-Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com atributos, convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas.
+Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com uma tabela por entidade no formato do exemplo do professor (Nome do Campo, Tipo de Dado, Descrição e Restrição / Chave), além de convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas.
 
 
 ### 5.1 Produto
@@ -527,10 +527,10 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 |---|---|
 | Ferramenta e etapa | Codex — auditoria e revisão documental preparatória para a Entrega 2 |
 | Motivação | Confrontar fontes, correção da Entrega 1 e esqueleto da Entrega 2; organizar levantamento/evidências e detalhar processos, RF/RNF e regras |
-| Prompt utilizado (trecho) | “o que ja é certeza do que precisa ser mudado DENTRO DO ESCOPO DAS MINHAS RESPONSABILIDADES, pode executar (faça um PR)” |
+| Prompt utilizado (trecho) | “o que ja é certeza do que precisa ser mudado DENTRO DO ESCOPO DAS MINHAS RESPONSABILIDADES, pode executar (faça um PR)”. Complemento: “faça as devidas correções seguindo o modelo (PDF), inclua no mesmo PR aberto” |
 | Resposta e trabalho produzido | Auditoria, síntese do levantamento, identificação das fontes, revisão do README e ajustes documentais no HTML |
-| Fontes consultadas | README e HTML da main; issue #1; anexo de perguntas e respostas; esqueleto da Entrega 2; confirmações do integrante registradas em levantamento/fontes/confirmacoes-documentais.md; manual oficial MySQL para DATETIME |
-| Correções e limites | A proposta de PostgreSQL já havia sido substituída por MySQL na main. Corrigida a frase contraditória sobre DATETIME. O limite de dez minutos foi identificado como estimativa adotada, sem alegar confirmação do restaurante |
+| Fontes consultadas | README e HTML da main; issue #1; anexo de perguntas e respostas; esqueleto da Entrega 2; confirmações do integrante registradas em levantamento/fontes/confirmacoes-documentais.md; manual oficial MySQL para DATETIME; exemplo do professor 02-03h_Exemplo de Dicionário de Dados.pdf (página 5) |
+| Correções e limites | A proposta de PostgreSQL já havia sido substituída por MySQL na main. Corrigida a frase contraditória sobre DATETIME. Após receber o exemplo do professor (02-03h, página 5), as tabelas de atributos e tipos foram consolidadas nas quatro colunas do exemplo, com explicação das operações e da integridade. O limite de dez minutos foi identificado como estimativa adotada, sem alegar confirmação do restaurante |
 | Escolha final | Incorporar apenas dados apoiados pelas fontes e decisões expressas do integrante; deixar lacunas e dependências técnicas explícitas |
 | Reflexão crítica | A IA não comprova visita, identidade, volumes, conformidade legal ou aceitação humana. Os textos gerados precisam de revisão do grupo; DER, SQL e evidências ausentes não foram produzidos artificialmente |
 
