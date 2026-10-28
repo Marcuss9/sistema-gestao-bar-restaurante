@@ -182,13 +182,6 @@ As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua d
 * **RN19 — Documentação fiscal:** As vendas devem cumprir as obrigações de documentação fiscal aplicáveis, incluindo a emissão de NFC-e no varejo paulista quando exigida, e as compras devem respeitar a documentação fiscal pertinente. Esta regra não pressupõe a implementação de um módulo fiscal nesta entrega.
 * **RN20 — Proteção de dados e controle de acesso:** As informações pessoais necessárias para entregas devem ser tratadas somente para finalidades legítimas, com coleta limitada ao necessário e acesso autorizado. Informações administrativas e financeiras devem ter acesso restrito, em consonância com a LGPD (Lei nº 13.709/2018) e o RNF04.
 
-**Referências normativas:**
-
-- [Estatuto da Criança e do Adolescente — Lei nº 8.069/1990](https://www2.camara.leg.br/legin/fed/lei/1990/lei-8069-13-julho-1990-372211-normaatualizada-pl.html).
-- [RDC Anvisa nº 216/2004 — Boas práticas para serviços de alimentação](https://anvisalegis.datalegis.net/action/ActionDatalegis.php?acao=abrirTextoAto&cod_menu=1696&cod_modulo=134&numeroAto=00000216&orgao=RDC%2FDC%2FANVISA%2FMS&pesquisa=true&seqAto=000&tipo=RDC&valorAno=2004).
-- [Secretaria da Fazenda de São Paulo — NFC-e](https://portal.fazenda.sp.gov.br/servicos/nfce/).
-- [LGPD — Lei nº 13.709/2018](https://www2.camara.leg.br/legin/fed/lei/2018/lei-13709-14-agosto-2018-787077-normaatualizada-pl.html).
-
 ### 4.4 Restrições organizacionais e decisões de escopo
 
 O estabelecimento possui quatro funcionários, incluindo o proprietário, e utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
