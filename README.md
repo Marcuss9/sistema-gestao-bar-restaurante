@@ -535,53 +535,249 @@ A estrutura proposta busca solucionar uma das principais dores identificadas: a 
 
 ### 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
+A conversão do modelo conceitual para o modelo lógico do sistema de gestão do Bar e Restaurante Esquina dos Amigos foi realizada utilizando o brModelo Web, com o objetivo de transformar as entidades, os atributos e os relacionamentos do Diagrama Entidade-Relacionamento (DER) em uma estrutura relacional adequada à implementação em banco de dados MySQL.
+
+O processo preservou as seis entidades principais do modelo conceitual e acrescentou duas tabelas associativas para representar os relacionamentos muitos-para-muitos (N:N), resultando em oito tabelas no modelo lógico apresentado.
+
 #### Entidades → Tabelas
 
-*A preencher.*
+Cada entidade identificada no modelo conceitual foi convertida em uma tabela correspondente, mantendo sua finalidade dentro do sistema.
+
+| Entidade | Tabela | Finalidade |
+|---|---|---|
+| Pedido | `Pedido` | Armazenar as informações dos pedidos realizados. |
+| Pagamento | `Pagamento` | Registrar os valores, formas e datas dos pagamentos. |
+| Produto | `Produto` | Armazenar os produtos comercializados e suas informações de estoque. |
+| Compra | `Compra` | Registrar as compras realizadas pelo estabelecimento. |
+| Fornecedor | `Fornecedor` | Armazenar a identificação e a classificação dos fornecedores. |
+| Movimentacao_Estoque | `Movimentacao_Estoque` | Registrar as entradas e saídas dos produtos no estoque. |
+
+Além dessas tabelas, foram criadas `Contem` e `Adquire`, responsáveis por representar os relacionamentos N:N entre Pedido e Produto e entre Compra e Produto, respectivamente.
+
+Dessa forma, as entidades principais permanecem independentes, enquanto as tabelas associativas permitem estabelecer as ligações necessárias sem repetir registros cadastrais.
 
 #### Atributos → Colunas
 
-*A preencher.*
+Os atributos definidos no DER foram convertidos em colunas de suas respectivas tabelas, preservando os nomes e as funções estabelecidas no modelo conceitual.
+
+Os identificadores foram definidos como `INT`, os atributos textuais como `VARCHAR`, as quantidades inteiras como `INT` e as informações temporais como `DATE` ou `DATETIME`.
+
+Para os valores monetários, foi utilizado `FLOAT` no modelo lógico do brModelo, considerando os tipos disponíveis na ferramenta. Na implementação física em MySQL, recomenda-se utilizar `DECIMAL(12,2)` para garantir maior precisão nos valores financeiros.
+
+A organização das colunas ficou definida da seguinte maneira:
+
+| Tabela | Colunas e tipos de dados |
+|---|---|
+| `Pedido` | `id_pedido` INT, `data_hora_pedido` DATETIME, `tipo_atendimento_pedido` VARCHAR, `status_pedido` VARCHAR, `observacao_pedido` VARCHAR, `endereco_entrega_pedido` VARCHAR |
+| `Pagamento` | `id_pagamento` INT, `id_pedido` INT, `forma_pagamento` VARCHAR, `data_hora_pagamento` DATETIME, `preco_total_pagamento` FLOAT |
+| `Produto` | `id_produto` INT, `nome_produto` VARCHAR, `categoria_produto` VARCHAR, `preco_venda_produto` FLOAT, `quantidade_estoque_produto` INT |
+| `Compra` | `id_compra` INT, `id_fornecedor` INT, `preco_total_compra` FLOAT, `data_compra` DATE |
+| `Fornecedor` | `id_fornecedor` INT, `tipo_fornecedor` VARCHAR, `nome_fornecedor` VARCHAR |
+| `Movimentacao_Estoque` | `id_movimentacao` INT, `id_produto` INT, `tipo_movimentacao` VARCHAR, `quantidade_movimentada` INT, `data_hora_movimentacao` DATETIME, `motivo_movimentacao` VARCHAR |
+| `Contem` | `id_pedido` INT, `id_produto` INT |
+| `Adquire` | `id_compra` INT, `idProduto` INT |
+
+Os atributos `id_pedido` em Pagamento, `id_fornecedor` em Compra e `id_produto` em Movimentacao_Estoque foram acrescentados como chaves estrangeiras durante a conversão dos relacionamentos.
+
+Nas tabelas associativas, os identificadores das entidades relacionadas foram utilizados tanto como chaves estrangeiras quanto como componentes das chaves primárias compostas.
+
+Os campos `observacao_pedido` e `endereco_entrega_pedido` permanecem opcionais conforme as condições definidas no modelo conceitual. A obrigatoriedade condicional do endereço para pedidos destinados à entrega deverá ser tratada na implementação.
 
 #### Relacionamentos → Chaves
 
-*A preencher.*
+Os relacionamentos presentes no DER foram convertidos em chaves estrangeiras ou tabelas associativas, de acordo com suas cardinalidades.
+
+| Relacionamento | Conversão realizada |
+|---|---|
+| Pedido — Gera — Pagamento | Adição de `id_pedido` como FK em `Pagamento`. |
+| Pedido — Contem — Produto | Criação da tabela associativa `Contem`. |
+| Compra — Adquire — Produto | Criação da tabela associativa `Adquire`. |
+| Compra — Realiza — Fornecedor | Adição de `id_fornecedor` como FK em `Compra`. |
+| Produto — Registra — Movimentacao_Estoque | Adição de `id_produto` como FK em `Movimentacao_Estoque`. |
+
+No relacionamento entre Pedido e Pagamento, optou-se por manter as tabelas separadas, apesar da cardinalidade 1:1 do modelo conceitual. Essa decisão permite distinguir as informações operacionais do pedido das informações financeiras do pagamento, facilitando a organização e a manutenção do sistema.
+
+Nos relacionamentos 1:N, as chaves estrangeiras foram posicionadas nas tabelas correspondentes ao lado muitos.
+
+Já os relacionamentos N:N foram convertidos em tabelas associativas, permitindo que um registro de uma entidade se relacione com diversos registros da outra.
 
 #### Cardinalidades
 
-*A preencher.*
+As cardinalidades do modelo conceitual foram tratadas conforme as regras de conversão para o modelo relacional.
+
+**Relacionamento 1:1 — Pedido e Pagamento**
+
+No DER, cada Pedido está associado a exatamente um Pagamento, e cada Pagamento pertence a exatamente um Pedido.
+
+Durante a conversão, as entidades foram mantidas separadas, com a chave estrangeira `id_pedido` na tabela Pagamento.
+
+Para garantir a cardinalidade máxima de um pagamento por pedido, será necessária uma restrição `UNIQUE` sobre essa chave estrangeira. A obrigatoriedade de todo pedido possuir um pagamento também precisará ser assegurada por uma regra adicional de integridade, não sendo garantida apenas pela FK.
+
+**Relacionamentos 1:N — Fornecedor e Compra; Produto e Movimentacao_Estoque**
+
+No relacionamento entre Fornecedor e Compra, um fornecedor pode estar associado a várias compras, enquanto cada compra pertence obrigatoriamente a um fornecedor. Por isso, a chave estrangeira `id_fornecedor` foi adicionada à tabela Compra.
+
+Da mesma forma, um produto pode possuir várias movimentações de estoque, mas cada movimentação corresponde a um único produto. Assim, a chave estrangeira `id_produto` foi adicionada à tabela Movimentacao_Estoque.
+
+Essa estratégia permite representar os relacionamentos sem criar tabelas intermediárias desnecessárias.
+
+**Relacionamentos N:N — Pedido e Produto; Compra e Produto**
+
+No relacionamento entre Pedido e Produto, um pedido deve conter um ou mais produtos, enquanto um produto pode aparecer em diferentes pedidos.
+
+Para representar essa associação, foi criada a tabela `Contem`, com os atributos `id_pedido` e `id_produto`, ambos identificados como PK e FK.
+
+No relacionamento entre Compra e Produto, uma compra deve incluir um ou mais produtos, e um produto pode ser adquirido em diferentes compras.
+
+Para esse relacionamento, foi criada a tabela `Adquire`, com os atributos `id_compra` e `idProduto`, também definidos como PK e FK.
+
+As tabelas associativas transformam cada relacionamento N:N em dois relacionamentos 1:N.
+
+**Observação sobre as cardinalidades convertidas:** o brModelo apresenta cardinalidades no modelo lógico de acordo com a estrutura relacional gerada. Algumas participações mínimas previstas no DER, como a exigência de ao menos um produto por pedido ou por compra, não são garantidas automaticamente pelas FKs. Essas regras deverão ser asseguradas na implementação do sistema.
 
 #### Generalização/especialização (se houver)
 
-*A preencher.*
+O modelo conceitual do sistema não apresenta relacionamentos de generalização ou especialização entre entidades.
+
+Todas as entidades foram definidas de maneira independente, com atributos e responsabilidades próprias. Portanto, não foi necessário aplicar estratégias como tabela única, tabela por entidade ou tabelas exclusivas para entidades especializadas.
 
 ### 1.3 Definição de Chaves Primárias e Estrangeiras
 
+As chaves primárias e estrangeiras foram definidas durante a conversão para o modelo lógico com a finalidade de identificar unicamente os registros e preservar os relacionamentos entre as tabelas.
+
+As chaves primárias (PKs) identificam cada registro de maneira única, enquanto as chaves estrangeiras (FKs) estabelecem referências entre tabelas relacionadas, permitindo a manutenção da integridade referencial.
+
 #### Chaves Primárias (PKs)
 
-*A preencher.*
+As tabelas principais utilizam identificadores individuais como chaves primárias. Já as tabelas associativas utilizam chaves primárias compostas pelos identificadores das entidades relacionadas.
+
+| Tabela | Chave primária (PK) | Tipo |
+|---|---|---|
+| `Pedido` | `id_pedido` | Simples |
+| `Pagamento` | `id_pagamento` | Simples |
+| `Produto` | `id_produto` | Simples |
+| `Compra` | `id_compra` | Simples |
+| `Fornecedor` | `id_fornecedor` | Simples |
+| `Movimentacao_Estoque` | `id_movimentacao` | Simples |
+| `Contem` | `id_pedido`, `id_produto` | Composta |
+| `Adquire` | `id_compra`, `idProduto` | Composta |
+
+As chaves simples permitem identificar individualmente cada pedido, pagamento, produto, compra, fornecedor ou movimentação de estoque.
+
+Nas tabelas associativas, as chaves compostas identificam uma combinação específica de registros. Isso impede, por exemplo, que a mesma combinação de pedido e produto seja cadastrada mais de uma vez em `Contem`.
 
 #### Chaves Estrangeiras (FKs)
 
-*A preencher.*
+As chaves estrangeiras foram definidas para estabelecer os relacionamentos entre as tabelas e garantir que os registros relacionados possuam referências válidas.
+
+| Tabela de origem | Chave estrangeira (FK) | Tabela referenciada | Chave referenciada |
+|---|---|---|---|
+| `Pagamento` | `id_pedido` | `Pedido` | `id_pedido` |
+| `Compra` | `id_fornecedor` | `Fornecedor` | `id_fornecedor` |
+| `Movimentacao_Estoque` | `id_produto` | `Produto` | `id_produto` |
+| `Contem` | `id_pedido` | `Pedido` | `id_pedido` |
+| `Contem` | `id_produto` | `Produto` | `id_produto` |
+| `Adquire` | `id_compra` | `Compra` | `id_compra` |
+| `Adquire` | `idProduto` | `Produto` | `id_produto` |
+
+As chaves estrangeiras permitem que o banco de dados mantenha vínculos entre os registros sem exigir a repetição das informações completas das entidades relacionadas.
+
+Por exemplo, a tabela Compra armazena apenas `id_fornecedor` como referência ao fornecedor, sem precisar repetir seu nome e sua classificação em cada compra.
+
+Nas tabelas `Contem` e `Adquire`, as chaves estrangeiras também integram as respectivas chaves primárias compostas.
+
+A definição das FKs representa a estrutura de referência do modelo lógico. Restrições adicionais, como `NOT NULL` e `UNIQUE`, deverão ser documentadas no dicionário de dados e implementadas no script SQL para garantir as regras de integridade correspondentes.
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
+A normalização do modelo relacional foi analisada com base nas três primeiras formas normais: Primeira Forma Normal (1FN), Segunda Forma Normal (2FN) e Terceira Forma Normal (3FN).
+
+O objetivo dessa análise foi verificar a organização dos atributos, a existência de dependências funcionais e a possibilidade de redundâncias que comprometam a integridade dos registros.
+
+A avaliação considera as oito tabelas apresentadas no modelo lógico e suas chaves definidas. Não foi documentada uma tabela universal anterior ao DER; portanto, a análise descreve a conformidade da estrutura resultante com as formas normais, em vez de presumir decomposições intermediárias que não foram realizadas.
+
 #### 1FN — Eliminação de grupos repetitivos/atributos multivalorados
 
-*A preencher.*
+A Primeira Forma Normal estabelece que cada coluna deve armazenar um único valor por registro, evitando grupos repetitivos e conjuntos de valores armazenados em um mesmo campo.
+
+No sistema do Bar e Restaurante Esquina dos Amigos, essa condição foi considerada na organização dos atributos e dos relacionamentos.
+
+Por exemplo, um pedido pode possuir vários produtos. Em vez de armazenar uma lista de produtos diretamente na tabela Pedido, foi utilizada a tabela associativa `Contem`, na qual cada registro representa uma associação entre um pedido e um produto.
+
+O mesmo tratamento foi aplicado às compras, por meio da tabela `Adquire`, que permite relacionar diferentes produtos a uma mesma compra sem utilizar colunas repetidas, como `produto_1`, `produto_2` ou `produto_3`.
+
+As movimentações de estoque também foram organizadas em registros individuais na tabela `Movimentacao_Estoque`, permitindo armazenar separadamente cada entrada ou saída de produto.
+
+Dessa maneira, o modelo evita grupos repetitivos e permite representar múltiplas ocorrências por meio de registros próprios, atendendo à 1FN, desde que cada coluna armazene um único valor conforme sua definição.
 
 #### 2FN — Eliminação de dependências parciais
 
-*A preencher.*
+A Segunda Forma Normal exige que o modelo esteja na 1FN e que os atributos não chave dependam da totalidade de uma chave candidata, sem dependências parciais de parte de uma chave composta.
+
+No modelo lógico apresentado, seis tabelas possuem chaves primárias simples:
+
+- `Pedido`
+- `Pagamento`
+- `Produto`
+- `Compra`
+- `Fornecedor`
+- `Movimentacao_Estoque`
+
+Como essas tabelas possuem apenas um atributo em suas respectivas chaves primárias, não apresentam dependências parciais em relação a essas chaves.
+
+As tabelas `Contem` e `Adquire` possuem chaves primárias compostas e, por isso, exigem uma análise específica.
+
+Na tabela `Contem`, a chave primária é formada por (`id_pedido`, `id_produto`). Atualmente, a tabela não possui atributos não chave, armazenando apenas a combinação dos identificadores.
+
+Na tabela `Adquire`, a chave primária é formada por (`id_compra`, `idProduto`). Assim como na tabela anterior, não existem atributos não chave que dependam parcialmente de apenas um dos identificadores.
+
+Portanto, considerando a estrutura apresentada, não foram identificadas dependências parciais que violem a 2FN.
+
+Caso sejam acrescentados atributos como quantidade e preço unitário praticado por item, eles deverão ser analisados para garantir que dependam da associação completa entre o pedido ou a compra e o respectivo produto, e não apenas de uma parte da chave composta.
 
 #### 3FN — Eliminação de dependências transitivas
 
-*A preencher.*
+A Terceira Forma Normal exige que o modelo esteja na 2FN e que não existam dependências transitivas inadequadas entre atributos não chave.
+
+Uma dependência transitiva ocorre, por exemplo, quando a chave primária determina um atributo não chave que, por sua vez, determina outro atributo não chave da mesma tabela.
+
+No modelo desenvolvido, as informações foram distribuídas entre tabelas de acordo com suas respectivas entidades.
+
+Na tabela `Compra`, são armazenados o identificador da compra, sua data, seu valor total e a chave estrangeira do fornecedor.
+
+Os atributos `nome_fornecedor` e `tipo_fornecedor` permanecem exclusivamente na tabela `Fornecedor`, evitando sua repetição em cada compra.
+
+Essa separação evita uma possível dependência transitiva em uma tabela unificada, na qual `id_compra` determinaria `id_fornecedor` e este determinaria os dados cadastrais do fornecedor.
+
+O mesmo princípio foi aplicado às movimentações de estoque.
+
+A tabela `Movimentacao_Estoque` armazena a referência `id_produto`, mas não repete o nome, a categoria ou o preço de venda do produto. Essas informações permanecem na tabela `Produto`.
+
+Além disso, a tabela `Pagamento` mantém os dados financeiros do pagamento separados dos atributos operacionais armazenados em `Pedido`.
+
+Com base nas dependências funcionais identificadas no modelo, não foram observadas dependências transitivas entre atributos não chave que exigissem novas decomposições.
+
+Assim, a estrutura apresentada é compatível com a 3FN quanto às dependências analisadas, ficando sua validação completa condicionada à confirmação das regras de negócio e dos atributos que ainda poderão ser incorporados.
 
 #### Justificativa do processo de normalização
 
-*A preencher.*
+A aplicação das três primeiras formas normais é importante para garantir que as informações do estabelecimento sejam armazenadas de maneira organizada, reduzindo redundâncias e evitando inconsistências.
+
+A **Primeira Forma Normal (1FN)** foi necessária para impedir a utilização de grupos repetitivos e listas de produtos em campos individuais. Com as tabelas associativas, tornou-se possível registrar diferentes produtos por pedido ou compra de maneira estruturada.
+
+A **Segunda Forma Normal (2FN)** foi importante para verificar as dependências dos atributos em relação às chaves primárias, especialmente nas tabelas associativas. Isso evita que informações pertencentes exclusivamente a um pedido, compra ou produto sejam armazenadas de maneira inadequada em uma associação.
+
+A **Terceira Forma Normal (3FN)** permitiu avaliar a separação das informações cadastrais e operacionais, evitando dependências transitivas. Dessa forma, dados como nome e classificação do fornecedor permanecem em sua tabela específica, sem necessidade de repetição nas compras.
+
+A organização resultante contribui para prevenir anomalias de inserção, atualização e exclusão, além de facilitar a manutenção e a consulta aos dados.
+
+Por exemplo, uma alteração no nome de determinado fornecedor poderá ser realizada diretamente na tabela `Fornecedor`, sem exigir modificações em todos os registros de compras associados a ele.
+
+Da mesma forma, os dados cadastrais de um produto poderão ser atualizados independentemente do histórico de pedidos, compras e movimentações de estoque, preservando suas referências por meio das chaves estrangeiras.
+
+Portanto, a análise de normalização até a 3FN demonstra que a estrutura atual apresenta uma separação adequada das entidades e de suas responsabilidades, considerando as dependências funcionais identificadas.
+
+A normalização, entretanto, não substitui a definição de todos os dados exigidos pelas regras de negócio. A inclusão de quantidade e preço praticado por item nas associações `Contem` e `Adquire`, ainda pendente no DER, deverá preservar essa organização e permitir o registro completo das operações de venda e compra.
 
 ### 1.5 Justificativas Técnicas das Decisões
 
