@@ -1,14 +1,31 @@
-## Metadados
+# Entrega 2 — Modelo Lógico, Implementação SQL e Apresentação Final
 
-- **Cauã Francisco Gomes da Silva** **- RGM: 47485990**
-- **João Pedro Liberato de Oliveira** **- RGM: 46801375**
-- **Marcus Vinicius dos Santos Cruz** **- RGM: 46690069**
-- **João Vitor Gonçalves De Oliveira** **- RGM: 47391111** 
-
-# Entrega 1 — Modelo Conceitual (DER)
 ### Modelagem de um sistema de gestão de informações para uma organização de pequeno porte
 
-## 1. Caracterização da Organização
+**Organização estudada:** Bar e Restaurante Esquina dos Amigos, São Paulo/SP.
+
+> **Critério de entrega:** este `README.md` da raiz da branch `main` é o Relatório Técnico Final. Os demais artefatos devem permanecer em arquivos próprios, referenciados neste relatório. As seções ainda não concluídas são identificadas como pendentes; nenhuma informação de campo, decisão de modelagem ou implementação SQL é presumida.
+
+## 1. Relatório Técnico Final
+
+### Integrantes
+
+| Nome completo | RGM | Usuário do GitHub |
+|---|---|---|
+| Cauã Francisco Gomes da Silva | 47485990 | A confirmar pelo integrante |
+| João Pedro Liberato de Oliveira | 46801375 | A confirmar pelo integrante |
+| Marcus Vinicius dos Santos Cruz | 46690069 | A confirmar pelo integrante |
+| João Vitor Gonçalves De Oliveira | 47391111 | A confirmar pelo integrante |
+
+### 1.1 Revisão do Modelo Conceitual
+
+Esta seção reúne a revisão documental da Entrega 1: caracterização da organização, relato do levantamento, processos, RF/RNF, RN01–RN20, inventário de dados, relacionamentos, DER existente e justificativas conceituais.
+
+**Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
+
+**Situação:** as informações disponíveis foram consolidadas na Entrega 1. Permanecem pendentes de validação presencial os volumes de operação, os metadados e a comprovação fotográfica específica da entrevista, além de decisões técnicas do DER indicadas adiante. A revisão textual não deve ser confundida com a aprovação do modelo pelo professor.
+
+#### Caracterização da Organização
 
 **Nome e natureza da organização**
 Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial do ramo de alimentação, com aproximadamente 20 anos de funcionamento. Sua operação envolve a comercialização de refeições, porções, lanches, bebidas alcoólicas e refrigerantes, incluindo pratos especiais disponibilizados em determinados dias da semana.
@@ -65,7 +82,7 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
 * Responsável identificado como "Ceará"; nome completo e função a confirmar.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-### 1.1 Relato e fontes do levantamento
+##### Relato e fontes do levantamento
 
 O [levantamento organizado](levantamento/levantamento.md) sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt) e as [confirmações complementares do integrante responsável pela revisão documental](levantamento/fontes/confirmacoes-documentais.md). A operação relatada utiliza pedidos em papel, comunicação verbal com a cozinha, estoque visual e anotações de gastos; o sistema descrito neste trabalho é uma proposta.
 
@@ -73,7 +90,7 @@ VR, ausência de frete próprio e contratação/pagamento do transporte por apli
 
 **Metadados pendentes:** data da entrevista, nome completo e função do entrevistado, integrantes presentes e eventual vínculo com a organização. As fontes não distinguem quais achados foram observados presencialmente e quais foram apenas relatados; essa separação precisa ser validada pelo grupo. As fotos existentes documentam a visita, mas a avaliação da Entrega 1 registra que nenhuma mostra o responsável. A comprovação específica da entrevista permanece pendente.
 
-### 1.2 Tratamento dos apontamentos da Entrega 1
+##### Tratamento dos apontamentos da Entrega 1
 
 | Apontamento da correção | O que mudou / situação | Por quê |
 |---|---|---|
@@ -87,7 +104,9 @@ Os apontamentos acima são tratados documentalmente; a tabela não declara concl
 
 ---
 
-## 2. Processos de Negócio
+---
+
+#### Processos de Negócio
 
 **Principais processos mapeados**
 A partir do levantamento realizado, foram identificados os seguintes processos principais:
@@ -146,27 +165,27 @@ Atualmente, os registros financeiros são realizados manualmente e posteriorment
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
 
-### 2.8 Cardápio e preços
+##### Cardápio e preços
 
 O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. No sistema proposto, o cadastro utiliza identificador, nome, categoria e preço atual do produto. A programação dos pratos e a frequência de atualização de preços não foram informadas. O preço efetivamente praticado em cada item precisa ser preservado na revisão do modelo; o preço atual do cadastro não substitui o histórico.
 
-### 2.9 Reposição, recebimento e conferência
+##### Reposição, recebimento e conferência
 
 A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. Quantidades, unidades, entregas parciais e tratamento de divergências precisam ser detalhados com o responsável.
 
 Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item de compra e vínculo com o recebimento dependem da revisão técnica. A consulta ao saldo registrado será apoio futuro à reposição, não descrição da prática atual.
 
-### 2.10 Contas e acompanhamento dos gastos
+##### Contas e acompanhamento dos gastos
 
 São anotados gastos com fornecedores, supermercado e contas do estabelecimento. O fechamento relatado é mensal, com uso de extratos para comparação com os gastos. Não há registro diário individualizado das vendas.
 
 A necessidade de visualizar entradas e saídas exige distinguir valor vendido, valor recebido, valor comprado e valor efetivamente pago. Datas de vencimento/pagamento, categorias das contas, taxas e controles de dinheiro não foram informados. A cobertura das contas e dos pagamentos das compras precisa ser discutida com a equipe de modelagem; esta revisão não cria entidade Despesa.
 
-### 2.11 Pedido errado
+##### Pedido errado
 
 Segundo as anotações originais, quando ocorre pedido errado, os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente pode aceitar o prato e pagar seu valor. O relato não define desconto, estorno, autorização ou procedimento geral de cancelamento. Esses detalhes permanecem pendentes, conforme RN14.
 
-### 2.12 Limites e processos a confirmar
+##### Limites e processos a confirmar
 
 A ausência de mesa/comanda e de cargos fixos está relatada. A exclusão de cadastros permanentes de clientes e funcionários e do controle estruturado de ingredientes é decisão do modelo atual, não prova de inexistência dos respectivos dados ou processos. A equipe deve reavaliar a cobertura diante da Entrega 2.
 
@@ -177,9 +196,11 @@ Escalas, validade de alimentos, rotina fiscal, pagamento posterior, divisão de 
 
 ---
 
-## 3. Requisitos do Sistema
+---
 
-### 3.1 Requisitos Funcionais
+#### Requisitos do Sistema
+
+##### Requisitos Funcionais
 
 Os requisitos descrevem a solução proposta, não funcionalidades implantadas. Os códigos são preservados; os campos abaixo usam o vocabulário atual, com dependências do modelo explicitadas.
 
@@ -198,7 +219,7 @@ Os requisitos descrevem a solução proposta, não funcionalidades implantadas. 
 * **RF13 — Registrar pedidos para entrega:** Identificar o tipo de atendimento e o endereço do pedido, respeitando a área adotada na RN03, a entrega local sem frete da RN12 e o transporte contratado pelo cliente da RN05. A representação da modalidade de retirada/entrega precisa ser alinhada ao modelo.
 * **RF14 — Consultar entradas e saídas financeiras:** Consultar recebimentos e gastos por período, distinguindo compras, contas e pagamentos. O modelo atual cobre Pagamento e Compra, mas ainda não representa integralmente as contas nem os desembolsos; essa lacuna precisa ser resolvida pela equipe para atender P2.
 
-### 3.2 Requisitos Não Funcionais
+##### Requisitos Não Funcionais
 Os seguintes requisitos são propostos para a solução, não constituindo características atualmente observadas na organização:
 * **RNF01 — Usabilidade:** O sistema deve possuir uma interface simples, considerando que a operação atual é realizada de maneira informal e sem um sistema de gestão estruturado.
 * **RNF02 — Disponibilidade:** O sistema deve estar disponível durante o período de funcionamento do estabelecimento para permitir o registro das operações.
@@ -220,11 +241,13 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 
 ---
 
-## 4. Regras de Negócio
+---
+
+#### Regras de Negócio
 
 As regras a seguir estão separadas em **regras operacionais**, **regras propostas que dependem de validação** e **restrições legais, sanitárias, fiscais e de privacidade**. Propostas não devem ser confundidas com práticas confirmadas na entrevista. A modelagem do DER não é alterada nesta correção.
 
-### 4.1 Regras operacionais e de escopo
+##### Regras operacionais e de escopo
 
 * **RN01 — Formas de pagamento:** As vendas podem ser pagas em dinheiro, cartão de crédito, cartão de débito, vale-refeição ou Pix. O registro de cada pagamento deve indicar uma das modalidades aceitas.
 * **RN02 — Execução das atividades:** As atividades de atendimento, preparo, compras, reposição e entregas podem ser desempenhadas pelos funcionários conforme a demanda, sem exigência de cargo fixo para cada operação.
@@ -239,7 +262,7 @@ As regras a seguir estão separadas em **regras operacionais**, **regras propost
 * **RN11 — Identificação do funcionário:** Os registros de pedidos, compras e movimentações de estoque não exigem vínculo com uma entidade Funcionário na modelagem atual. Essa decisão não elimina a necessidade de controle de acesso às informações sensíveis.
 * **RN12 — Cobrança de entrega:** O restaurante não cobra frete próprio nas entregas locais. O custo do transporte por aplicativo solicitado pelo cliente, previsto na RN05, não corresponde a frete cobrado pelo estabelecimento.
 
-### 4.2 Exceções, regras propostas e decisões pendentes
+##### Exceções, regras propostas e decisões pendentes
 
 A RN13 é proposta e a RN15 continua pendente. A RN14 separa a exceção relatada nas anotações da proposta de registro e das condições ainda desconhecidas. A RN16 deriva da oferta de pratos especiais, mas sua programação específica precisa ser confirmada.
 
@@ -248,7 +271,7 @@ A RN13 é proposta e a RN15 continua pendente. A RN14 separa a exceção relatad
 * **RN15 — Venda fiada ou pagamento posterior (decisão pendente):** Deve ser confirmado se o estabelecimento permite pagamento após o consumo ou a entrega. Não se presume que a prática seja aceita nem proibida. Se for permitida, serão necessárias regras para acompanhamento dos valores pendentes e revisão da adequação da modelagem de Pagamento.
 * **RN16 — Pratos especiais por dia:** A oferta de pratos especiais deverá respeitar os dias da semana definidos pelo restaurante. Os dias específicos e o modo de atualizar essa disponibilidade devem ser confirmados antes de criar uma validação automática.
 
-### 4.3 Restrições legais, sanitárias, fiscais e de privacidade
+##### Restrições legais, sanitárias, fiscais e de privacidade
 
 As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua documentação não significa que as funcionalidades correspondentes já estejam implementadas.
 
@@ -257,7 +280,7 @@ As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua d
 * **RN19 — Documentação fiscal:** As vendas devem cumprir as obrigações de documentação fiscal aplicáveis, incluindo a emissão de NFC-e no varejo paulista quando exigida, e as compras devem respeitar a documentação fiscal pertinente. Esta regra não pressupõe a implementação de um módulo fiscal nesta entrega.
 * **RN20 — Proteção de dados e controle de acesso:** As informações pessoais necessárias para entregas devem ser tratadas somente para finalidades legítimas, com coleta limitada ao necessário e acesso autorizado. Informações administrativas e financeiras devem ter acesso restrito, em consonância com a LGPD (Lei nº 13.709/2018) e o RNF04.
 
-### 4.4 Restrições organizacionais e decisões de escopo
+##### Restrições organizacionais e decisões de escopo
 
 A composição da equipe permanece a confirmar (3 funcionários nas anotações; 4 pessoas incluindo o proprietário no README anterior). O estabelecimento utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
 
@@ -265,12 +288,14 @@ Para adequar a solução ao levantamento, a modelagem desta entrega não prevê 
 
 ---
 
-## 5. Dicionário de Dados Conceitual
+---
+
+#### Dicionário de Dados Conceitual
 
 Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com uma tabela por entidade no formato do exemplo do professor (Nome do Campo, Tipo de Dado, Descrição e Restrição / Chave), além de convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas.
 
 
-### 5.1 Produto
+##### Produto
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_produto | Identificador único do produto | Deve identificar exclusivamente cada produto |
@@ -279,7 +304,7 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 | preco_venda_produto | Preço praticado na venda do produto | Deve representar o preço atual |
 | quantidade_estoque_produto | Quantidade atualmente disponível em estoque | Deve representar o saldo atualizado do produto |
 
-### 5.2 Pedido
+##### Pedido
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_pedido | Identificador único do pedido | Deve identificar exclusivamente cada pedido |
@@ -289,7 +314,7 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 | observacao_pedido | Informações adicionais do pedido | Opcional |
 | endereco_entrega_pedido | Local informado para pedidos de entrega | Obrigatório quando o pedido for destinado à entrega |
 
-### 5.3 Pagamento
+##### Pagamento
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_pagamento | Identificador único do pagamento | Deve identificar exclusivamente o pagamento |
@@ -297,14 +322,14 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 | forma_pagamento | Forma utilizada no pagamento | Dinheiro, crédito, débito, vale refeição ou Pix |
 | data_hora_pagamento | Momento em que o pagamento foi realizado | Obrigatório |
 
-### 5.4 Fornecedor
+##### Fornecedor
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_fornecedor | Identificador único do fornecedor | Deve identificar exclusivamente o fornecedor |
 | nome_fornecedor | Nome do fornecedor | Obrigatório |
 | tipo_fornecedor | Classificação do fornecedor | Pode distinguir fornecedor recorrente de supermercado |
 
-### 5.5 Compra
+##### Compra
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_compra | Identificador único da compra | Deve identificar exclusivamente a compra |
@@ -312,7 +337,7 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 | preco_total_compra | Preço total da compra | Deve corresponder à soma dos itens adquiridos |
 | id_fornecedor_compra | Fornecedor relacionado à compra | Deve permitir identificar a origem da compra |
 
-### 5.6 Movimentacao_Estoque
+##### Movimentacao_Estoque
 | Atributo | Descrição | Regra de negócio associada |
 |----------|-----------|------------------------------|
 | id_movimentacao | Identificador único da movimentação | Deve identificar exclusivamente o registro |
@@ -323,13 +348,15 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 
 ---
 
-## 6. Modelagem Conceitual (Entidades, Atributos e Relacionamentos)
+---
+
+#### Modelagem Conceitual (Entidades, Atributos e Relacionamentos)
 
 A modelagem conceitual foi elaborada a partir dos processos de negócio, requisitos, regras de negócio e do Dicionário de Dados Conceitual definidos para o **Bar e Restaurante Esquina dos Amigos**.
 
 O objetivo desta etapa é representar, de forma independente da implementação física do banco de dados, as principais entidades necessárias ao sistema, seus atributos, relacionamentos, cardinalidades e restrições organizacionais.
 
-### 6.1 Entidades reconhecidas
+##### Entidades reconhecidas
 
 A partir do levantamento realizado e das necessidades identificadas no estabelecimento, foram reconhecidas as seguintes entidades:
 
@@ -351,7 +378,7 @@ Também não foi criada uma entidade **Venda**, pois o Pedido já representa a o
 
 As estruturas **Item_Pedido** e **Item_Compra** não fazem parte desta etapa conceitual. Os relacionamentos entre Pedido e Produto e entre Compra e Produto permanecem como relacionamentos N:N, conforme definido para esta etapa da modelagem. A revisão conceitual ainda precisa representar quantidade e preço praticado nos relacionamentos, antes da conversão em estruturas intermediárias no modelo lógico.
 
-### 6.2 Atributos e classificações
+##### Atributos e classificações
 
 Os atributos definidos para cada entidade são:
 
@@ -370,11 +397,11 @@ No Pedido, `observacao_pedido` é opcional, pois nem todo pedido necessita de um
 
 Os demais atributos representam informações necessárias para caracterizar e acompanhar cada ocorrência das entidades dentro dos processos do estabelecimento.
 
-### 6.3 Relacionamentos pertinentes
+##### Relacionamentos pertinentes
 
 As entidades estão conectadas pelos seguintes relacionamentos:
 
-#### Produto — Movimentacao_Estoque
+###### Produto — Movimentacao_Estoque
 
 Um **Produto pode possuir nenhuma ou várias Movimentações de Estoque**, enquanto cada **Movimentacao_Estoque está relacionada a exatamente um Produto**.
 
@@ -385,7 +412,7 @@ Um **Produto pode possuir nenhuma ou várias Movimentações de Estoque**, enqua
 
 Esse relacionamento permite registrar e acompanhar as entradas e saídas relacionadas a cada produto.
 
-#### Pedido — Produto
+###### Pedido — Produto
 
 Um **Pedido contém um ou vários Produtos**, enquanto um Produto pode estar presente em nenhum ou em vários Pedidos.
 
@@ -396,7 +423,7 @@ Um **Pedido contém um ou vários Produtos**, enquanto um Produto pode estar pre
 
 Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
 
-#### Pedido — Pagamento
+###### Pedido — Pagamento
 
 Um **Pedido gera exatamente um Pagamento**, e cada Pagamento está relacionado a exatamente um Pedido.
 
@@ -407,7 +434,7 @@ Um **Pedido gera exatamente um Pagamento**, e cada Pagamento está relacionado a
 
 Esse relacionamento representa o pagamento correspondente à operação comercial registrada pelo pedido.
 
-#### Compra — Produto
+###### Compra — Produto
 
 Uma **Compra adquire um ou vários Produtos**, enquanto um Produto pode estar presente em nenhuma ou em várias Compras.
 
@@ -418,7 +445,7 @@ Uma **Compra adquire um ou vários Produtos**, enquanto um Produto pode estar pr
 
 Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
 
-#### Fornecedor — Compra
+###### Fornecedor — Compra
 
 Um **Fornecedor pode estar relacionado a nenhuma ou várias Compras**, enquanto cada Compra está relacionada a exatamente um Fornecedor.
 
@@ -429,7 +456,7 @@ Um **Fornecedor pode estar relacionado a nenhuma ou várias Compras**, enquanto 
 
 Esse relacionamento permite identificar o fornecedor responsável por cada aquisição realizada pelo estabelecimento.
 
-### 6.4 Restrições e políticas organizacionais aplicadas ao modelo
+##### Restrições e políticas organizacionais aplicadas ao modelo
 
 As seguintes regras e características observadas no estabelecimento influenciaram diretamente a construção do modelo conceitual:
 
@@ -456,7 +483,9 @@ As seguintes regras e características observadas no estabelecimento influenciar
 - Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no modelo conceitual. As estruturas necessárias para representar esses relacionamentos no banco de dados serão definidas somente na etapa de modelagem lógica.
 ---
 
-## 7. Diagrama Entidade-Relacionamento (DER)
+---
+
+#### Diagrama Entidade-Relacionamento (DER)
 
 ![DER](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
 
@@ -474,7 +503,9 @@ O modelo deverá ser construído de maneira que possa posteriormente ser convert
 
 ---
 
-## 8. Justificativa Técnica
+---
+
+#### Justificativa Técnica
 
 A modelagem proposta busca transformar os principais processos atualmente executados de maneira manual e informal em estruturas de dados organizadas.
 
@@ -502,7 +533,108 @@ A estrutura proposta busca solucionar uma das principais dores identificadas: a 
 
 ---
 
-## 9. Uso de Inteligência Artificial
+### 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
+
+**Pendente — equipe responsável pelo modelo lógico.** Depois da validação e revisão do DER, documentar aqui:
+
+- A conversão de cada entidade em tabela e de cada atributo em coluna;
+- O tratamento dos relacionamentos 1:1, 1:N e N:N, inclusive atributos dos itens de Pedido e Compra;
+- A implementação das cardinalidades mínima/máxima por chaves e restrições;
+- A estratégia de conversão de generalizações/especializações, caso existam, com justificativa.
+
+| Elemento do DER revisado | Representação relacional | Decisão/justificativa |
+|---|---|---|
+| A preencher após aprovação do DER | A preencher | A preencher |
+
+Não reutilizar automaticamente as cardinalidades da Entrega 1 antes de resolver os apontamentos documentados na seção 1.1.
+
+### 1.3 Definição de Chaves Primárias e Estrangeiras
+
+**Pendente — equipe responsável pela modelagem lógica/SQL.** Apresentar todas as tabelas efetivamente previstas no modelo lógico, com suas chaves primárias e estrangeiras, incluindo chaves compostas se aplicáveis.
+
+| Tabela do modelo lógico | PK | FK e tabela referenciada |
+|---|---|---|
+| A preencher após conclusão do modelo lógico | A preencher | A preencher |
+
+### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
+
+**Pendente — equipe responsável pela normalização.** Documentar sobre as tabelas finais:
+
+- **1FN:** como atributos multivalorados e grupos repetitivos foram tratados;
+- **2FN:** demonstração da ausência ou eliminação de dependências parciais, especialmente em chaves compostas;
+- **3FN:** demonstração da ausência ou eliminação de dependências transitivas;
+- **Justificativa:** alterações efetivamente feitas no modelo, com exemplos de atributos/tabelas do projeto.
+
+### 1.5 Justificativas Técnicas das Decisões
+
+**Pendente — equipe responsável pelo modelo lógico e pelo SQL.** Justificar a escolha das PKs, das FKs, as relações e as restrições `NOT NULL`, `UNIQUE`, `CHECK` e `DEFAULT` efetivamente implementadas, vinculando-as às regras de negócio `RNxx` quando pertinente. Explicar também eventuais decisões arquiteturais. As justificativas **conceituais da Entrega 1**, preservadas na seção 1.1, não substituem esta análise do modelo lógico.
+
+### 1.6 Proposta de Arquitetura Analítica para BI e IA
+
+**Pendente — equipe responsável pelas consultas e pela análise de BI/IA.** Definir KPIs calculáveis a partir das tabelas finais, com fórmula, período e meta (quando disponível), além de aplicações de BI e IA coerentes com os dados realmente registrados. Cada KPI exige consulta gerencial `Gxx` no script SQL.
+
+**Rastreabilidade inicial dos problemas levantados** (as tabelas e consultas serão preenchidas após a implementação; códigos de problemas foram preservados):
+
+| Problema ou KPI | Tabelas envolvidas | Consulta no script SQL |
+|---|---|---|
+| P1 — Ausência de registro individual das vendas e de visão dos recebimentos do dia | A validar no modelo lógico (pedidos, itens e pagamentos) | Pendente — Gxx |
+| P2 — Entradas e saídas financeiras dispersas entre papel e extratos | A validar no modelo lógico (recebimentos, compras, contas e pagamentos de despesas) | Pendente — Gxx |
+| P3 — Estoque e necessidade de reposição acompanhados visualmente | A validar no modelo lógico (produtos e movimentações de estoque) | Pendente — Gxx |
+| KPIs gerenciais | A definir com base nas tabelas finais, com fórmula e período | Pendente — Gxx por KPI |
+
+**Atenção:** esta tabela registra pendências de rastreabilidade, não comprova consultas existentes nem resolução dos problemas.
+
+---
+
+## 2. Modelo Lógico Relacional
+
+**Pendente — artefato da equipe de modelagem.** Inserir aqui um link relativo para o diagrama final, após inclusão no repositório. O modelo deverá usar a notação visual do brModelo, apresentando tabelas, colunas com tipos, PKs, FKs e cardinalidades convertidas. Registrar também o aplicativo usado na criação.
+
+O [DER conceitual existente](docs/imagens/DER_esquina_dos_amigos_v2.jpg) **não substitui** o modelo lógico, e suas pendências estão identificadas na seção 1.1.
+
+---
+
+## 3. Script SQL Completo
+
+**Pendente — equipe responsável pela implementação SQL.** Disponibilizar o arquivo `.sql` no repositório (preferencialmente `docs/script.sql`) e adicionar o link aqui somente quando existir.
+
+**SGBD exigido:** MySQL. O script deverá executar desde banco vazio e conter `CREATE DATABASE`, `CREATE TABLE`, restrições de integridade, `INSERT`, `SELECT` com `JOIN`, `UPDATE`, `DELETE`, consultas gerenciais e consultas de auditoria.
+
+Cada consulta gerencial precisa ter código `G01`, `G02` etc., pergunta respondida e indicação do problema/KPI atendido. Cada consulta de auditoria precisa ter código `A01`, `A02` etc., pergunta respondida e regra `RNxx` verificada. Registrar o resultado do teste de execução integral antes da entrega.
+
+---
+
+## 4. Massa de Dados
+
+**Pendente — equipe responsável pela implementação e testes.** Disponibilizar dados **fictícios**, consistentes com o levantamento, em script `.sql` (integrado ao script principal ou separado, preferencialmente em `docs/`).
+
+Justificar a quantidade de registros por tabela com os volumes reais validados na caracterização da organização. Incluir cenários variados para demonstrar consultas gerenciais e auditorias (por exemplo, períodos diferentes, modalidades de pagamento, pedidos com situações distintas e níveis de estoque diferentes).
+
+**Dependência documental:** os volumes de pedidos, vendas, compras e produtos ativos ainda não foram quantificados nas fontes disponíveis; não atribuir números fictícios ao porte da organização como se fossem observados.
+
+---
+
+## 5. Repositório GitHub
+
+Este repositório centraliza o relatório e os artefatos da Entrega 2. O trabalho será corrigido com base no conteúdo da branch `main`.
+
+| Artefato exigido | Localização | Situação |
+|---|---|---|
+| Relatório Técnico Final | [README.md](README.md) | Estrutura da Entrega 2 organizada; seções técnicas pendentes identificadas |
+| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | Existe; alinhar a versão final ao modelo lógico e às restrições implementadas |
+| DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Versão existente da Entrega 1; revisão técnica pendente |
+| Modelo lógico | Link a inserir após criação | Pendente |
+| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Presente, com pendências de validação indicadas |
+| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/) e [docs/imagens/](docs/imagens/) | Presentes parcialmente; comprovação específica da entrevista e formatos das fotos a verificar |
+| Script SQL MySQL | Link a inserir após criação | Pendente |
+| Massa de dados fictícia | Link a inserir após criação | Pendente |
+| Apresentação final | Link a inserir após criação | Pendente |
+
+As fotos atuais estão no repositório com extensão `.jpeg`. O enunciado exige arquivos **JPG ou PNG**; o grupo deve conferir a adequação dos arquivos e adicionar, quando disponível, a foto da entrevista com o responsável no local. Também deve manter histórico de commits distribuído entre os integrantes, com os nomes e usuários de GitHub identificáveis na tabela inicial.
+
+---
+
+## 6. Uso de Inteligência Artificial
 
 O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trabalho.
 
@@ -521,7 +653,7 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ---
 
-### 9.1 Revisão documental de 28/10/2026
+### Revisão documental de 28/10/2026
 
 | Item | Registro |
 |---|---|
@@ -536,22 +668,31 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ---
 
-## Critérios Atitudinais (20%)
-**Estes critérios NÃO constam explicitamente como item de entrega no README.** Eles são avaliados por meio de **Avaliação 360º entre os integrantes do grupo** (cada membro avalia os colegas de equipe) e, no caso da Colaboração, também pela **colaboração equilibrada no histórico de commits** do repositório GitHub — não pela leitura do restante do repositório nem pela apresentação:
+### Reorganização do README para a Entrega 2 — 29/10/2026
 
-- **Participação (5%):** envolvimento nas discussões técnicas e nas decisões do grupo.
-- **Comprometimento (5%):** cumprimento de prazos e responsabilidades assumidas.
-- **Colaboração (5%):** respeito às contribuições dos colegas, cooperação na construção do projeto e colaboração equilibrada no histórico de commits do repositório GitHub.
-- **Autonomia (5%):** busca independente de soluções e proposta de melhorias.
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — reorganização documental do `README.md` |
+| Motivação | Adequar o Relatório Técnico Final ao esqueleto obrigatório da Entrega 2, preservando a revisão já realizada na Entrega 1 |
+| Prompt(s) utilizados | “A gene tem que mudar o esqueleto do readme pro modelo da entrega 2.”; “Faça isso, é a unica coisa q falta da minha parte” |
+| Resposta recebida | Proposta e execução de reorganização das seções existentes em 1.1 e criação das seções 1.2–1.6 e 2–7 previstas no enunciado |
+| Fontes consultadas e verificadas | README da branch `main`, arquivo `00-d_Esqueleto_Entrega_2.md` e anotações `Perguntas e respostas`; conferência dos caminhos dos artefatos existentes no repositório |
+| Trechos rejeitados ou corrigidos | Não foram inventados volumes de operação, vínculos entre tabelas, consultas SQL, modelo lógico ou comprovação da entrevista. Os itens não disponíveis foram marcados como pendentes |
+| Justificativa da escolha final | Manter a documentação existente, eliminar a estrutura de Entrega 1 como índice principal e não atribuir a terceiros decisões técnicas ainda não validadas |
+| Reflexão crítica | O texto de IA organiza a documentação, mas não substitui validação presencial, auditoria do DER, aprovação do grupo ou execução dos scripts SQL |
 
 ---
 
-## Resumo dos Pesos
+## 7. Apresentação Corporativa Final
 
-| Dimensão | Peso total |
-|----------|-----------|
-| Conceitual (contexto, requisitos/regras, modelagem, justificativa técnica) | 30% |
-| Procedimental (requisitos, fluxogramas, dicionário de dados, DER) | 50% |
-| Atitudinal (participação, comprometimento, colaboração, autonomia) | 20% |
+**Pendente — apresentação do grupo.** Preparar um pitch de **8 minutos**, com slides de leitura visual clara, na ordem exigida:
 
-**Entrega final:** README.md completo + DER + Dicionário de Dados em HTML (com exceção dos cursos GTI) anexado no repositório GitHub do grupo.
+1. Contextualização dos problemas operacionais do estabelecimento;
+2. Solução proposta e abrangência do banco de dados;
+3. Modelo lógico relacional efetivamente elaborado;
+4. Demonstração do script SQL executando no MySQL;
+5. Demonstração de consultas gerenciais (`Gxx`) e de auditoria (`Axx`);
+6. Potencial dos dados para BI e IA;
+7. Benefícios para a tomada de decisão da organização.
+
+Inserir aqui o link da apresentação quando o arquivo estiver no repositório. Todos os integrantes deverão participar da defesa do modelo lógico, mesmo que nem todos apresentem o pitch.
