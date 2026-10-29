@@ -535,35 +535,53 @@ A estrutura proposta busca solucionar uma das principais dores identificadas: a 
 
 ### 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
-**Pendente — equipe responsável pelo modelo lógico.** Depois da validação e revisão do DER, documentar aqui:
+#### Entidades → Tabelas
 
-- A conversão de cada entidade em tabela e de cada atributo em coluna;
-- O tratamento dos relacionamentos 1:1, 1:N e N:N, inclusive atributos dos itens de Pedido e Compra;
-- A implementação das cardinalidades mínima/máxima por chaves e restrições;
-- A estratégia de conversão de generalizações/especializações, caso existam, com justificativa.
+*A preencher.*
 
-| Elemento do DER revisado | Representação relacional | Decisão/justificativa |
-|---|---|---|
-| A preencher após aprovação do DER | A preencher | A preencher |
+#### Atributos → Colunas
 
-Não reutilizar automaticamente as cardinalidades da Entrega 1 antes de resolver os apontamentos documentados na seção 1.1.
+*A preencher.*
+
+#### Relacionamentos → Chaves
+
+*A preencher.*
+
+#### Cardinalidades
+
+*A preencher.*
+
+#### Generalização/especialização (se houver)
+
+*A preencher.*
 
 ### 1.3 Definição de Chaves Primárias e Estrangeiras
 
-**Pendente — equipe responsável pela modelagem lógica/SQL.** Apresentar todas as tabelas efetivamente previstas no modelo lógico, com suas chaves primárias e estrangeiras, incluindo chaves compostas se aplicáveis.
+#### Chaves Primárias (PKs)
 
-| Tabela do modelo lógico | PK | FK e tabela referenciada |
-|---|---|---|
-| A preencher após conclusão do modelo lógico | A preencher | A preencher |
+*A preencher.*
+
+#### Chaves Estrangeiras (FKs)
+
+*A preencher.*
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
-**Pendente — equipe responsável pela normalização.** Documentar sobre as tabelas finais:
+#### 1FN — Eliminação de grupos repetitivos/atributos multivalorados
 
-- **1FN:** como atributos multivalorados e grupos repetitivos foram tratados;
-- **2FN:** demonstração da ausência ou eliminação de dependências parciais, especialmente em chaves compostas;
-- **3FN:** demonstração da ausência ou eliminação de dependências transitivas;
-- **Justificativa:** alterações efetivamente feitas no modelo, com exemplos de atributos/tabelas do projeto.
+*A preencher.*
+
+#### 2FN — Eliminação de dependências parciais
+
+*A preencher.*
+
+#### 3FN — Eliminação de dependências transitivas
+
+*A preencher.*
+
+#### Justificativa do processo de normalização
+
+*A preencher.*
 
 ### 1.5 Justificativas Técnicas das Decisões
 
