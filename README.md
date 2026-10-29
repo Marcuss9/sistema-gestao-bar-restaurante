@@ -802,9 +802,7 @@ A normalização, entretanto, não substitui a definição de todos os dados exi
 
 ## 2. Modelo Lógico Relacional
 
-**Pendente — artefato da equipe de modelagem.** Inserir aqui um link relativo para o diagrama final, após inclusão no repositório. O modelo deverá usar a notação visual do brModelo, apresentando tabelas, colunas com tipos, PKs, FKs e cardinalidades convertidas. Registrar também o aplicativo usado na criação.
-
-O [DER conceitual existente](docs/imagens/DER_esquina_dos_amigos_v2.jpg) **não substitui** o modelo lógico, e suas pendências estão identificadas na seção 1.1.
+![ModeloLogico](docs/imagens/ModeloLogico.png)
 
 ---
 
