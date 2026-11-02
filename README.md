@@ -839,7 +839,28 @@ Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quant
 
 ## 2. Modelo Lógico Relacional
 
-![ModeloLogico](docs/imagens/ModeloLogicoRelacional.png)
+O modelo lógico relacional do sistema de gestão do **Bar e Restaurante Esquina dos Amigos** foi elaborado no **brModelo Web**, utilizando a notação de modelo lógico indicada no Esqueleto da Entrega 2. O diagrama final é apresentado como arquivo de imagem separado, armazenado no repositório em [`docs/imagens/ModeloLogicoRelacional.png`](docs/imagens/ModeloLogicoRelacional.png).
+
+![Modelo Lógico Relacional — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
+
+O diagrama apresenta **oito tabelas** — seis correspondentes às entidades principais (`Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque`) e duas associativas (`Contem` e `Adquire`), originadas da conversão dos relacionamentos N:N do DER conceitual. Todas possuem colunas com tipos de dados indicados, identificação visual das chaves primárias (`PK`) e estrangeiras (`FK`) e ligações entre as tabelas com cardinalidades convertidas.
+
+| Tabela | Chave primária (PK) | Chaves estrangeiras (FKs) |
+|---|---|---|
+| `Pedido` | `id_pedido` | — |
+| `Pagamento` | `id_pagamento` | `id_pedido` → `Pedido(id_pedido)` |
+| `Produto` | `id_produto` | — |
+| `Compra` | `id_compra` | `id_fornecedor` → `Fornecedor(id_fornecedor)` |
+| `Fornecedor` | `id_fornecedor` | — |
+| `Movimentacao_Estoque` | `id_movimentacao` | `id_produto` → `Produto(id_produto)` |
+| `Contem` | (`id_pedido`, `id_produto`) | `id_pedido` → `Pedido(id_pedido)`; `id_produto` → `Produto(id_produto)` |
+| `Adquire` | (`id_compra`, `id_produto`) | `id_compra` → `Compra(id_compra)`; `id_produto` → `Produto(id_produto)` |
+
+Nas tabelas associativas, os campos identificadores são marcados simultaneamente como **PK e FK**. Os atributos `quantidade_pedido` e `preco_unitario_pedido` pertencem a `Contem`, e `quantidade_comprada` e `preco_unitario_compra` pertencem a `Adquire`. As descrições da conversão e das dependências funcionais estão nas seções 1.2 a 1.4.
+
+**Cardinalidades convertidas:** as ligações 1:N associam Fornecedor a Compra e Produto a Movimentacao_Estoque. Os relacionamentos N:N entre Pedido–Produto e Compra–Produto foram resolvidos pelas tabelas `Contem` e `Adquire`. O relacionamento Pedido–Pagamento é exibido automaticamente pelo brModelo como 1:N na representação lógica. Contudo, **o DER conceitual atual prevê 1:1**: para limitar a associação a no máximo um pagamento por pedido, a implementação física deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. A exigência adicional de que todo pedido possua um pagamento não é assegurada por essa FK isoladamente e depende de controle próprio; essa regra ainda deve ser validada caso haja pagamentos divididos ou posteriores.
+
+**Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para os campos de preços e valores financeiros. Na implementação física **MySQL**, deverá ser adotado preferencialmente `DECIMAL(12,2)` para esses valores. As demais restrições, como obrigatoriedade (`NOT NULL`), unicidade (`UNIQUE`), domínios (`CHECK`) e valores padrão (`DEFAULT`), **não estão representadas visualmente no diagrama** e devem ser especificadas no [dicionário de dados](dicionario_dados_conceitual.html), vinculado na seção 5, e implementadas no script SQL da seção 3. Restrições ainda dependentes da confirmação das regras de negócio não devem ser apresentadas como já implementadas.
 
 ---
 
@@ -872,7 +893,7 @@ Este repositório centraliza o relatório e os artefatos da Entrega 2. O trabalh
 | Relatório Técnico Final | [README.md](README.md) | Estrutura da Entrega 2 organizada; seções técnicas pendentes identificadas |
 | Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | Existe; alinhar a versão final ao modelo lógico e às restrições implementadas |
 | DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Versão existente da Entrega 1; revisão técnica pendente |
-| Modelo lógico | Link a inserir após criação | Pendente |
+| Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Presente na branch `main`; diagrama lógico final (brModelo Web) |
 | Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Presente, com pendências de validação indicadas |
 | Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/) e [docs/imagens/](docs/imagens/) | Presentes parcialmente; comprovação específica da entrevista e formatos das fotos a verificar |
 | Script SQL MySQL | Link a inserir após criação | Pendente |
