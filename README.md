@@ -682,13 +682,11 @@ Todas as entidades foram definidas de maneira independente, com atributos e resp
 
 ### 1.3 Definição de Chaves Primárias e Estrangeiras
 
-As chaves primárias e estrangeiras foram definidas durante a conversão para o modelo lógico com a finalidade de identificar unicamente os registros e preservar os relacionamentos entre as tabelas.
-
-As chaves primárias (PKs) identificam cada registro de maneira única, enquanto as chaves estrangeiras (FKs) estabelecem referências entre tabelas relacionadas, permitindo a manutenção da integridade referencial.
+As chaves primárias (PKs) e estrangeiras (FKs) foram identificadas a partir das oito tabelas do modelo lógico descrito na seção 1.2. As PKs identificam exclusivamente os registros, enquanto as FKs representam os relacionamentos entre as tabelas e permitem preservar a integridade referencial. As definições abaixo descrevem o modelo planejado; a efetiva aplicação das restrições deverá ser comprovada no script SQL MySQL.
 
 #### Chaves Primárias (PKs)
 
-As tabelas principais utilizam identificadores individuais como chaves primárias. Já as tabelas associativas utilizam chaves primárias compostas pelos identificadores das entidades relacionadas.
+As seis tabelas principais utilizam chaves primárias simples. As tabelas associativas `Contem` e `Adquire`, originadas dos relacionamentos N:N do DER, utilizam chaves primárias compostas pelos identificadores dos registros relacionados.
 
 | Tabela | Chave primária (PK) | Tipo |
 |---|---|---|
@@ -699,15 +697,13 @@ As tabelas principais utilizam identificadores individuais como chaves primária
 | `Fornecedor` | `id_fornecedor` | Simples |
 | `Movimentacao_Estoque` | `id_movimentacao` | Simples |
 | `Contem` | `id_pedido`, `id_produto` | Composta |
-| `Adquire` | `id_compra`, `idProduto` | Composta |
+| `Adquire` | `id_compra`, `id_produto` | Composta |
 
-As chaves simples permitem identificar individualmente cada pedido, pagamento, produto, compra, fornecedor ou movimentação de estoque.
-
-Nas tabelas associativas, as chaves compostas identificam uma combinação específica de registros. Isso impede, por exemplo, que a mesma combinação de pedido e produto seja cadastrada mais de uma vez em `Contem`.
+As chaves primárias compostas impedem a repetição da mesma combinação de pedido e produto em `Contem`, ou de compra e produto em `Adquire`. Os atributos `quantidade_pedido` e `preco_unitario_pedido`, em `Contem`, e `quantidade_comprada` e `preco_unitario_compra`, em `Adquire`, descrevem cada associação e não integram essas chaves. Todas as colunas de chave primária devem possuir valores não nulos e identificar combinações únicas.
 
 #### Chaves Estrangeiras (FKs)
 
-As chaves estrangeiras foram definidas para estabelecer os relacionamentos entre as tabelas e garantir que os registros relacionados possuam referências válidas.
+Foram definidas sete chaves estrangeiras, distribuídas entre cinco tabelas. Cada FK referencia a chave primária da respectiva tabela relacionada.
 
 | Tabela de origem | Chave estrangeira (FK) | Tabela referenciada | Chave referenciada |
 |---|---|---|---|
@@ -717,15 +713,15 @@ As chaves estrangeiras foram definidas para estabelecer os relacionamentos entre
 | `Contem` | `id_pedido` | `Pedido` | `id_pedido` |
 | `Contem` | `id_produto` | `Produto` | `id_produto` |
 | `Adquire` | `id_compra` | `Compra` | `id_compra` |
-| `Adquire` | `idProduto` | `Produto` | `id_produto` |
+| `Adquire` | `id_produto` | `Produto` | `id_produto` |
 
-As chaves estrangeiras permitem que o banco de dados mantenha vínculos entre os registros sem exigir a repetição das informações completas das entidades relacionadas.
+As tabelas `Pedido`, `Produto` e `Fornecedor` não possuem chaves estrangeiras no modelo lógico atual; suas chaves primárias são referenciadas pelas demais tabelas. Em `Contem` e `Adquire`, as FKs também compõem as respectivas PKs, de modo que a mesma associação não seja duplicada.
 
-Por exemplo, a tabela Compra armazena apenas `id_fornecedor` como referência ao fornecedor, sem precisar repetir seu nome e sua classificação em cada compra.
+O relacionamento **Pedido–Pagamento** foi definido como **1:1 no DER conceitual**, embora o brModelo mostre automaticamente uma ligação 1:N na representação lógica. Para preservar a cardinalidade máxima de um pagamento por pedido no MySQL, a FK `Pagamento.id_pedido` deverá possuir `UNIQUE` e `NOT NULL`. Isso garante que cada pagamento esteja vinculado a um pedido e que um pedido tenha **no máximo um pagamento**; a obrigatoriedade inversa de todo pedido possuir pagamento exige controle adicional, pois não é assegurada somente pela FK.
 
-Nas tabelas `Contem` e `Adquire`, as chaves estrangeiras também integram as respectivas chaves primárias compostas.
+Nos relacionamentos obrigatórios **Compra–Fornecedor** e **Movimentacao_Estoque–Produto**, as FKs `Compra.id_fornecedor` e `Movimentacao_Estoque.id_produto` deverão ser `NOT NULL`. Os identificadores das PKs compostas de `Contem` e `Adquire` também não podem ser nulos. A exigência de pelo menos um produto para cada pedido e compra depende de uma regra adicional de integridade, não sendo garantida apenas por essas FKs.
 
-A definição das FKs representa a estrutura de referência do modelo lógico. Restrições adicionais, como `NOT NULL` e `UNIQUE`, deverão ser documentadas no dicionário de dados e implementadas no script SQL para garantir as regras de integridade correspondentes.
+As restrições `UNIQUE`, `NOT NULL` e outras regras de integridade deverão ser detalhadas no dicionário de dados e implementadas no script SQL. Sua justificativa completa, vinculada às regras de negócio pertinentes, pertence à seção 1.5.
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
