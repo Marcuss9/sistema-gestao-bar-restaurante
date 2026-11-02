@@ -843,7 +843,26 @@ O modelo lógico relacional do sistema de gestão do **Bar e Restaurante Esquina
 
 ![Modelo Lógico Relacional — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
 
-O diagrama apresenta **oito tabelas** — seis correspondentes às entidades principais (`Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque`) e duas associativas (`Contem` e `Adquire`), originadas da conversão dos relacionamentos N:N do DER conceitual. Todas possuem colunas com tipos de dados indicados, identificação visual das chaves primárias (`PK`) e estrangeiras (`FK`) e ligações entre as tabelas com cardinalidades convertidas.
+O diagrama apresenta **oito tabelas** — seis correspondentes às entidades principais (`Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque`) e duas associativas (`Contem` e `Adquire`), originadas da conversão dos relacionamentos N:N do DER conceitual. Os elementos exigidos pelo Esqueleto 2 (tabelas, colunas com tipos, PKs, FKs e cardinalidades convertidas) estão visíveis na imagem e detalhados a seguir.
+
+### Tabelas e atributos (colunas com tipos de dados)
+
+A tabela abaixo reproduz os **nomes dos atributos e os tipos exibidos no diagrama lógico do brModelo Web**, sem antecipar as modificações de tipos previstas para o SQL físico em MySQL.
+
+| Tabela | Atributos (colunas) e tipos de dados |
+|---|---|
+| `Pedido` | `id_pedido` INT; `data_hora_pedido` DATETIME; `tipo_atendimento_pedido` VARCHAR; `status_pedido` VARCHAR; `observacao_pedido` VARCHAR; `endereco_entrega_pedido` VARCHAR |
+| `Pagamento` | `id_pagamento` INT; `id_pedido` INT; `forma_pagamento` VARCHAR; `data_hora_pagamento` DATETIME; `preco_total_pagamento` FLOAT |
+| `Produto` | `id_produto` INT; `nome_produto` VARCHAR; `categoria_produto` VARCHAR; `preco_venda_produto` FLOAT; `quantidade_estoque_produto` INT |
+| `Compra` | `id_compra` INT; `id_fornecedor` INT; `preco_total_compra` FLOAT; `data_compra` DATE |
+| `Fornecedor` | `id_fornecedor` INT; `tipo_fornecedor` VARCHAR; `nome_fornecedor` VARCHAR |
+| `Movimentacao_Estoque` | `id_movimentacao` INT; `id_produto` INT; `tipo_movimentacao` VARCHAR; `quantidade_movimentada` INT; `data_hora_movimentacao` DATETIME; `motivo_movimentacao` VARCHAR |
+| `Contem` | `id_pedido` INT; `id_produto` INT; `quantidade_pedido` INT; `preco_unitario_pedido` FLOAT |
+| `Adquire` | `id_compra` INT; `id_produto` INT; `quantidade_comprada` INT; `preco_unitario_compra` FLOAT |
+
+### Chaves primárias e estrangeiras
+
+
 
 | Tabela | Chave primária (PK) | Chaves estrangeiras (FKs) |
 |---|---|---|
@@ -858,7 +877,23 @@ O diagrama apresenta **oito tabelas** — seis correspondentes às entidades pri
 
 Nas tabelas associativas, os campos identificadores são marcados simultaneamente como **PK e FK**. Os atributos `quantidade_pedido` e `preco_unitario_pedido` pertencem a `Contem`, e `quantidade_comprada` e `preco_unitario_compra` pertencem a `Adquire`. As descrições da conversão e das dependências funcionais estão nas seções 1.2 a 1.4.
 
-**Cardinalidades convertidas:** as ligações 1:N associam Fornecedor a Compra e Produto a Movimentacao_Estoque. Os relacionamentos N:N entre Pedido–Produto e Compra–Produto foram resolvidos pelas tabelas `Contem` e `Adquire`. O relacionamento Pedido–Pagamento é exibido automaticamente pelo brModelo como 1:N na representação lógica. Contudo, **o DER conceitual atual prevê 1:1**: para limitar a associação a no máximo um pagamento por pedido, a implementação física deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. A exigência adicional de que todo pedido possua um pagamento não é assegurada por essa FK isoladamente e depende de controle próprio; essa regra ainda deve ser validada caso haja pagamentos divididos ou posteriores.
+### Cardinalidades já convertidas
+
+O brModelo Web apresenta as cardinalidades `(mín, máx)` nas extremidades das ligações após a conversão para o modelo relacional. A tabela reproduz essas marcações **na ordem em que as tabelas são nomeadas**, com a primeira marcação próxima à tabela da esquerda e a segunda próxima à tabela da direita.
+
+| Ligação entre tabelas | Marcações no diagrama (esquerda — direita) | Relacionamento representado |
+|---|---|---|
+| `Pedido` — `Pagamento` | `(1,1) — (0,n)` | 1:N gerado a partir da FK `Pagamento.id_pedido`; **1:1 previsto no DER**, a restringir no SQL |
+| `Pedido` — `Contem` | `(1,1) — (0,n)` | Um item `Contem` pertence a um único pedido; um pedido pode ter vários itens |
+| `Produto` — `Contem` | `(1,1) — (0,n)` | Um item `Contem` referencia um único produto; um produto pode aparecer em vários pedidos |
+| `Compra` — `Adquire` | `(1,1) — (0,n)` | Um item `Adquire` pertence a uma única compra; uma compra pode ter vários itens |
+| `Produto` — `Adquire` | `(1,1) — (0,n)` | Um item `Adquire` referencia um único produto; um produto pode aparecer em várias compras |
+| `Fornecedor` — `Compra` | `(1,1) — (0,n)` | Cada compra referencia um fornecedor; um fornecedor pode participar de várias compras |
+| `Produto` — `Movimentacao_Estoque` | `(1,1) — (0,n)` | Cada movimentação referencia um produto; um produto pode ter várias movimentações |
+
+Assim, os dois relacionamentos N:N do DER foram convertidos em **duas relações 1:N cada**, por meio de `Contem` e `Adquire`. As participações mínimas conceituais de pelo menos um item por pedido ou compra não são asseguradas automaticamente pelas chaves estrangeiras.
+
+**Atenção ao relacionamento Pedido–Pagamento:** o brModelo mostra uma ligação 1:N porque `Pagamento.id_pedido` é uma FK. Entretanto, o DER conceitual estabelece **1:1**. Para limitar a associação a no máximo um pagamento por pedido, o SQL MySQL deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. Isso não obriga, por si só, que todo pedido já possua um pagamento; essa regra depende de controle adicional e de validação caso o estabelecimento aceite pagamentos divididos ou posteriores.
 
 **Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para os campos de preços e valores financeiros. Na implementação física **MySQL**, deverá ser adotado preferencialmente `DECIMAL(12,2)` para esses valores. As demais restrições, como obrigatoriedade (`NOT NULL`), unicidade (`UNIQUE`), domínios (`CHECK`) e valores padrão (`DEFAULT`), **não estão representadas visualmente no diagrama** e devem ser especificadas no [dicionário de dados](dicionario_dados_conceitual.html), vinculado na seção 5, e implementadas no script SQL da seção 3. Restrições ainda dependentes da confirmação das regras de negócio não devem ser apresentadas como já implementadas.
 
