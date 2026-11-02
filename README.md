@@ -19,11 +19,11 @@
 
 ### 1.1 Revisão do Modelo Conceitual
 
-Esta seção reúne a revisão documental da Entrega 1: caracterização da organização, relato do levantamento, processos, RF/RNF, RN01–RN20, inventário de dados, relacionamentos, DER existente e justificativas conceituais.
+Esta seção apresenta a revisão da **mesma organização real utilizada na Entrega 1 (Caso A do Esqueleto 2)**, tomando como referência a [Issue #1 — correção da Entrega 1](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1), os registros de levantamento e os modelos existentes. Reúne a caracterização, o relato da entrevista, os processos, os requisitos, as regras de negócio, os atributos, os relacionamentos e o estado de revisão do DER conceitual.
 
 **Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
 
-**Situação:** as informações disponíveis foram consolidadas na Entrega 1. Permanecem pendentes de validação presencial os volumes de operação, os metadados e a comprovação fotográfica específica da entrevista, além de decisões técnicas do DER indicadas adiante. A revisão textual não deve ser confundida com a aprovação do modelo pelo professor.
+**Situação:** a documentação foi ampliada e o modelo lógico da seção 1.2 já possui quantidade e preço unitário nas tabelas `Contem` e `Adquire`. Entretanto, o **DER conceitual vinculado nesta seção ainda não contém esses atributos nos relacionamentos N:N**. Permanecem pendentes a validação presencial de volumes, dados e foto da entrevista, decisões sobre pagamentos e a abrangência dos gastos. Correções textuais não devem ser confundidas com aprovação do DER ou implementação do sistema.
 
 #### Caracterização da Organização
 
@@ -50,7 +50,7 @@ Os problemas passam a ser identificados para rastreabilidade documental:
 
 | Código | Problema identificado | Requisitos relacionados | Limite atual |
 |---|---|---|---|
-| P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | Quantidade e preço por item dependem da revisão do modelo |
+| P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | Quantidade e preço por item já constam no modelo lógico; faltam no DER conceitual e nas consultas gerenciais Gxx |
 | P2 | Entradas e saídas financeiras dispersas entre papel e extratos | RF07, RF14 | Contas do estabelecimento e data de pagamento das compras não estão plenamente representadas |
 | P3 | Estoque e necessidade de reposição acompanhados visualmente | RF09–RF12 | Saldo inicial, unidades, ajustes e alcance do controle precisam ser confirmados |
 
@@ -64,7 +64,12 @@ Entre as principais necessidades identificadas estão:
 * registrar movimentações de entrada e saída do estoque.
 
 **Volumes operacionais**
-As fontes disponíveis informam aproximadamente 20 anos de funcionamento, mas não quantificam pedidos por dia/semana, entregas, produtos ativos ou compras por período. Esses volumes devem ser levantados com o responsável antes de justificar a massa fictícia da Entrega 2. A composição da equipe também precisa ser esclarecida.
+As fontes disponíveis informam aproximadamente 20 anos de funcionamento, mas não quantificam pedidos por dia/semana, entregas, produtos ativos ou compras por período. Esses volumes devem ser levantados com o responsável antes de justificar a massa fictícia da Entrega 2. A composição da equipe também precisa ser esclarecida. **Não se atribuem números fictícios à operação real.**
+
+**Escopo do sistema e abrangência da organização**
+O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores e movimentações de estoque. A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
+
+O Esqueleto 2 exige cobertura dos dados relevantes de **toda a organização**. A estrutura atual, embora represente vendas, compras e estoque, **não cobre integralmente contas do estabelecimento, efetivos pagamentos de compras, conferência dos recebimentos e gestão de insumos**. Essa lacuna compromete sobretudo a solução completa do problema **P2**. Antes de encerrar a revisão, o grupo deve confirmar quais dados e estruturas adicionais são necessários com o responsável. Não se presume que processos sem evidência deixem de existir.
 
 **Justificativa da escolha**
 O estabelecimento foi escolhido por apresentar uma operação real, de pequeno porte e com processos suficientemente definidos para a elaboração de um modelo conceitual de banco de dados.
@@ -82,25 +87,48 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
 * Responsável identificado como "Ceará"; nome completo e função a confirmar.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-##### Relato e fontes do levantamento
+**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a comprovação da entrevista ainda estão pendentes. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
 
-O [levantamento organizado](levantamento/levantamento.md) sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt) e as [confirmações complementares do integrante responsável pela revisão documental](levantamento/fontes/confirmacoes-documentais.md). A operação relatada utiliza pedidos em papel, comunicação verbal com a cozinha, estoque visual e anotações de gastos; o sistema descrito neste trabalho é uma proposta.
+##### Relato da entrevista e fontes do levantamento
 
-VR, ausência de frete próprio e contratação/pagamento do transporte por aplicativo pelo cliente foram confirmados pelo integrante durante a revisão de 28/10/2026. O limite de dez minutos a pé foi adotado como critério do projeto a partir de estimativa desse integrante.
+O [levantamento organizado](levantamento/levantamento.md) é o documento Markdown separado requerido pelo Esqueleto 2. Ele sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt) e as [confirmações documentais de 28/10/2026](levantamento/fontes/confirmacoes-documentais.md). Essas confirmações de um integrante não constituem nova entrevista com o restaurante.
 
-**Metadados pendentes:** data da entrevista, nome completo e função do entrevistado, integrantes presentes e eventual vínculo com a organização. As fontes não distinguem quais achados foram observados presencialmente e quais foram apenas relatados; essa separação precisa ser validada pelo grupo. As fotos existentes documentam a visita, mas a avaliação da Entrega 1 registra que nenhuma mostra o responsável. A comprovação específica da entrevista permanece pendente.
+| Informação exigida | Registro comprovável e pendência |
+|---|---|
+| Responsável entrevistado | Identificado pelo apelido **“Ceará”**; nome completo e função pendentes |
+| Contato do responsável | Telefone comercial informado na caracterização; contato específico a confirmar |
+| Data e horário | Não informados nas fontes |
+| Local da entrevista | Visita ao estabelecimento documentada, mas local e contexto exatos da entrevista a confirmar |
+| Integrantes presentes | A confirmar |
+| Vínculo de integrante com o estabelecimento | A declarar, se houver |
+| Evidência fotográfica da entrevista | **Pendente**; as fotos disponíveis não mostram o responsável segundo a Issue #1 |
+
+**Informações relatadas:** registro de pedidos em papel e comunicação verbal com a cozinha; ausência de mesa/comanda; estoque acompanhado visualmente; anotações de gastos e contas; compras com distribuidores e supermercados; entrega local e pagamento pelo cliente de transporte solicitado por aplicativo; tratamento de pedidos errados. O conteúdo detalhado, organizado por processo e com seus limites, está no levantamento Markdown.
+
+**Observação presencial:** as imagens documentam aspectos do local (fachada e ambiente), mas as fontes não distinguem quais procedimentos os integrantes efetivamente **viram acontecer** e quais foram apenas **relatados**. Essa separação deverá ser completada pelo grupo após conferência com os participantes, sem atribuir observação direta sem evidência.
+
+**Confirmações após a Entrega 1:** um integrante confirmou em 28/10/2026 o aceite de vale-refeição, a ausência de frete próprio e que o cliente solicita e paga o transporte por aplicativo. O limite de até dez minutos a pé é **estimativa adotada como critério do projeto**, não uma medição ou confirmação formal do responsável.
+
+**Pendências para completar a entrevista:** nome e função do entrevistado, telefone de contato, data, integrantes participantes, local, observações presenciais, eventual vínculo com o estabelecimento, volumes de operação e foto da entrevista no local. Se for necessária nova visita, registrar data, participantes e alterações em relação à Entrega 1.
 
 ##### Tratamento dos apontamentos da Entrega 1
 
-| Apontamento da correção | O que mudou / situação | Por quê |
-|---|---|---|
-| Regras limitadas a constatações e sem restrições legais/fiscais/sanitárias | RN13–RN20 já acrescentadas na main; esta revisão distingue fontes, propostas e pendências e detalha RN03, RN05, RN07, RN08, RN12 e RN14 | Evitar apresentar uma proposta como prática validada |
-| HTML restrito às tabelas de atributos | A main já contém convenções, cardinalidades, fluxos, expressões, tipos, índices, papéis e logs, além da adequação para MySQL; esta revisão corrige a frase sobre DATETIME, reúne campo/tipo/descrição/restrições em uma tabela por entidade conforme o exemplo do professor e explicita a situação dos valores padrão | Responder à correção sem afirmar implementação do banco |
-| N:N Pedido–Produto e Compra–Produto sem quantidade/preço por item | Pendente de revisão do DER pela equipe responsável; o texto deixa de justificar a omissão como mera etapa do modelo lógico | Quantidade e preço praticado são fatos do negócio necessários à totalização |
-| Cardápio, conferência, pagamento de contas e reposição parcialmente descritos | Processos detalhados a partir das fontes, com as informações desconhecidas indicadas | Explicitar dados e exceções sem inventar rotinas |
-| Pedido–Pagamento 1:1 e origem das movimentações limitada a texto | Pendentes de decisão da equipe após validar pagamentos e rastreamento | A documentação não altera cardinalidades ou vínculos técnicos |
+Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [Issue #1](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1), as providências efetivamente tomadas e as pendências. Uma correção do modelo lógico não é apresentada como correção do DER conceitual.
 
-Os apontamentos acima são tratados documentalmente; a tabela não declara concluídas as pendências do DER, do modelo lógico ou do SQL.
+| Apontamento da correção da E1 | O que mudou no trabalho / situação | Por quê |
+|---|---|---|
+| **Critério 8 — regras de negócio** insuficientes e sem restrições legais, fiscais e sanitárias | **Revisão documental realizada:** RN13–RN20 acrescentadas, distinguindo práticas descritas, propostas e obrigações; validação de algumas regras continua pendente | Regras precisam ser verificáveis e relacionadas ao funcionamento e às obrigações aplicáveis |
+| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Revisão documental realizada:** HTML ampliado com convenções MySQL, cardinalidades, fluxo, tipos, expressões, índices propostos, controle de acesso e log; novos atributos por item ainda precisam ser sincronizados no HTML | Representar os dados, suas restrições e os fluxos sem confundir propostas com SQL implementado |
+| **Critério 10 — Pedido–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_pedido` e `preco_unitario_pedido` à tabela lógica `Contem`; o DER conceitual ainda não mostra esses atributos no relacionamento | Sem os atributos no conceito, não há descrição completa de cada item vendido |
+| **Critério 10 — Compra–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_comprada` e `preco_unitario_compra` à tabela lógica `Adquire`; o DER conceitual ainda não mostra esses atributos no relacionamento | Preservar a quantidade e o custo unitário de cada aquisição |
+| **Critério 5 — processos de cardápio, recebimento, contas e reposição parcialmente descritos** | **Parcial:** descrições ampliadas com base no levantamento; horários de pratos especiais, recebimentos parciais, pagamentos de contas e critérios de reposição seguem sem validação | Evitar inventar rotinas e reconhecer dados não cobertos pelo modelo |
+| **Pedido–Pagamento 1:1 impede pagamento dividido** | **Pendente de decisão:** mantida a cardinalidade conceitual original; o modelo lógico descreve a futura restrição `UNIQUE`, se o 1:1 for confirmado | Pagamento dividido ou posterior só pode alterar o modelo depois de confirmada sua prática |
+| **Movimentações sem referência direta à origem** | **Pendente:** permanece `motivo_movimentacao` textual, sem FK para Pedido ou Compra | Rastreabilidade da operação pode exigir vínculos adicionais |
+| **Cobertura de despesas, contas e desembolsos** | **Pendente:** `Compra` indica aquisição e `Pagamento` indica recebimento de vendas, sem representação de todas as saídas efetivamente pagas | O problema P2 requer distinguir valores comprados, devidos e pagos |
+| **Comprovação da entrevista e volumes operacionais** | **Pendente:** faltam dados do entrevistado, foto específica, datas e números do movimento | A Entrega 2 exige comprovação da entrevista e volumes para fundamentar a massa de dados |
+
+**Resultado:** os apontamentos sobre regras e dicionário foram tratados **documentalmente**. Os apontamentos N:N estão tratados **no modelo lógico**, mas ainda **não no DER conceitual**; as demais decisões e evidências permanecem registradas como pendentes. Não se declara revisão concluída nem aprovação do DER.
+
 
 ---
 
@@ -119,18 +147,18 @@ A partir do levantamento realizado, foram identificados os seguintes processos p
 * Registro de compras
 * Acompanhamento financeiro
 
-**2.1 Atendimento e registro de pedidos**
+**Atendimento e registro de pedidos**
 O cliente realiza o pedido diretamente no estabelecimento ou, no caso de entregas, por meio do WhatsApp.
 No atendimento presencial, o funcionário recebe o pedido e faz uma anotação em papel, utilizada para comunicar verbalmente os itens à cozinha. Essa anotação não constitui um registro estruturado de vendas. Não são registrados número da mesa, nome do cliente ou número de comanda.
 Em seguida, o funcionário comunica verbalmente o pedido à cozinha.
 Nos pedidos destinados à entrega, o cliente informa, por meio do WhatsApp, as informações necessárias para que o pedido seja entregue.
 
-**2.2 Preparação e entrega**
+**Preparação e entrega**
 A cozinha prepara o pedido com base na comunicação realizada pelo funcionário.
 Quando o pedido fica pronto, os funcionários comunicam verbalmente que ele está disponível. Um funcionário pode realizar a entrega do prato ao cliente, porém não existe uma pessoa exclusivamente responsável por essa atividade.
 Todos os funcionários podem executar as tarefas necessárias conforme a demanda.
 
-**2.3 Venda e pagamento**
+**Venda e pagamento**
 O estabelecimento aceita:
 * dinheiro;
 * cartão de crédito;
@@ -141,39 +169,39 @@ O estabelecimento aceita:
 Atualmente, as vendas não são registradas individualmente em um sistema.
 A solução proposta deverá permitir registrar cada operação comercial e relacioná-la ao respectivo pedido e pagamento.
 
-**2.4 Entregas**
+**Entregas**
 O estabelecimento realiza entregas apenas nas proximidades.
 Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário.
 Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente.
 Não existe um funcionário exclusivamente responsável pelas entregas.
 Não é cobrado frete próprio para as entregas locais, conforme confirmação complementar do integrante. Para delimitar as proximidades, o projeto adota trajetos de até dez minutos a pé a partir do estabelecimento na R. Inês Monteiro, 157. Esse critério foi estimado e aceito pelo integrante; não resulta de medição em campo.
 
-**2.5 Controle de produtos em estoque**
+**Controle de produtos em estoque**
 Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema.
 A quantidade dos produtos comercializados é acompanhada de maneira informal e visual.
 A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída.
 O modelo atual exclui ingredientes do controle estruturado de estoque. Essa é uma decisão de escopo anterior, cuja adequação à cobertura exigida na Entrega 2 deve ser reavaliada pela equipe; o anexo não confirma que o controle de insumos seja desnecessário.
 
-**2.6 Compras**
+**Compras**
 As compras são realizadas pelos próprios funcionários, conforme a necessidade do estabelecimento.
 Os produtos comercializados podem ser adquiridos de fornecedores recorrentes, como Ambev, Heineken e Coca-Cola.
 Ingredientes utilizados na preparação dos alimentos também podem ser adquiridos diretamente em supermercados.
-Os gastos com fornecedores e supermercados são anotados manualmente. A compra e seu pagamento são fatos distintos: as fontes não informam prazos nem formas de pagamento dos fornecedores, que permanecem pendentes.
+Os gastos com fornecedores e supermercados são anotados manualmente. No sistema proposto, `Compra` identifica fornecedor, data e valor total, enquanto `Adquire` registra produto, quantidade comprada e preço unitário da aquisição. Esses atributos já constam do modelo lógico, mas ainda faltam no DER conceitual. A compra e seu pagamento são fatos distintos: as fontes não informam prazos nem formas de pagamento dos fornecedores, que permanecem pendentes.
 
-**2.7 Acompanhamento financeiro**
+**Acompanhamento financeiro**
 Atualmente, os registros financeiros são realizados manualmente e posteriormente comparados com os extratos financeiros.
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
 
 ##### Cardápio e preços
 
-O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. No sistema proposto, o cadastro utiliza identificador, nome, categoria e preço atual do produto. A programação dos pratos e a frequência de atualização de preços não foram informadas. O preço efetivamente praticado em cada item precisa ser preservado na revisão do modelo; o preço atual do cadastro não substitui o histórico.
+O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. No sistema proposto, o cadastro utiliza identificador, nome, categoria e preço atual do produto. A programação dos pratos e a frequência de atualização de preços não foram informadas. O preço praticado em cada item já foi representado no modelo lógico como `preco_unitario_pedido`, mas falta sua representação conceitual; o preço atual do cadastro não substitui o histórico.
 
 ##### Reposição, recebimento e conferência
 
 A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. Quantidades, unidades, entregas parciais e tratamento de divergências precisam ser detalhados com o responsável.
 
-Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item de compra e vínculo com o recebimento dependem da revisão técnica. A consulta ao saldo registrado será apoio futuro à reposição, não descrição da prática atual.
+Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. A consulta ao saldo registrado será apoio futuro à reposição, não descrição da prática atual.
 
 ##### Contas e acompanhamento dos gastos
 
@@ -206,11 +234,11 @@ Os requisitos descrevem a solução proposta, não funcionalidades implantadas. 
 
 * **RF01 — Cadastrar produtos:** Registrar identificador, nome, categoria, preço atual de venda e saldo dos produtos abrangidos pelo controle. Categorias e unidades devem ser validadas.
 * **RF02 — Registrar pedidos:** Registrar identificador único, data/hora, tipo de atendimento, situação e observação opcional; para entrega, registrar endereço. O domínio de situações depende de confirmação.
-* **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. Os atributos por item ainda precisam ser incorporados ao modelo revisado.
+* **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. Os atributos por item já foram incorporados à tabela lógica `Contem`; falta representá-los no DER conceitual revisado.
 * **RF04 — Registrar a forma de pagamento:** Registrar identificador, valor recebido, modalidade (dinheiro, crédito, débito, vale-refeição ou Pix) e data/hora, associado ao pedido. Pagamento dividido e posterior permanecem pendentes.
 * **RF05 — Registrar vendas:** Identificar a operação comercial pelo Pedido e seus itens, preservando quantidade e preço praticado, e relacionar os recebimentos. Não confundir valor vendido com valor recebido.
 * **RF06 — Consultar movimentação diária:** Consultar valores recebidos por data e forma de pagamento, utilizando valor e data/hora de Pagamento. A data de venda utiliza Pedido e deve ser distinguida da data de recebimento.
-* **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. Os atributos por item dependem da revisão do modelo.
+* **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. Os atributos por item já foram incorporados à tabela lógica `Adquire`; falta representá-los no DER conceitual revisado.
 * **RF08 — Registrar fornecedores:** Registrar identificador, nome e classificação do fornecedor, incluindo distribuidores recorrentes e supermercados; o domínio da classificação deve ser validado.
 * **RF09 — Acompanhar necessidade de abastecimento:** Consultar produto, unidade e saldo registrado para apoiar a reposição. O processo atual é visual; não foi confirmado estoque mínimo numérico.
 * **RF10 — Registrar recebimento de produtos:** Registrar os produtos e quantidades efetivamente recebidos, data e referência à compra/documento conferido. Esses dados e vínculos dependem da revisão do modelo e da validação das divergências.
@@ -245,7 +273,7 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 
 #### Regras de Negócio
 
-As regras a seguir estão separadas em **regras operacionais**, **regras propostas que dependem de validação** e **restrições legais, sanitárias, fiscais e de privacidade**. Propostas não devem ser confundidas com práticas confirmadas na entrevista. A modelagem do DER não é alterada nesta correção.
+As regras a seguir estão separadas em **regras operacionais**, **regras propostas que dependem de validação** e **restrições legais, sanitárias, fiscais e de privacidade**. Propostas não devem ser confundidas com práticas confirmadas na entrevista. A presente atualização textual não modifica o arquivo gráfico do DER, cuja revisão está indicada adiante.
 
 ##### Regras operacionais e de escopo
 
@@ -292,7 +320,7 @@ Para adequar a solução ao levantamento, a modelagem desta entrega não prevê 
 
 #### Dicionário de Dados Conceitual
 
-Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com uma tabela por entidade no formato do exemplo do professor (Nome do Campo, Tipo de Dado, Descrição e Restrição / Chave), além de convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas.
+Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com uma tabela por entidade no formato do exemplo do professor (Nome do Campo, Tipo de Dado, Descrição e Restrição / Chave), além de convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas. O HTML ainda deverá ser sincronizado com os quatro atributos por item recentemente incluídos no modelo lógico.
 
 
 ##### Produto
@@ -335,7 +363,8 @@ Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquiv
 | id_compra | Identificador único da compra | Deve identificar exclusivamente a compra |
 | data_compra | Data de realização da compra | Obrigatório |
 | preco_total_compra | Preço total da compra | Deve corresponder à soma dos itens adquiridos |
-| id_fornecedor_compra | Fornecedor relacionado à compra | Deve permitir identificar a origem da compra |
+
+A referência ao fornecedor da compra será implementada no **modelo lógico** com `Compra.id_fornecedor`; no DER conceitual, ela é expressa pelo relacionamento Compra–Fornecedor, não por uma FK desenhada na entidade.
 
 ##### Movimentacao_Estoque
 | Atributo | Descrição | Regra de negócio associada |
@@ -376,7 +405,7 @@ As entidades **Cliente** e **Funcionario** não foram incluídas no modelo conce
 
 Também não foi criada uma entidade **Venda**, pois o Pedido já representa a operação comercial realizada pelo estabelecimento.
 
-As estruturas **Item_Pedido** e **Item_Compra** não fazem parte desta etapa conceitual. Os relacionamentos entre Pedido e Produto e entre Compra e Produto permanecem como relacionamentos N:N, conforme definido para esta etapa da modelagem. A revisão conceitual ainda precisa representar quantidade e preço praticado nos relacionamentos, antes da conversão em estruturas intermediárias no modelo lógico.
+Os relacionamentos `Contem` (Pedido–Produto) e `Adquire` (Compra–Produto) continuam N:N no DER conceitual. No modelo lógico, eles já foram convertidos nas tabelas associativas homônimas, equivalentes às estruturas `Item_Pedido` e `Item_Compra`. Os quatro atributos de quantidade e preço já existem na conversão lógica, mas ainda devem ser desenhados nos relacionamentos conceituais.
 
 ##### Atributos e classificações
 
@@ -388,10 +417,21 @@ Os atributos definidos para cada entidade são:
 | **Pedido** | `id_pedido`, `data_hora_pedido`, `tipo_atendimento_pedido`, `status_pedido`, `observacao_pedido`, `endereco_entrega_pedido` |
 | **Pagamento** | `id_pagamento`, `preco_total_pagamento`, `forma_pagamento`, `data_hora_pagamento` |
 | **Fornecedor** | `id_fornecedor`, `nome_fornecedor`, `tipo_fornecedor` |
-| **Compra** | `id_compra`, `data_compra`, `preco_total_compra`, `id_fornecedor_compra` |
+| **Compra** | `id_compra`, `data_compra`, `preco_total_compra` |
 | **Movimentacao_Estoque** | `id_movimentacao`, `tipo_movimentacao`, `quantidade_movimentada`, `data_hora_movimentacao`, `motivo_movimentacao` |
 
-Os atributos iniciados por `id_` atuam como identificadores ou referências relacionadas às respectivas entidades.
+Os identificadores iniciados por `id_` identificam as entidades. Os relacionamentos conceituais são convertidos em chaves estrangeiras apenas no modelo lógico.
+
+**Atributos dos relacionamentos N:N pendentes no DER conceitual revisado:**
+
+| Relacionamento conceitual | Atributo que deve ser acrescentado | Finalidade |
+|---|---|---|
+| Pedido — **Contem** — Produto | `quantidade_pedido` | Quantidade do produto vendido em cada pedido |
+| Pedido — **Contem** — Produto | `preco_unitario_pedido` | Preço unitário praticado naquela venda |
+| Compra — **Adquire** — Produto | `quantidade_comprada` | Quantidade do produto adquirida na compra |
+| Compra — **Adquire** — Produto | `preco_unitario_compra` | Preço unitário de aquisição |
+
+Na notação do brModelo exigida pelo Esqueleto 2, esses atributos devem estar **ligados aos losangos dos relacionamentos**, ou às entidades associativas adequadas se o grupo optar por essa representação. Não se desenham FKs no DER conceitual.
 
 No Pedido, `observacao_pedido` é opcional, pois nem todo pedido necessita de uma observação adicional. O atributo `endereco_entrega_pedido` também é opcional, sendo necessário apenas quando o tipo de atendimento corresponder a uma entrega.
 
@@ -421,7 +461,7 @@ Um **Pedido contém um ou vários Produtos**, enquanto um Produto pode estar pre
 - Pedido: `(1,n)`
 - Produto: `(0,n)`
 
-Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
+É um relacionamento **N:N**. O diagrama conceitual ainda deve representar no losango `Contem` a quantidade e o preço unitário praticado.
 
 ###### Pedido — Pagamento
 
@@ -443,7 +483,7 @@ Uma **Compra adquire um ou vários Produtos**, enquanto um Produto pode estar pr
 - Compra: `(1,n)`
 - Produto: `(0,n)`
 
-Trata-se de um relacionamento **N:N**, mantido dessa forma nesta etapa da modelagem conceitual.
+É um relacionamento **N:N**. O diagrama conceitual ainda deve representar no losango `Adquire` a quantidade e o preço unitário de aquisição.
 
 ###### Fornecedor — Compra
 
@@ -480,26 +520,23 @@ As seguintes regras e características observadas no estabelecimento influenciar
 
 - A necessidade de reposição não é representada por uma entidade específica. O acompanhamento é realizado por meio da quantidade disponível de cada Produto e dos registros existentes em `Movimentacao_Estoque`.
 
-- Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no modelo conceitual. As estruturas necessárias para representar esses relacionamentos no banco de dados serão definidas somente na etapa de modelagem lógica.
+- Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no conceito. A conversão lógica em `Contem` e `Adquire` já existe; resta representar seus atributos diretamente nos relacionamentos do DER conceitual.
 ---
 
 ---
 
 #### Diagrama Entidade-Relacionamento (DER)
 
-![DER](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
+**DER conceitual existente (versão da Entrega 1, ainda não revisada graficamente):**
 
-O DER representa:
-* entidades;
-* atributos;
-* relacionamentos;
-* cardinalidades;
-* identificação das entidades;
-* relações entre pedidos, produtos e pagamentos;
-* relações entre compras, fornecedores e produtos;
-* estrutura necessária para representar as movimentações de estoque.
+![DER conceitual existente](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
 
-O modelo deverá ser construído de maneira que possa posteriormente ser convertido para um modelo lógico relacional e implementado em SQL.
+O DER original utiliza notação do **brModelo**: entidades em retângulos, relacionamentos em losangos, identificadores em círculos preenchidos, atributos comuns em círculos vazios e cardinalidades mínimas/máximas dos dois lados. Contém seis entidades e cinco relacionamentos, sem FKs desenhadas e sem generalização/especialização. O grupo ainda deve confirmar a versão exata do software usada para produzir o arquivo original; a modelagem lógica foi elaborada no brModelo Web.
+
+**Revisão do DER exigida pela Issue #1 e pelo Esqueleto 2 (Caso A):** acrescentar `quantidade_pedido` e `preco_unitario_pedido` ligados ao relacionamento `Contem`; acrescentar `quantidade_comprada` e `preco_unitario_compra` ligados a `Adquire`. Também é possível representá-los por entidades associativas, desde que a notação siga o exemplo do Esqueleto. A imagem acima **ainda não mostra essas correções**, apesar de elas constarem do modelo lógico.
+
+Após a atualização gráfica, substituir a versão vinculada pelo **DER conceitual revisado** e conferir novamente cardinalidades, atributos e correspondência com as seções 1.2–1.4. Enquanto isso, a exigência do Esqueleto 2 de apresentar o DER revisado permanece **pendente**, sem simular aprovação ou alteração do diagrama.
+
 
 ---
 
@@ -511,19 +548,19 @@ A modelagem proposta busca transformar os principais processos atualmente execut
 
 A entidade **Produto** é necessária porque os produtos comercializados representam elementos centrais das vendas e do controle de estoque.
 
-A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N será mantida no modelo conceitual, sendo sua resolução estrutural realizada posteriormente no modelo lógico.
+A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N permanece no conceitual e já foi convertida em `Contem` no lógico. O DER gráfico ainda precisa mostrar quantidade e preço por item.
 
 A entidade **Pagamento** foi separada do pedido para representar explicitamente a forma pela qual uma operação comercial foi recebida, contemplando dinheiro, cartão de crédito, cartão de débito, vale refeição e Pix.
 
 Não foi criada uma entidade **Venda** separada porque não existe uma necessidade identificada de distinguir uma venda de seu pedido. O pedido representa a operação comercial e pode ser associado ao pagamento correspondente.
 
-A entidade **Compra** representa uma aquisição realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra. A cardinalidade N:N entre Compra e Produto será resolvida posteriormente no modelo lógico.
+A entidade **Compra** representa uma aquisição realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra. A cardinalidade N:N já foi convertida em `Adquire` no modelo lógico, mas a versão conceitual ainda necessita dos atributos de quantidade e preço de aquisição.
 
 A entidade **Fornecedor** permite registrar a origem das compras e representar fornecedores recorrentes, como Ambev, Heineken e Coca-Cola, além de outros estabelecimentos utilizados para aquisição de produtos e ingredientes.
 
 O controle de estoque foi incluído como uma necessidade da solução proposta para os produtos comercializados, embora atualmente seja realizado de maneira informal. A entidade **Movimentacao_Estoque** permite rastrear cada entrada e saída individual, garantindo que o saldo seja justificável com base em motivos reais, como vendas, compras e quebras.
 
-O modelo atual não inclui **Item_Pedido**, **Item_Compra**, **Reposição** ou **Despesa** como entidades. A representação de itens pode usar relacionamentos N:N no conceitual, mas precisa incluir quantidade e preço praticado. Contas e despesas já existem no levantamento e sua ausência de representação é uma lacuna de cobertura, não apenas uma decisão física a adiar para o lógico. A equipe responsável pelo DER deve avaliar esses pontos antes da conversão; esta revisão documental não altera o diagrama.
+Não foram criadas entidades conceituais independentes denominadas **Item_Pedido** e **Item_Compra**, pois `Contem` e `Adquire` são relações N:N convertidas em tabelas associativas no modelo lógico. O DER conceitual continua precisando representar quantidade e preço nos respectivos relacionamentos. Não existem entidades próprias de **Reposição** ou **Despesa**; a ausência de dados de contas e desembolsos permanece uma lacuna a resolver para atender P2. A equipe deve confirmar a abrangência antes da implementação SQL.
 
 A entidade **Funcionário** não foi incluída no modelo atual. Todos podem desempenhar diferentes tarefas, mas isso não demonstra, por si só, que a identificação do executor seja desnecessária. A decisão deve ser confirmada com o responsável, sem alterar o DER nesta revisão.
 
