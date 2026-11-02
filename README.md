@@ -839,7 +839,7 @@ Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quant
 
 ## 2. Modelo Lógico Relacional
 
-![ModeloLogico](docs/imagens/ModeloLogico.png)
+![ModeloLogico](docs/imagens/ModeloLogicoRelacional.png)
 
 ---
 
