@@ -558,11 +558,11 @@ Dessa forma, as entidades principais permanecem independentes, enquanto as tabel
 
 #### Atributos → Colunas
 
-Os atributos definidos no DER foram convertidos em colunas de suas respectivas tabelas, preservando os nomes e as funções estabelecidas no modelo conceitual.
+Os atributos das seis entidades do DER foram convertidos em colunas de suas respectivas tabelas. Na conversão dos relacionamentos N:N, foram acrescentados os atributos `quantidade_pedido` e `preco_unitario_pedido` em `Contem`, bem como `quantidade_comprada` e `preco_unitario_compra` em `Adquire`. Esses dados descrevem cada item da operação, não o cadastro geral do produto, e sua inclusão ainda deverá ser refletida no DER conceitual revisado.
 
 Os identificadores foram definidos como `INT`, os atributos textuais como `VARCHAR`, as quantidades inteiras como `INT` e as informações temporais como `DATE` ou `DATETIME`.
 
-Para os valores monetários, foi utilizado `FLOAT` no modelo lógico do brModelo, considerando os tipos disponíveis na ferramenta. Na implementação física em MySQL, recomenda-se utilizar `DECIMAL(12,2)` para garantir maior precisão nos valores financeiros.
+Para os atributos monetários, o diagrama no brModelo utiliza `FLOAT`, incluindo os preços unitários das tabelas associativas. Na implementação física em MySQL, deverá ser utilizado preferencialmente `DECIMAL(12,2)` para representar preços e valores financeiros com precisão decimal. Essa adequação de tipos diz respeito ao script SQL, ainda não implementado nesta seção.
 
 A organização das colunas ficou definida da seguinte maneira:
 
@@ -574,8 +574,10 @@ A organização das colunas ficou definida da seguinte maneira:
 | `Compra` | `id_compra` INT, `id_fornecedor` INT, `preco_total_compra` FLOAT, `data_compra` DATE |
 | `Fornecedor` | `id_fornecedor` INT, `tipo_fornecedor` VARCHAR, `nome_fornecedor` VARCHAR |
 | `Movimentacao_Estoque` | `id_movimentacao` INT, `id_produto` INT, `tipo_movimentacao` VARCHAR, `quantidade_movimentada` INT, `data_hora_movimentacao` DATETIME, `motivo_movimentacao` VARCHAR |
-| `Contem` | `id_pedido` INT, `id_produto` INT |
-| `Adquire` | `id_compra` INT, `idProduto` INT |
+| `Contem` | `id_pedido` INT, `id_produto` INT, `quantidade_pedido` INT, `preco_unitario_pedido` FLOAT |
+| `Adquire` | `id_compra` INT, `id_produto` INT, `quantidade_comprada` INT, `preco_unitario_compra` FLOAT |
+
+Em `Contem`, `quantidade_pedido` registra quantas unidades do produto foram vendidas e `preco_unitario_pedido` preserva o preço praticado naquele pedido, mesmo que o preço atual do cadastro mude. Em `Adquire`, `quantidade_comprada` registra a quantidade adquirida e `preco_unitario_compra` preserva o custo unitário daquela compra. Esses atributos permitem detalhar os itens que compõem os valores totais das operações, atendendo aos RF03, RF05 e RF07.
 
 Os atributos `id_pedido` em Pagamento, `id_fornecedor` em Compra e `id_produto` em Movimentacao_Estoque foram acrescentados como chaves estrangeiras durante a conversão dos relacionamentos.
 
@@ -590,8 +592,8 @@ Os relacionamentos presentes no DER foram convertidos em chaves estrangeiras ou 
 | Relacionamento | Conversão realizada |
 |---|---|
 | Pedido — Gera — Pagamento | Adição de `id_pedido` como FK em `Pagamento`. |
-| Pedido — Contem — Produto | Criação da tabela associativa `Contem`. |
-| Compra — Adquire — Produto | Criação da tabela associativa `Adquire`. |
+| Pedido — Contem — Produto | Criação da tabela associativa `Contem`, com FKs para Pedido e Produto e atributos de quantidade e preço unitário praticado. |
+| Compra — Adquire — Produto | Criação da tabela associativa `Adquire`, com FKs para Compra e Produto e atributos de quantidade e preço unitário de aquisição. |
 | Compra — Realiza — Fornecedor | Adição de `id_fornecedor` como FK em `Compra`. |
 | Produto — Registra — Movimentacao_Estoque | Adição de `id_produto` como FK em `Movimentacao_Estoque`. |
 
@@ -609,9 +611,9 @@ As cardinalidades do modelo conceitual foram tratadas conforme as regras de conv
 
 No DER, cada Pedido está associado a exatamente um Pagamento, e cada Pagamento pertence a exatamente um Pedido.
 
-Durante a conversão, as entidades foram mantidas separadas, com a chave estrangeira `id_pedido` na tabela Pagamento.
+Durante a conversão, as entidades foram mantidas separadas, com a chave estrangeira `id_pedido` na tabela `Pagamento`. O brModelo Web exibe visualmente essa ligação como 1:N no modelo lógico gerado e não permite ajustar manualmente essas cardinalidades nessa representação; isso não altera, por si só, a regra 1:1 estabelecida no DER conceitual.
 
-Para garantir a cardinalidade máxima de um pagamento por pedido, será necessária uma restrição `UNIQUE` sobre essa chave estrangeira. A obrigatoriedade de todo pedido possuir um pagamento também precisará ser assegurada por uma regra adicional de integridade, não sendo garantida apenas pela FK.
+Para limitar a associação a no máximo um pagamento por pedido, a implementação MySQL deverá definir `Pagamento.id_pedido` como FK com `UNIQUE` e `NOT NULL`. O `NOT NULL` exige que todo pagamento faça referência a um pedido, enquanto `UNIQUE` impede dois pagamentos para o mesmo pedido. A obrigatoriedade inversa — todo pedido possuir um pagamento — não é garantida por essas restrições isoladamente e exige controle adicional. Pagamentos divididos ou posteriores permanecem pendentes de validação, conforme o levantamento.
 
 **Relacionamentos 1:N — Fornecedor e Compra; Produto e Movimentacao_Estoque**
 
@@ -625,15 +627,15 @@ Essa estratégia permite representar os relacionamentos sem criar tabelas interm
 
 No relacionamento entre Pedido e Produto, um pedido deve conter um ou mais produtos, enquanto um produto pode aparecer em diferentes pedidos.
 
-Para representar essa associação, foi criada a tabela `Contem`, com os atributos `id_pedido` e `id_produto`, ambos identificados como PK e FK.
+Para representar essa associação, foi criada a tabela `Contem`, com `id_pedido` e `id_produto` como componentes da chave primária composta e, simultaneamente, chaves estrangeiras. Foram acrescentados `quantidade_pedido` e `preco_unitario_pedido` para registrar os itens vendidos.
 
 No relacionamento entre Compra e Produto, uma compra deve incluir um ou mais produtos, e um produto pode ser adquirido em diferentes compras.
 
-Para esse relacionamento, foi criada a tabela `Adquire`, com os atributos `id_compra` e `idProduto`, também definidos como PK e FK.
+Para esse relacionamento, foi criada a tabela `Adquire`, com `id_compra` e `id_produto` como componentes da chave primária composta e, simultaneamente, chaves estrangeiras. Foram acrescentados `quantidade_comprada` e `preco_unitario_compra` para registrar os itens adquiridos.
 
 As tabelas associativas transformam cada relacionamento N:N em dois relacionamentos 1:N.
 
-**Observação sobre as cardinalidades convertidas:** o brModelo apresenta cardinalidades no modelo lógico de acordo com a estrutura relacional gerada. Algumas participações mínimas previstas no DER, como a exigência de ao menos um produto por pedido ou por compra, não são garantidas automaticamente pelas FKs. Essas regras deverão ser asseguradas na implementação do sistema.
+**Observação sobre as cardinalidades convertidas:** as cardinalidades exibidas automaticamente pelo brModelo no diagrama lógico refletem as FKs geradas, não necessariamente todas as restrições mínimas e máximas do DER. Em especial, a associação 1:1 de Pedido e Pagamento requer a restrição `UNIQUE` descrita acima. A exigência de ao menos um produto por pedido ou por compra não é garantida automaticamente pelas FKs das tabelas `Contem` e `Adquire`; deverá ser assegurada na implementação do sistema.
 
 #### Generalização/especialização (se houver)
 
