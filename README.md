@@ -725,94 +725,96 @@ As restrições `UNIQUE`, `NOT NULL` e outras regras de integridade deverão ser
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
-A normalização do modelo relacional foi analisada com base nas três primeiras formas normais: Primeira Forma Normal (1FN), Segunda Forma Normal (2FN) e Terceira Forma Normal (3FN).
+A análise de normalização do sistema de gestão do Bar e Restaurante Esquina dos Amigos segue os conceitos do material didático **Normalização em Banco de Dados e Eliminação de Redundâncias** (Prof. Cid Andrade, 2026.2): identificação das chaves e dependências funcionais, verificação da atomicidade (1FN), eliminação de dependências parciais (2FN) e eliminação de dependências transitivas (3FN).
 
-O objetivo dessa análise foi verificar a organização dos atributos, a existência de dependências funcionais e a possibilidade de redundâncias que comprometam a integridade dos registros.
-
-A avaliação considera as oito tabelas apresentadas no modelo lógico e suas chaves definidas. Não foi documentada uma tabela universal anterior ao DER; portanto, a análise descreve a conformidade da estrutura resultante com as formas normais, em vez de presumir decomposições intermediárias que não foram realizadas.
+A análise considera as **oito tabelas do modelo lógico** da seção 1.2 e as chaves documentadas na seção 1.3: `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor`, `Movimentacao_Estoque`, `Contem` e `Adquire`. Como não foi documentada uma relação universal anterior, os exemplos de dados não normalizados abaixo são **ilustrações dos problemas evitados**, e não afirmações de que o grupo criou e depois decompôs uma tabela universal.
 
 #### 1FN — Eliminação de grupos repetitivos/atributos multivalorados
 
-A Primeira Forma Normal estabelece que cada coluna deve armazenar um único valor por registro, evitando grupos repetitivos e conjuntos de valores armazenados em um mesmo campo.
+A Primeira Forma Normal (1FN) exige que cada coluna contenha um valor atômico por registro, sem listas de valores, grupos repetitivos ou conjuntos de itens armazenados no mesmo campo.
 
-No sistema do Bar e Restaurante Esquina dos Amigos, essa condição foi considerada na organização dos atributos e dos relacionamentos.
+No sistema, um mesmo pedido pode conter vários produtos. Uma estrutura que armazenasse todos os produtos, quantidades e preços de um pedido em um único campo de `Pedido`, ou em colunas como `produto_1`, `produto_2` e `produto_3`, não atenderia a esse requisito. No modelo lógico, os itens foram representados separadamente pela tabela `Contem`:
 
-Por exemplo, um pedido pode possuir vários produtos. Em vez de armazenar uma lista de produtos diretamente na tabela Pedido, foi utilizada a tabela associativa `Contem`, na qual cada registro representa uma associação entre um pedido e um produto.
+| Tabela | Identificação de cada registro | Dados armazenados sem grupos repetitivos |
+|---|---|---|
+| `Pedido` | `id_pedido` | Dados gerais do pedido, como data/hora, atendimento e situação |
+| `Contem` | (`id_pedido`, `id_produto`) | `quantidade_pedido` e `preco_unitario_pedido` para cada produto do pedido |
+| `Compra` | `id_compra` | Dados gerais da compra, como fornecedor, data e valor total |
+| `Adquire` | (`id_compra`, `id_produto`) | `quantidade_comprada` e `preco_unitario_compra` para cada produto adquirido |
 
-O mesmo tratamento foi aplicado às compras, por meio da tabela `Adquire`, que permite relacionar diferentes produtos a uma mesma compra sem utilizar colunas repetidas, como `produto_1`, `produto_2` ou `produto_3`.
+Da mesma forma, cada entrada ou saída de estoque é registrada em uma linha de `Movimentacao_Estoque`, com seu próprio identificador, produto, tipo, quantidade, data/hora e motivo, em vez de reunir um histórico de movimentações em um campo de `Produto`.
 
-As movimentações de estoque também foram organizadas em registros individuais na tabela `Movimentacao_Estoque`, permitindo armazenar separadamente cada entrada ou saída de produto.
+Os demais atributos das entidades são representados como valores individuais de seus respectivos tipos (`INT`, `VARCHAR`, `DATE` ou `DATETIME`, além dos campos monetários representados como `FLOAT` no brModelo). A aplicação da 1FN depende também de gravar um único valor válido por coluna; o modelo não prevê listas de produtos ou fornecedores em um campo textual.
 
-Dessa maneira, o modelo evita grupos repetitivos e permite representar múltiplas ocorrências por meio de registros próprios, atendendo à 1FN, desde que cada coluna armazene um único valor conforme sua definição.
+**Resultado da 1FN:** os itens de pedidos e compras e as movimentações são registros individuais, sem grupos repetitivos ou atributos multivalorados nas tabelas definidas. As tabelas `Contem` e `Adquire` são necessárias para representar os relacionamentos N:N com quantidade e preço por item.
 
 #### 2FN — Eliminação de dependências parciais
 
-A Segunda Forma Normal exige que o modelo esteja na 1FN e que os atributos não chave dependam da totalidade de uma chave candidata, sem dependências parciais de parte de uma chave composta.
+A Segunda Forma Normal (2FN) exige o atendimento à 1FN e que nenhum atributo não chave dependa apenas de parte de uma chave candidata composta. Uma dependência funcional `X → Y` significa que um valor de `X` determina unicamente um valor de `Y`.
 
-No modelo lógico apresentado, seis tabelas possuem chaves primárias simples:
+As tabelas `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque` possuem **chaves primárias simples**. Assim, não apresentam dependências parciais em relação a essas chaves. A verificação específica concentra-se nas duas tabelas associativas com chaves compostas:
 
-- `Pedido`
-- `Pagamento`
-- `Produto`
-- `Compra`
-- `Fornecedor`
-- `Movimentacao_Estoque`
+| Tabela associativa | Chave primária composta | Atributos não chave que dependem da combinação completa |
+|---|---|---|
+| `Contem` | (`id_pedido`, `id_produto`) | `quantidade_pedido`, `preco_unitario_pedido` |
+| `Adquire` | (`id_compra`, `id_produto`) | `quantidade_comprada`, `preco_unitario_compra` |
 
-Como essas tabelas possuem apenas um atributo em suas respectivas chaves primárias, não apresentam dependências parciais em relação a essas chaves.
+Na tabela `Contem`, a dependência funcional relevante é:
 
-As tabelas `Contem` e `Adquire` possuem chaves primárias compostas e, por isso, exigem uma análise específica.
+`(id_pedido, id_produto) → (quantidade_pedido, preco_unitario_pedido)`
 
-Na tabela `Contem`, a chave primária é formada por (`id_pedido`, `id_produto`). Atualmente, a tabela não possui atributos não chave, armazenando apenas a combinação dos identificadores.
+Apenas `id_pedido` não determina a quantidade e o preço de **cada produto**, pois o pedido pode conter produtos diferentes. Apenas `id_produto` também não determina esses valores, pois a quantidade e o preço praticado podem variar entre pedidos. O preço atual do cadastro (`preco_venda_produto`) permanece em `Produto` e não substitui `preco_unitario_pedido`, que registra o valor efetivamente praticado naquele item.
 
-Na tabela `Adquire`, a chave primária é formada por (`id_compra`, `idProduto`). Assim como na tabela anterior, não existem atributos não chave que dependam parcialmente de apenas um dos identificadores.
+Na tabela `Adquire`, a dependência funcional relevante é:
 
-Portanto, considerando a estrutura apresentada, não foram identificadas dependências parciais que violem a 2FN.
+`(id_compra, id_produto) → (quantidade_comprada, preco_unitario_compra)`
 
-Caso sejam acrescentados atributos como quantidade e preço unitário praticado por item, eles deverão ser analisados para garantir que dependam da associação completa entre o pedido ou a compra e o respectivo produto, e não apenas de uma parte da chave composta.
+O identificador da compra isoladamente não define os valores de cada produto adquirido; o identificador do produto isoladamente também não determina a quantidade comprada nem o custo unitário de uma compra específica. Esses atributos dependem, portanto, da associação completa entre compra e produto.
+
+Para evitar dependências parciais, os atributos determinados somente por `id_pedido`, como `data_hora_pedido` e `status_pedido`, permanecem em `Pedido`. Atributos determinados por `id_compra`, como `data_compra`, permanecem em `Compra`. Os atributos de cadastro determinados por `id_produto`, como `nome_produto` e `categoria_produto`, permanecem em `Produto`, sem serem repetidos nas tabelas associativas.
+
+**Resultado da 2FN:** com base nas chaves e nas dependências identificadas, não foram encontradas dependências parciais nas oito tabelas. Os quatro atributos acrescentados a `Contem` e `Adquire` são específicos de cada associação e não exigem novas decomposições para satisfazer a 2FN.
 
 #### 3FN — Eliminação de dependências transitivas
 
-A Terceira Forma Normal exige que o modelo esteja na 2FN e que não existam dependências transitivas inadequadas entre atributos não chave.
+A Terceira Forma Normal (3FN) exige o atendimento à 2FN e, na análise das dependências aqui identificadas, que atributos não chave não determinem outros atributos não chave da mesma tabela, provocando uma dependência transitiva da chave primária. Dados cadastrais de uma entidade não devem ser repetidos desnecessariamente em registros de outra.
 
-Uma dependência transitiva ocorre, por exemplo, quando a chave primária determina um atributo não chave que, por sua vez, determina outro atributo não chave da mesma tabela.
+Um exemplo de dependência transitiva que ocorreria caso os dados fossem reunidos em uma única tabela seria:
 
-No modelo desenvolvido, as informações foram distribuídas entre tabelas de acordo com suas respectivas entidades.
+`id_compra → id_fornecedor → (nome_fornecedor, tipo_fornecedor)`
 
-Na tabela `Compra`, são armazenados o identificador da compra, sua data, seu valor total e a chave estrangeira do fornecedor.
+O identificador da compra determina o fornecedor associado; o identificador do fornecedor determina seu nome e sua classificação. Para evitar que os dados do fornecedor se repitam em todas as compras, a estrutura separa:
 
-Os atributos `nome_fornecedor` e `tipo_fornecedor` permanecem exclusivamente na tabela `Fornecedor`, evitando sua repetição em cada compra.
+- `Compra`: `id_compra`, `id_fornecedor` (FK), `data_compra` e `preco_total_compra`.
+- `Fornecedor`: `id_fornecedor` (PK), `nome_fornecedor` e `tipo_fornecedor`.
 
-Essa separação evita uma possível dependência transitiva em uma tabela unificada, na qual `id_compra` determinaria `id_fornecedor` e este determinaria os dados cadastrais do fornecedor.
+O mesmo princípio é observado na relação entre `Movimentacao_Estoque` e `Produto`. Caso o nome e a categoria do produto fossem repetidos na tabela de movimentações, a cadeia `id_movimentacao → id_produto → (nome_produto, categoria_produto)` introduziria dependência transitiva na tabela unificada. No modelo adotado, `Movimentacao_Estoque` armazena apenas `id_produto` como referência; nome, categoria e preço de venda atual ficam em `Produto`.
 
-O mesmo princípio foi aplicado às movimentações de estoque.
+Também se observa que:
 
-A tabela `Movimentacao_Estoque` armazena a referência `id_produto`, mas não repete o nome, a categoria ou o preço de venda do produto. Essas informações permanecem na tabela `Produto`.
+- `Contem` registra os dados de cada item vendido, sem repetir atributos cadastrais de `Produto` ou informações gerais de `Pedido`.
+- `Adquire` registra os dados de cada item adquirido, sem repetir nome/classificação do fornecedor ou atributos cadastrais de `Produto`.
+- `Pagamento` mantém os dados do recebimento separados dos atributos operacionais de `Pedido`, referenciando-o por `id_pedido`.
 
-Além disso, a tabela `Pagamento` mantém os dados financeiros do pagamento separados dos atributos operacionais armazenados em `Pedido`.
+A presença de chaves estrangeiras não configura, por si só, violação da 3FN: as dependências problemáticas surgiriam se atributos de outras entidades fossem duplicados **dentro da mesma tabela** em lugar de serem acessados pelos relacionamentos.
 
-Com base nas dependências funcionais identificadas no modelo, não foram observadas dependências transitivas entre atributos não chave que exigissem novas decomposições.
-
-Assim, a estrutura apresentada é compatível com a 3FN quanto às dependências analisadas, ficando sua validação completa condicionada à confirmação das regras de negócio e dos atributos que ainda poderão ser incorporados.
+**Resultado da 3FN:** considerando as dependências funcionais documentadas, não foram identificadas dependências transitivas que exijam decompor novamente as oito tabelas. Essa conclusão diz respeito às dependências conhecidas do modelo atual e deverá ser reavaliada caso novas regras de negócio ou atributos sejam incorporados.
 
 #### Justificativa do processo de normalização
 
-A aplicação das três primeiras formas normais é importante para garantir que as informações do estabelecimento sejam armazenadas de maneira organizada, reduzindo redundâncias e evitando inconsistências.
+A aplicação das formas normais foi importante para reduzir redundâncias e evitar **anomalias de repetição, inserção, atualização e exclusão**, conforme apresentado no material didático da disciplina.
 
-A **Primeira Forma Normal (1FN)** foi necessária para impedir a utilização de grupos repetitivos e listas de produtos em campos individuais. Com as tabelas associativas, tornou-se possível registrar diferentes produtos por pedido ou compra de maneira estruturada.
+| Forma normal | Necessidade no sistema do restaurante | Benefício obtido |
+|---|---|---|
+| **1FN** | Representar os vários produtos de cada pedido ou compra sem listas e colunas repetidas | Cada item e movimentação pode ser registrado e consultado individualmente |
+| **2FN** | Garantir que quantidade e preço por item dependam do par de identificadores em `Contem` e `Adquire` | Evita misturar informações gerais do pedido, compra ou produto com dados próprios de cada associação |
+| **3FN** | Evitar repetir dados cadastrais de fornecedores e produtos em compras, movimentações e itens | Reduz anomalias de atualização e permite alterar cadastros sem reescrever o histórico das operações |
 
-A **Segunda Forma Normal (2FN)** foi importante para verificar as dependências dos atributos em relação às chaves primárias, especialmente nas tabelas associativas. Isso evita que informações pertencentes exclusivamente a um pedido, compra ou produto sejam armazenadas de maneira inadequada em uma associação.
+Por exemplo, uma alteração em `nome_fornecedor` ocorre em `Fornecedor`, sem exigir a edição de cada compra relacionada. Da mesma forma, atualizar `preco_venda_produto` em `Produto` não altera o preço unitário histórico já registrado em `Contem`. Os dados relacionados podem ser recuperados com operações `JOIN` baseadas nas chaves primárias e estrangeiras definidas nas seções 1.2 e 1.3.
 
-A **Terceira Forma Normal (3FN)** permitiu avaliar a separação das informações cadastrais e operacionais, evitando dependências transitivas. Dessa forma, dados como nome e classificação do fornecedor permanecem em sua tabela específica, sem necessidade de repetição nas compras.
+**Cuidados que a normalização não resolve sozinha:** `preco_total_compra` deve permanecer coerente com a soma das quantidades multiplicadas pelos preços unitários dos itens em `Adquire`. Além disso, o saldo registrado em `quantidade_estoque_produto` precisa ser conciliado com os movimentos de `Movimentacao_Estoque` e com o saldo inicial, ainda pendente de definição. Essas consistências entre tabelas não representam, por si só, dependências transitivas internas que obriguem nova decomposição para 3FN; exigem regras de atualização e integridade na implementação. Da mesma forma, alcançar a 3FN não garante automaticamente conformidade com formas normais mais avançadas.
 
-A organização resultante contribui para prevenir anomalias de inserção, atualização e exclusão, além de facilitar a manutenção e a consulta aos dados.
-
-Por exemplo, uma alteração no nome de determinado fornecedor poderá ser realizada diretamente na tabela `Fornecedor`, sem exigir modificações em todos os registros de compras associados a ele.
-
-Da mesma forma, os dados cadastrais de um produto poderão ser atualizados independentemente do histórico de pedidos, compras e movimentações de estoque, preservando suas referências por meio das chaves estrangeiras.
-
-Portanto, a análise de normalização até a 3FN demonstra que a estrutura atual apresenta uma separação adequada das entidades e de suas responsabilidades, considerando as dependências funcionais identificadas.
-
-A normalização, entretanto, não substitui a definição de todos os dados exigidos pelas regras de negócio. A inclusão de quantidade e preço praticado por item nas associações `Contem` e `Adquire`, ainda pendente no DER, deverá preservar essa organização e permitir o registro completo das operações de venda e compra.
+Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quanto às dependências funcionais analisadas**, mantendo seis tabelas principais e duas associativas. Não foi necessário criar novas tabelas exclusivamente para essa normalização. A verificação definitiva deverá considerar as regras de negócio ainda pendentes, as restrições implementadas no MySQL e os testes com os dados do sistema.
 
 ### 1.5 Justificativas Técnicas das Decisões
 
