@@ -8,26 +8,27 @@ Revisão documental inicial: 28/10/2026; consolidação de decisões do integran
 |---|---|
 | [F01 — Anotações originais](fontes/perguntas-e-respostas.txt) | Material fornecido pelo integrante como anexo “Perguntas e respostas”; preservado sem reescrita. Data de coleta e autoria não informadas |
 | [F02 — Confirmações e decisões complementares](fontes/confirmacoes-documentais.md) | Informações fornecidas pelo integrante em 28/10 e 02/11/2026; não equivalem a nova entrevista com o restaurante |
+| [F03 — Cardápio semanal transcrito](fontes/cardapio-semanal-transcricao.md) | Transcrição de imagem anexada pelo integrante à conversa em 02/11/2026, com pratos, acompanhamentos, preços e limites de interpretação; a imagem original ainda não foi versionada no repositório |
 | [README da E1](../README.md) | Documento anterior do grupo, com informações adicionais e decisões de modelagem; não resolve sozinho divergências com F01 |
 | [Avaliação da E1, issue #1](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1) | Correção do professor e descrição das evidências existentes |
 | Esqueleto 00-d_Esqueleto_Entrega_2.md | Anexo da atividade usado para conferir exigências; não comprova fatos sobre o restaurante |
 
 ## 2. Organização e porte
 
-O Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial com aproximadamente vinte anos de funcionamento. O README informa endereço na R. Inês Monteiro, 157, São Paulo/SP, e identifica o responsável pelo apelido “Ceará”. Nome completo e função devem ser confirmados. O endereço e o contato publicados estão no README.
+O Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial com aproximadamente vinte anos de funcionamento. O README informa endereço na R. Inês Monteiro, 157, São Paulo/SP. Em 02/11/2026, o integrante identificou o **proprietário** pelo apelido **“Ceará”**, sem informar o nome civil. Não há evidência documental suficiente para afirmar quem participou da entrevista. Endereço e telefone do estabelecimento estão no README.
 
 As anotações originais informam três funcionários; o README anterior registra quatro pessoas incluindo o proprietário. **Em 02/11/2026, o integrante informou quatro funcionários**; esse é o dado complementar adotado, mas resta esclarecer com o responsável se inclui o proprietário. Todos podem executar as tarefas demandadas, sem funções fixas.
 
 O estabelecimento vende PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. Possui cardápio físico com preços. Os fornecedores recorrentes citados são Ambev, Heineken e Coca-Cola; outros produtos e ingredientes são adquiridos em supermercados.
 
-O integrante sugeriu **12 pedidos/hora como estimativa de pico**, sem confirmar medição ou média diária. Faltam volumes reais por período de pedidos, entregas e compras, quantidade de produtos ativos e calendário de funcionamento. Esses números devem fundamentar a massa fictícia da E2. Não se utilizará faturamento real ou dados reais de clientes como massa de demonstração.
+O integrante esclareceu em 02/11/2026 que **não dispõe de volumes operacionais verificáveis**. A possibilidade anteriormente mencionada de 12 pedidos/hora foi descartada como informação da organização e **não será utilizada nem como média nem como pico documentado**. Não há dados sobre pedidos, entregas e compras por período, quantidade de produtos ativos ou calendário completo de funcionamento. A massa de dados da Entrega 2 deverá usar **quantidades fictícias justificadas como cenários de demonstração**, sem atribuí-las à realidade do restaurante; não se utilizará faturamento real ou dados reais de clientes.
 
 ## 3. Entrevista e observação presencial
 
 | Metadado | Situação |
 |---|---|
 | Data e horário da entrevista | Não informados nas fontes |
-| Entrevistado | Identificado no README como “Ceará”; nome completo e função pendentes |
+| Proprietário / entrevistado | O proprietário é conhecido como “Ceará”, sem nome civil informado; ainda não foi comprovada a identidade de quem respondeu à entrevista |
 | Integrantes presentes | Não informados |
 | Local exato da entrevista | O trabalho relata visita ao estabelecimento; confirmar onde ocorreu a entrevista |
 | Vínculo dos integrantes com a organização | Não informado |
@@ -45,7 +46,7 @@ Não há discriminação suficiente nas fontes para atribuir cada achado à obse
 
 ### 4.1 Cardápio, atendimento e pedido
 
-O cardápio físico informa pratos e valores; há pratos especiais conforme o dia da semana. O funcionário anota o pedido no papel e o comunica verbalmente à cozinha. Não se registram mesa, nome ou comanda. Quando o prato fica pronto, a cozinha avisa verbalmente e um funcionário o entrega.
+O cardápio físico informa pratos e valores; há pratos especiais conforme o dia da semana. A [imagem de cardápio semanal transcrita em F03](fontes/cardapio-semanal-transcricao.md) descreve pratos de segunda a sábado, com **duas entradas rotuladas como sexta-feira**, preços distintos nas colunas “PF” e “COM.” e **sem referência a domingo**. O significado de “COM.”, a data de validade dos preços e a duplicidade de sexta-feira continuam sem confirmação. O funcionário anota o pedido no papel e o comunica verbalmente à cozinha. Não se registram mesa, nome ou comanda. Quando o prato fica pronto, a cozinha avisa verbalmente e um funcionário o entrega.
 
 Na solução proposta, Pedido terá identificador, data/hora, tipo de atendimento, situação, observação opcional e endereço quando necessário. Seus itens precisam indicar produto, quantidade e preço praticado, ainda ausentes do relacionamento conceitual atual.
 
@@ -112,7 +113,7 @@ Os vínculos finais com tabelas e consultas Gxx/Axx devem ser preenchidos com os
 | RN13 | Proposta de bloquear saldo negativo | Validação com o restaurante e exceções |
 | RN14 | F01: duas alternativas para prato errado; F02 (02/11): cancelamento comum apenas antes do preparo | Estorno, autorização, diferença de valores e efeito em estoque |
 | RN15 | F02 (02/11): pagamento no ato em uma modalidade, sem fiado nem divisão, como decisão do projeto | Momento exato da cobrança; pedidos cancelados/pagos; impacto na cardinalidade |
-| RN16 | Pratos por dia em F01 | Programação, alterações e indisponibilidade |
+| RN16 | Pratos por dia em F01 e tabela/preços de F03, com duas entradas para sexta-feira | Confirmar se as duas ofertas são de sexta, o sentido de “COM.”, vigência dos preços, horários, mudanças e representação das variantes no modelo lógico |
 | RN17 | Restrição legal já documentada na E1 | Procedimento de verificação e alcance do projeto |
 | RN18 | Restrição sanitária já documentada na E1 | Processos efetivos e alcance do projeto |
 | RN19 | Restrição fiscal já documentada na E1 | Procedimento/enquadramento com responsável e contabilidade |
@@ -122,10 +123,10 @@ A presença das RN17–RN20 não certifica conformidade do estabelecimento nem i
 
 ## 7. Pendências para retorno ao responsável
 
-1. Validar com o responsável os quatro funcionários informados pelo integrante, incluindo se o proprietário integra a contagem, além de identidade/função do entrevistado e metadados da entrevista.
+1. Validar com o responsável os quatro funcionários informados pelo integrante, incluindo se o proprietário integra a contagem. Identificar formalmente quem concedeu a entrevista; o proprietário foi referido apenas pelo apelido “Ceará” e seu nome civil é desconhecido.
 2. Obter comprovação específica da entrevista no local e identificar achados observados.
-3. Levantar volumes reais por período, produtos ativos e dias/horários de funcionamento; verificar a estimativa de pico de 12 pedidos/hora, sem tratá-la como média observada.
-4. Confirmar programação do cardápio, atualização de preços e unidades de estoque.
+3. Registrar que os volumes reais são **desconhecidos**; não usar a hipótese descartada de 12 pedidos/hora como dado observado. Se não for possível obter números, justificar a massa fictícia com cenários de demonstração, sem atribuir escala operacional real.
+4. Conferir a duplicidade de sexta-feira no cardápio F03 (Peixe e Rabada), o significado de “COM.”, data de vigência dos preços e horários de oferta; definir com a equipe como modelar modalidades e dias. Confirmar também unidades de estoque.
 5. Validar com o responsável a decisão de pagamento no ato e único (RN15), definir o momento exato da cobrança e tratamento de cancelamento antes do preparo (RN14), sem confundir com a exceção de pedido errado.
 6. Detalhar entregas parciais, devoluções, solução de divergências com fornecedor (RN08), unidades, saldos iniciais e parâmetros mínimos (RN07).
 7. Esclarecer contas, vencimentos, pagamentos de fornecedores e fechamento.
