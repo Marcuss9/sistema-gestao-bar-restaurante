@@ -118,7 +118,7 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 | Apontamento da correção da E1 | O que mudou no trabalho / situação | Por quê |
 |---|---|---|
 | **Critério 8 — regras de negócio** insuficientes e sem restrições legais, fiscais e sanitárias | **Revisão documental realizada:** RN13–RN20 acrescentadas, distinguindo práticas descritas, propostas e obrigações; validação de algumas regras continua pendente | Regras precisam ser verificáveis e relacionadas ao funcionamento e às obrigações aplicáveis |
-| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Revisão documental realizada:** HTML ampliado com convenções MySQL, cardinalidades, fluxo, tipos, expressões, índices propostos, controle de acesso e log; novos atributos por item ainda precisam ser sincronizados no HTML | Representar os dados, suas restrições e os fluxos sem confundir propostas com SQL implementado |
+| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Revisão documental realizada:** HTML alinhado às 8 tabelas e 37 colunas da seção 2, incluindo Contem e Adquire, PKs/FKs, nulidade, unicidade, CHECK propostos, DEFAULT e rastreabilidade RN/RF. Mantidos convenções MySQL, cardinalidades, fluxos, índices, LGPD e logs | Representar os dados e restrições pretendidas sem confundir propostas com SQL implementado |
 | **Critério 10 — Pedido–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_pedido` e `preco_unitario_pedido` à tabela lógica `Contem`; o DER conceitual ainda não mostra esses atributos no relacionamento | Sem os atributos no conceito, não há descrição completa de cada item vendido |
 | **Critério 10 — Compra–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_comprada` e `preco_unitario_compra` à tabela lógica `Adquire`; o DER conceitual ainda não mostra esses atributos no relacionamento | Preservar a quantidade e o custo unitário de cada aquisição |
 | **Critério 5 — processos de cardápio, recebimento, contas e reposição parcialmente descritos** | **Parcial:** descrições ampliadas com base no levantamento; horários de pratos especiais, recebimentos parciais, pagamentos de contas e critérios de reposição seguem sem validação | Evitar inventar rotinas e reconhecer dados não cobertos pelo modelo |
@@ -320,7 +320,7 @@ Por decisões de escopo, a modelagem desta entrega não prevê cadastro independ
 
 #### Dicionário de Dados Conceitual
 
-Consulte o [Dicionário de Dados HTML](dicionario_dados_conceitual.html), arquivo único com uma tabela por entidade no formato do exemplo do professor (Nome do Campo, Tipo de Dado, Descrição e Restrição / Chave), além de convenções MySQL, cardinalidades e propostas físicas. Os domínios, valores padrão e demais decisões pendentes não constituem restrições implementadas. O HTML ainda deverá ser sincronizado com os quatro atributos por item recentemente incluídos no modelo lógico.
+Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.html), arquivo único com **as 8 tabelas e 37 colunas do modelo lógico relacional** (seção 2), incluindo `Contem` e `Adquire` com chaves compostas. Cada coluna documenta tipo MySQL, obrigatoriedade, PK/FK, unicidade, domínio/CHECK, DEFAULT e regras RN/RF associadas. Os campos monetários do brModelo (FLOAT) são descritos como `DECIMAL(12,2)` no MySQL; tamanhos de VARCHAR são propostas físicas. **Restrições documentadas ainda não equivalem a SQL implementado.** As tabelas de atributos resumidas abaixo apresentam apenas as seis entidades do DER **conceitual**, sem substituir o dicionário completo do modelo lógico.
 
 
 ##### Produto
@@ -895,7 +895,7 @@ Assim, os dois relacionamentos N:N do DER foram convertidos em **duas relações
 
 **Atenção ao relacionamento Pedido–Pagamento:** o brModelo mostra uma ligação 1:N porque `Pagamento.id_pedido` é uma FK. Entretanto, o DER conceitual estabelece **1:1**. Para limitar a associação a no máximo um pagamento por pedido, o SQL MySQL deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. Isso não obriga, por si só, que todo pedido já possua um pagamento; a RN15 prevê pagamento único no ato e a RN14 permite cancelar antes do preparo. A implementação deverá definir os estados e quando um pedido pode ficar sem pagamento, sem alterar automaticamente o diagrama existente.
 
-**Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para os campos de preços e valores financeiros. Na implementação física **MySQL**, deverá ser adotado preferencialmente `DECIMAL(12,2)` para esses valores. As demais restrições, como obrigatoriedade (`NOT NULL`), unicidade (`UNIQUE`), domínios (`CHECK`) e valores padrão (`DEFAULT`), **não estão representadas visualmente no diagrama** e devem ser especificadas no [dicionário de dados](dicionario_dados_conceitual.html), vinculado na seção 5, e implementadas no script SQL da seção 3. Restrições ainda dependentes da confirmação das regras de negócio não devem ser apresentadas como já implementadas.
+**Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para valores monetários; o [dicionário HTML](dicionario_dados_conceitual.html) atualizado especifica `DECIMAL(12,2)` como tipo físico MySQL, além de nulidade, chaves, UNIQUE, CHECK propostos e DEFAULT por coluna, nas **8 tabelas**. Os comprimentos `VARCHAR(N)` são propostas de implementação, pois o diagrama apresenta `VARCHAR` sem tamanho. As constraints não aparecem visualmente no modelo lógico e **ainda deverão ser implementadas e testadas no script SQL** da seção 3; valores pendentes de validação não devem ser tratados como regras finais.
 
 ---
 
@@ -926,7 +926,7 @@ Este repositório centraliza o relatório e os artefatos da Entrega 2. O trabalh
 | Artefato exigido | Localização | Situação |
 |---|---|---|
 | Relatório Técnico Final | [README.md](README.md) | Estrutura da Entrega 2 organizada; seções técnicas pendentes identificadas |
-| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | Existe; alinhar a versão final ao modelo lógico e às restrições implementadas |
+| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 8 tabelas, 37 colunas, PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
 | DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Versão existente da Entrega 1; revisão técnica pendente |
 | Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Presente na branch `main`; diagrama lógico final (brModelo Web) |
 | Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Presente, com pendências de validação indicadas |
@@ -1000,6 +1000,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Trechos rejeitados/corrigidos | Excluída a proposta intermediária de controlar ingredientes; mantida RN10 original. Não se atribui 12 pedidos/hora a uma medição de campo nem se considera o novo estoque mínimo implementado |
 | Justificativa da escolha final | Preservar o escopo aprovado pelo integrante e as contribuições técnicas recentes, sem substituir validação com o responsável |
 | Reflexão crítica | Decisões de projeto não comprovam práticas atuais; alterações em requisitos podem exigir revisão do modelo e do dicionário, e as obrigações legais permanecem independentes da confirmação do responsável |
+
+---
+
+### Atualização do Dicionário de Dados da Entrega 2 — 02/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — revisão do dicionário HTML relacional e conferência com o README/modelo lógico |
+| Motivação | Substituir a descrição limitada a seis entidades por um dicionário de oito tabelas e 37 colunas com restrições físicas propostas, alinhado ao Esqueleto da Entrega 2 |
+| Prompt utilizado | Solicitação para atualizar Contem e Adquire, suas chaves compostas, tipos MySQL, obrigatoriedade, UNIQUE, CHECK, DEFAULT, relacionamentos, regras RNxx e limites de implementação |
+| Resposta produzida | HTML com oito tabelas e todas as colunas do modelo lógico, restrições por campo, relacionamentos, fluxo de dados, expressões formais, índices, acesso/LGPD e pendências |
+| Fontes verificadas | README atual das seções 1.2, 1.3 e 2; imagem lógica referenciada em docs/imagens/ModeloLogicoRelacional.png; dicionário HTML anterior; decisões RN07–RN15 do levantamento |
+| Ajustes e limites | INT mantido nos IDs e quantidades; FLOAT monetário convertido para DECIMAL(12,2). Tamanhos VARCHAR propostos, não inferidos como definitivos. Nenhuma coluna extra foi incluída para RN07/RN08 porque ainda não consta no modelo lógico |
+| Justificativa | Preservar os nomes/colunas da versão lógica e explicitar o que depende de confirmação ou SQL; não inventar DEFAULT, UNIQUE nominal ou status de pedido |
+| Reflexão crítica | Um dicionário de constraints não assegura execução no MySQL; consistência de totais, saldos e obrigatoriedade de itens exige mecanismos adicionais e teste do script |
 
 ---
 
