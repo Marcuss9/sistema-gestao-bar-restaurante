@@ -23,7 +23,7 @@ Esta seção apresenta a revisão da **mesma organização real utilizada na Ent
 
 **Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
 
-**Situação:** a documentação foi ampliada e o modelo lógico da seção 1.2 já possui quantidade e preço unitário nas tabelas `Contem` e `Adquire`. Entretanto, o **DER conceitual vinculado nesta seção ainda não contém esses atributos nos relacionamentos N:N**. Permanecem pendentes a validação presencial de volumes, dados e foto da entrevista, decisões sobre pagamentos e a abrangência dos gastos. Correções textuais não devem ser confundidas com aprovação do DER ou implementação do sistema.
+**Situação:** a documentação foi ampliada e o modelo lógico da seção 1.2 já possui quantidade e preço unitário nas tabelas `Contem` e `Adquire`. Entretanto, o **DER conceitual vinculado nesta seção ainda não contém esses atributos nos relacionamentos N:N**. Permanecem pendentes a validação presencial de volumes, dados e foto da entrevista, a conciliação das novas regras com o modelo lógico e a abrangência dos gastos. A RN15 já foi definida documentalmente como pagamento único no ato, sem fiado. Correções textuais não devem ser confundidas com aprovação do DER ou implementação do sistema.
 
 #### Caracterização da Organização
 
@@ -31,7 +31,7 @@ Esta seção apresenta a revisão da **mesma organização real utilizada na Ent
 Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial do ramo de alimentação, com aproximadamente 20 anos de funcionamento. Sua operação envolve a comercialização de refeições, porções, lanches, bebidas alcoólicas e refrigerantes, incluindo pratos especiais disponibilizados em determinados dias da semana.
 
 **Contexto e porte**
-O estabelecimento possui uma operação de pequeno porte. O README da Entrega 1 registra 4 pessoas incluindo o proprietário, enquanto as anotações originais informam 3 funcionários. A composição exata da equipe permanece pendente de confirmação; não se presume que os dois números sejam equivalentes. Não existem funções rigidamente atribuídas aos funcionários: todos podem desempenhar as atividades necessárias de acordo com a demanda do estabelecimento, incluindo atendimento, cozinha, reposição, compras e entregas.
+O estabelecimento possui uma operação de pequeno porte. Em atualização documental fornecida pelo integrante em 02/11/2026, a equipe foi informada como **quatro funcionários**. A anotação original registrava três funcionários e o README anterior, quatro pessoas incluindo o proprietário; por isso, o novo número é atribuído explicitamente ao integrante e ainda requer conferência com o responsável quanto à inclusão do proprietário. Não existem funções rigidamente atribuídas aos funcionários: todos podem desempenhar as atividades necessárias de acordo com a demanda do estabelecimento, incluindo atendimento, cozinha, reposição, compras e entregas.
 A operação é fortemente baseada na experiência adquirida ao longo dos anos e na familiaridade dos funcionários com o próprio comércio e com seus clientes. Dessa forma, diversas atividades são realizadas de maneira informal e sem registros estruturados, baseando-se principalmente no conhecimento dos funcionários e no acompanhamento visual da operação.
 O estabelecimento trabalha com diferentes fornecedores. Entre os fornecedores recorrentes estão Ambev, Heineken e Coca-Cola, enquanto outros produtos e ingredientes são adquiridos diretamente em supermercados.
 
@@ -52,7 +52,7 @@ Os problemas passam a ser identificados para rastreabilidade documental:
 |---|---|---|---|
 | P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | Quantidade e preço por item já constam no modelo lógico; faltam no DER conceitual e nas consultas gerenciais Gxx |
 | P2 | Entradas e saídas financeiras dispersas entre papel e extratos | RF07, RF14 | Contas do estabelecimento e data de pagamento das compras não estão plenamente representadas |
-| P3 | Estoque e necessidade de reposição acompanhados visualmente | RF09–RF12 | Saldo inicial, unidades, ajustes e alcance do controle precisam ser confirmados |
+| P3 | Estoque e necessidade de reposição acompanhados visualmente | RF09–RF12 | Decidido: estoque mínimo configurável e alerta por produto comercializado; falta incorporar o campo no DER/modelo lógico/dicionário e definir unidades, saldo inicial e ajustes |
 
 Esses códigos ainda precisam ser vinculados às tabelas finais e consultas Gxx pela equipe responsável pelo modelo lógico e SQL. Não há consultas implementadas nesta revisão.
 
@@ -64,12 +64,12 @@ Entre as principais necessidades identificadas estão:
 * registrar movimentações de entrada e saída do estoque.
 
 **Volumes operacionais**
-As fontes disponíveis informam aproximadamente 20 anos de funcionamento, mas não quantificam pedidos por dia/semana, entregas, produtos ativos ou compras por período. Esses volumes devem ser levantados com o responsável antes de justificar a massa fictícia da Entrega 2. A composição da equipe também precisa ser esclarecida. **Não se atribuem números fictícios à operação real.**
+As fontes originais informam aproximadamente 20 anos de funcionamento. O integrante informou quatro funcionários e sugeriu **12 pedidos por hora apenas como estimativa de período de pico**, não como média observada do expediente ou volume confirmado pelo responsável. Ainda faltam pedidos reais por dia/semana, dias e horas de funcionamento, entregas, produtos ativos e compras por período para justificar a massa fictícia da Entrega 2. **Não se apresentam estimativas como medições reais.**
 
 **Escopo do sistema e abrangência da organização**
 O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores e movimentações de estoque. A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
 
-O Esqueleto 2 exige cobertura dos dados relevantes de **toda a organização**. A estrutura atual, embora represente vendas, compras e estoque, **não cobre integralmente contas do estabelecimento, efetivos pagamentos de compras, conferência dos recebimentos e gestão de insumos**. Essa lacuna compromete sobretudo a solução completa do problema **P2**. Antes de encerrar a revisão, o grupo deve confirmar quais dados e estruturas adicionais são necessários com o responsável. Não se presume que processos sem evidência deixem de existir.
+O Esqueleto 2 exige cobertura dos dados relevantes de **toda a organização**. A estrutura atual, embora represente vendas, compras e estoque de produtos comercializados, **não cobre integralmente contas do estabelecimento, efetivos pagamentos de compras e registros de divergência na conferência dos recebimentos**. O controle informatizado de ingredientes da cozinha foi expressamente **excluído da RN10 por decisão de escopo do projeto**, sem negar que o restaurante adquire e utiliza esses ingredientes. A lacuna financeira compromete sobretudo a solução completa do problema **P2**. Antes de encerrar a revisão, o grupo deve confirmar quais dados e estruturas adicionais são necessários com o responsável. Não se presume que processos sem evidência deixem de existir.
 
 **Justificativa da escolha**
 O estabelecimento foi escolhido por apresentar uma operação real, de pequeno porte e com processos suficientemente definidos para a elaboração de um modelo conceitual de banco de dados.
@@ -180,7 +180,7 @@ Não é cobrado frete próprio para as entregas locais, conforme confirmação c
 Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema.
 A quantidade dos produtos comercializados é acompanhada de maneira informal e visual.
 A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída.
-O modelo atual exclui ingredientes do controle estruturado de estoque. Essa é uma decisão de escopo anterior, cuja adequação à cobertura exigida na Entrega 2 deve ser reavaliada pela equipe; o anexo não confirma que o controle de insumos seja desnecessário.
+O controle estruturado **não abrange ingredientes utilizados na cozinha**, conforme decisão de escopo RN10 reafirmada pelo integrante em 02/11/2026. Trata-se de uma delimitação do sistema, não de evidência de que o estabelecimento não compre ingredientes; os gastos correspondentes continuam relevantes para o acompanhamento financeiro.
 
 **Compras**
 As compras são realizadas pelos próprios funcionários, conforme a necessidade do estabelecimento.
@@ -199,9 +199,9 @@ O estabelecimento possui cardápio físico com produtos e valores. Comercializa 
 
 ##### Reposição, recebimento e conferência
 
-A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. Quantidades, unidades, entregas parciais e tratamento de divergências precisam ser detalhados com o responsável.
+A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. **Para o sistema proposto**, o integrante decidiu cadastrar estoque mínimo por produto comercializado, alertar quando o saldo for menor ou igual ao mínimo e registrar diferenças entre quantidades esperadas e recebidas para resolução com o fornecedor. Essas decisões não comprovam uma rotina informatizada atual; unidades, valores mínimos iniciais e entregas parciais ainda precisam de detalhamento.
 
-Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. A consulta ao saldo registrado será apoio futuro à reposição, não descrição da prática atual.
+Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. O alerta por estoque mínimo e o registro de divergências são requisitos futuros; o modelo lógico vigente ainda não contém todos os campos ou vínculos necessários e deverá ser revisado pelos responsáveis técnicos.
 
 ##### Contas e acompanhamento dos gastos
 
@@ -211,13 +211,13 @@ A necessidade de visualizar entradas e saídas exige distinguir valor vendido, v
 
 ##### Pedido errado
 
-Segundo as anotações originais, quando ocorre pedido errado, os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente pode aceitar o prato e pagar seu valor. O relato não define desconto, estorno, autorização ou procedimento geral de cancelamento. Esses detalhes permanecem pendentes, conforme RN14.
+Segundo as anotações originais, quando ocorre pedido errado, os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente pode aceitar o prato e pagar seu valor. Como **decisão para a solução**, o integrante definiu que o cancelamento comum será permitido antes do início do preparo. Isso não foi registrado como prática observada na entrevista. Estornos, autorização e diferença de valores em pratos preparados incorretamente continuam sem procedimento confirmado, conforme RN14.
 
 ##### Limites e processos a confirmar
 
-A ausência de mesa/comanda e de cargos fixos está relatada. A exclusão de cadastros permanentes de clientes e funcionários e do controle estruturado de ingredientes é decisão do modelo atual, não prova de inexistência dos respectivos dados ou processos. A equipe deve reavaliar a cobertura diante da Entrega 2.
+A ausência de mesa/comanda e de cargos fixos está relatada. A exclusão de cadastros permanentes de clientes e funcionários permanece uma decisão do modelo atual. O integrante reafirmou a **exclusão de ingredientes do controle de estoque** na RN10; não se conclui com isso que os processos de compra e preparo desses ingredientes não existam. A equipe deverá justificar a delimitação perante a exigência de cobertura da Entrega 2.
 
-Escalas, validade de alimentos, rotina fiscal, pagamento posterior, divisão de pagamento e detalhes de fechamento não estão confirmados nas fontes. Não são declarados inexistentes. Não há evidência de necessidade de QR Code, recomendação automática ou outro canal de venda adicional.
+Escalas, validade de alimentos, rotina fiscal e detalhes do fechamento não estão confirmados nas fontes. **Para o projeto**, a RN15 já exclui pagamento posterior/fiado e divisão entre modalidades, mas o instante exato da cobrança (antes ou depois do preparo) ainda precisa ser confirmado no estabelecimento. Não há evidência de necessidade de QR Code, recomendação automática ou outro canal de venda adicional.
 
 **Fluxogramas**
 * ![Fotos da visita](docs/imagens/fluxograma.jpeg)
@@ -232,16 +232,16 @@ Escalas, validade de alimentos, rotina fiscal, pagamento posterior, divisão de 
 
 Os requisitos descrevem a solução proposta, não funcionalidades implantadas. Os códigos são preservados; os campos abaixo usam o vocabulário atual, com dependências do modelo explicitadas.
 
-* **RF01 — Cadastrar produtos:** Registrar identificador, nome, categoria, preço atual de venda e saldo dos produtos abrangidos pelo controle. Categorias e unidades devem ser validadas.
-* **RF02 — Registrar pedidos:** Registrar identificador único, data/hora, tipo de atendimento, situação e observação opcional; para entrega, registrar endereço. O domínio de situações depende de confirmação.
+* **RF01 — Cadastrar produtos:** Registrar identificador, nome, categoria, preço atual de venda, saldo e **estoque mínimo configurável** de cada produto comercializado sujeito a controle. Ingredientes de cozinha permanecem fora do escopo (RN10). O campo de estoque mínimo ainda precisa ser incorporado ao modelo e ao dicionário; categorias e unidades devem ser validadas.
+* **RF02 — Registrar pedidos:** Registrar identificador único, data/hora, tipo de atendimento, situação e observação opcional; para entrega, registrar endereço. A solução deve distinguir pedido ainda não iniciado na cozinha de pedido em preparo, para aplicar a RN14; os estados e sua representação no modelo precisam ser definidos.
 * **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. Os atributos por item já foram incorporados à tabela lógica `Contem`; falta representá-los no DER conceitual revisado.
-* **RF04 — Registrar a forma de pagamento:** Registrar identificador, valor recebido, modalidade (dinheiro, crédito, débito, vale-refeição ou Pix) e data/hora, associado ao pedido. Pagamento dividido e posterior permanecem pendentes.
+* **RF04 — Registrar a forma de pagamento:** Registrar identificador, valor recebido, uma única modalidade (dinheiro, crédito, débito, vale-refeição ou Pix) e data/hora, associado ao pedido. A RN15 define pagamento no ato, sem fiado nem divisão; a equipe técnica deve tratar pedidos cancelados antes de pagamento e o momento exato da cobrança.
 * **RF05 — Registrar vendas:** Identificar a operação comercial pelo Pedido e seus itens, preservando quantidade e preço praticado, e relacionar os recebimentos. Não confundir valor vendido com valor recebido.
 * **RF06 — Consultar movimentação diária:** Consultar valores recebidos por data e forma de pagamento, utilizando valor e data/hora de Pagamento. A data de venda utiliza Pedido e deve ser distinguida da data de recebimento.
 * **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. Os atributos por item já foram incorporados à tabela lógica `Adquire`; falta representá-los no DER conceitual revisado.
 * **RF08 — Registrar fornecedores:** Registrar identificador, nome e classificação do fornecedor, incluindo distribuidores recorrentes e supermercados; o domínio da classificação deve ser validado.
-* **RF09 — Acompanhar necessidade de abastecimento:** Consultar produto, unidade e saldo registrado para apoiar a reposição. O processo atual é visual; não foi confirmado estoque mínimo numérico.
-* **RF10 — Registrar recebimento de produtos:** Registrar os produtos e quantidades efetivamente recebidos, data e referência à compra/documento conferido. Esses dados e vínculos dependem da revisão do modelo e da validação das divergências.
+* **RF09 — Acompanhar necessidade de abastecimento:** Cadastrar e consultar o estoque mínimo de cada produto controlado, comparar com o saldo disponível e **alertar quando o saldo for menor ou igual ao mínimo** (RN07). O processo atual é visual; o parâmetro e o alerta são decisões do sistema proposto, ainda não refletidas integralmente no modelo lógico.
+* **RF10 — Registrar recebimento de produtos:** Registrar produto, quantidade esperada, quantidade efetivamente recebida, diferença identificada, data e referência à compra/documento para conferência e resolução junto ao fornecedor (RN08). A forma de registrar entregas parciais/devoluções e os vínculos no modelo ainda dependem da equipe técnica e validação operacional.
 * **RF11 — Registrar movimentações de estoque:** Registrar identificador, produto, entrada/saída, quantidade positiva, data/hora e motivo. A origem em venda, compra, perda ou ajuste deve ter sua representação definida pela equipe.
 * **RF12 — Consultar informações de estoque:** Consultar saldo por produto e histórico de entradas/saídas com quantidade, data/hora e motivo. A conciliação exige definir saldo inicial e unidades.
 * **RF13 — Registrar pedidos para entrega:** Identificar o tipo de atendimento e o endereço do pedido, respeitando a área adotada na RN03, a entrega local sem frete da RN12 e o transporte contratado pelo cliente da RN05. A representação da modalidade de retirada/entrega precisa ser alinhada ao modelo.
@@ -252,7 +252,7 @@ Os seguintes requisitos são propostos para a solução, não constituindo carac
 * **RNF01 — Usabilidade:** O sistema deve possuir uma interface simples, considerando que a operação atual é realizada de maneira informal e sem um sistema de gestão estruturado.
 * **RNF02 — Disponibilidade:** O sistema deve estar disponível durante o período de funcionamento do estabelecimento para permitir o registro das operações.
 * **RNF03 — Integridade dos dados:** Os registros devem manter consistência entre pedidos, produtos, pagamentos, compras, estoque e movimentações financeiras.
-* **RNF04 — Segurança:** O acesso aos dados administrativos e financeiros deve ser restrito a usuários autorizados.
+* **RNF04 — Segurança:** O acesso aos dados administrativos, financeiros e pessoais deve depender de autenticação e permissões por perfil de acesso, sem exigir vínculo obrigatório de cada operação a uma entidade Funcionário (RN11); os perfis ainda precisam ser definidos.
 * **RNF05 — Desempenho:** O sistema deve responder às operações de cadastro, consulta e registro das operações cotidianas em até 3 segundos em condições normais de uso.
 * **RNF06 — Manutenibilidade:** O sistema deve ser estruturado de forma organizada, permitindo a manutenção e evolução de suas funcionalidades sem comprometer os dados já registrados.
 
@@ -283,20 +283,20 @@ As regras a seguir estão separadas em **regras operacionais**, **regras propost
 * **RN04 — Entrega a pé:** As entregas locais podem ser realizadas a pé por qualquer funcionário, sem a designação obrigatória de um entregador exclusivo.
 * **RN05 — Transporte por aplicativo:** Quando houver transporte por aplicativo para retirada do pedido, o próprio cliente solicita o serviço e paga o transporte. O restaurante não é responsável por contratar esse transporte, conforme anotações originais e confirmação complementar do integrante.
 * **RN06 — Identificação do fornecedor:** Toda compra registrada deve identificar seu fornecedor, inclusive quando realizada em supermercado, sem limitar o cadastro a uma lista fixa de empresas.
-* **RN07 — Reposição de estoque:** Na rotina atual, os funcionários identificam visualmente a necessidade de reposição, inclusive pelo último pacote restante. Na solução proposta, a consulta à quantidade registrada dos produtos apoiará essa decisão; não há estoque mínimo numérico confirmado nem entidade própria de Reposição no modelo atual.
-* **RN08 — Conferência do recebimento:** A equipe compara o que foi anotado no caderno com a nota do fornecedor no recebimento. A solução deve permitir conferir os produtos e quantidades recebidos com o documento. O procedimento para divergências, entregas parciais e confirmação da entrada ainda depende de validação; não se declara um bloqueio automático já aprovado.
+* **RN07 — Reposição de estoque:** Hoje a necessidade de reposição é identificada visualmente, inclusive pelo último pacote. **Decisão do projeto (02/11/2026):** cada produto comercializado sob controle deverá ter estoque mínimo configurável, e o sistema alertará quando o saldo registrado for menor ou igual a esse mínimo. A definição dos valores iniciais, unidades e o acréscimo do atributo ao modelo/dicionário permanecem pendentes; não há entidade própria de Reposição.
+* **RN08 — Conferência do recebimento:** A rotina relatada compara o caderno com a nota do fornecedor. **Decisão do projeto (02/11/2026):** registrar as quantidades esperadas e recebidas, identificar divergências e mantê-las documentadas para resolução com o fornecedor. Devoluções, entregas parciais e como cada diferença afeta a entrada de estoque continuam pendentes de detalhamento; não se presume bloqueio automático.
 * **RN09 — Identificação do pedido:** Cada pedido registrado deve possuir identificador único, sem exigir identificação de mesa, comanda ou cadastro de cliente, pois tais controles não integram a operação modelada.
-* **RN10 — Limite do controle de estoque:** O estoque estruturado compreende apenas os produtos comercializados pelo estabelecimento. Ingredientes empregados no preparo de alimentos permanecem fora do controle estruturado previsto nesta entrega.
-* **RN11 — Identificação do funcionário:** Os registros de pedidos, compras e movimentações de estoque não exigem vínculo com uma entidade Funcionário na modelagem atual. Essa decisão não elimina a necessidade de controle de acesso às informações sensíveis.
+* **RN10 — Limite do controle de estoque:** O estoque estruturado abrangerá **somente produtos comercializados sob controle**, sem cadastrar ou movimentar ingredientes da cozinha. A delimitação original foi reafirmada pelo integrante em 02/11/2026; compras e gastos com ingredientes continuam relevantes para os registros financeiros, sem exigir controle de quantidade por insumo.
+* **RN11 — Identificação do funcionário e acesso:** Por decisão do projeto (02/11/2026), pedidos, compras e movimentações não exigirão a identificação do funcionário executor em cada registro, nem entidade Funcionário no modelo conceitual atual. O acesso ao sistema, porém, dependerá de perfis e permissões; forma de autenticação, papéis e eventual identificação técnica de sessão ainda devem ser definidos (RNF04/RN20).
 * **RN12 — Cobrança de entrega:** O restaurante não cobra frete próprio nas entregas locais. O custo do transporte por aplicativo solicitado pelo cliente, previsto na RN05, não corresponde a frete cobrado pelo estabelecimento.
 
 ##### Exceções, regras propostas e decisões pendentes
 
-A RN13 é proposta e a RN15 continua pendente. A RN14 separa a exceção relatada nas anotações da proposta de registro e das condições ainda desconhecidas. A RN16 deriva da oferta de pratos especiais, mas sua programação específica precisa ser confirmada.
+A RN13 continua proposta e a RN16 requer confirmação dos dias de pratos especiais. As **RN14 e RN15 foram definidas como decisões do projeto em 02/11/2026**, sem comprovação de uma nova entrevista: cancelamento somente antes de iniciar o preparo e pagamento no ato, único, sem fiado ou divisão. Detalhes de estorno e do procedimento para pedido preparado incorretamente permanecem pendentes.
 
 * **RN13 — Venda com estoque insuficiente (proposta):** Para produtos controlados em estoque, a confirmação de uma venda não deverá gerar saldo negativo. Quantidades insuficientes deverão ser revisadas; o tratamento de exceções e diferenças entre saldo físico e registrado depende de validação com o estabelecimento.
-* **RN14 — Pedido errado, cancelamento ou troca:** Conforme as anotações originais, em caso de pedido errado os funcionários podem consumir o prato e o estabelecimento arca com a diferença, ou o cliente aceita o prato e paga seu valor. Como proposta do sistema, o registro da ocorrência deve preservar o histórico e permitir refletir os efeitos sobre pedido, estoque e recebimentos. As condições de cancelamento, estorno, autorização e eventual diferença de valores continuam pendentes; não são inferidas do relato.
-* **RN15 — Venda fiada ou pagamento posterior (decisão pendente):** Deve ser confirmado se o estabelecimento permite pagamento após o consumo ou a entrega. Não se presume que a prática seja aceita nem proibida. Se for permitida, serão necessárias regras para acompanhamento dos valores pendentes e revisão da adequação da modelagem de Pagamento.
+* **RN14 — Pedido errado, cancelamento ou troca:** O relato original informa que, diante de prato preparado incorretamente, os funcionários podem consumi-lo e o estabelecimento arca com a diferença, ou o cliente aceita o prato e paga seu valor. **Decisão do projeto (02/11/2026):** o cancelamento comum de pedido é permitido **somente antes do início do preparo**, com registro da ocorrência e preservação do histórico. A exceção de prato errado não é tratada automaticamente como cancelamento comum. Estornos, autorizações, diferenças de valores e efeito no estoque dependem de regras complementares.
+* **RN15 — Pagamento único e no ato (decisão do projeto):** Para a solução proposta, o pagamento deverá ser realizado no ato da operação, em **uma única modalidade por pedido**, sem fiado, parcelamento interno ou divisão entre formas de pagamento. A informação é decisão do integrante em 02/11/2026, não confirmação registrada em entrevista. O momento exato em relação ao preparo e o tratamento de pedidos cancelados antes de pagar ou já pagos ainda exigem definição; a equipe deve conferir a correspondência com a cardinalidade Pedido–Pagamento.
 * **RN16 — Pratos especiais por dia:** A oferta de pratos especiais deverá respeitar os dias da semana definidos pelo restaurante. Os dias específicos e o modo de atualizar essa disponibilidade devem ser confirmados antes de criar uma validação automática.
 
 ##### Restrições legais, sanitárias, fiscais e de privacidade
@@ -310,9 +310,9 @@ As obrigações abaixo decorrem das normas aplicáveis ao estabelecimento; sua d
 
 ##### Restrições organizacionais e decisões de escopo
 
-A composição da equipe permanece a confirmar (3 funcionários nas anotações; 4 pessoas incluindo o proprietário no README anterior). O estabelecimento utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
+O integrante informou **quatro funcionários** em 02/11/2026 (as anotações anteriores diziam três e o README antigo, quatro pessoas incluindo o proprietário); resta confirmar com o responsável se o proprietário está incluído nessa contagem. O estabelecimento utiliza processos predominantemente informais, com dependência da experiência da equipe. Essas características contextualizam o projeto, **mas não substituem regras operacionais verificáveis**.
 
-Para adequar a solução ao levantamento, a modelagem desta entrega não prevê cadastro independente de Cliente ou Funcionário, identificação por mesa ou comanda, controle estruturado de ingredientes nem entidade própria de Reposição. Pedido representa a operação comercial, mantendo o escopo de registros de pedidos, pagamentos, compras, fornecedores e movimentações dos produtos controlados em estoque.
+Por decisões de escopo, a modelagem desta entrega não prevê cadastro independente de Cliente ou Funcionário, identificação por mesa ou comanda, controle estruturado de ingredientes (RN10) nem entidade própria de Reposição. Os perfis de acesso da RN11 não exigem atribuir um funcionário executor a cada pedido. Pedido representa a operação comercial, mantendo o escopo de registros de pedidos, pagamentos, compras, fornecedores e movimentações dos produtos controlados em estoque.
 
 ---
 
@@ -650,7 +650,7 @@ No DER, cada Pedido está associado a exatamente um Pagamento, e cada Pagamento 
 
 Durante a conversão, as entidades foram mantidas separadas, com a chave estrangeira `id_pedido` na tabela `Pagamento`. O brModelo Web exibe visualmente essa ligação como 1:N no modelo lógico gerado e não permite ajustar manualmente essas cardinalidades nessa representação; isso não altera, por si só, a regra 1:1 estabelecida no DER conceitual.
 
-Para limitar a associação a no máximo um pagamento por pedido, a implementação MySQL deverá definir `Pagamento.id_pedido` como FK com `UNIQUE` e `NOT NULL`. O `NOT NULL` exige que todo pagamento faça referência a um pedido, enquanto `UNIQUE` impede dois pagamentos para o mesmo pedido. A obrigatoriedade inversa — todo pedido possuir um pagamento — não é garantida por essas restrições isoladamente e exige controle adicional. Pagamentos divididos ou posteriores permanecem pendentes de validação, conforme o levantamento.
+Para limitar a associação a no máximo um pagamento por pedido, a implementação MySQL deverá definir `Pagamento.id_pedido` como FK com `UNIQUE` e `NOT NULL`. O `NOT NULL` exige que todo pagamento faça referência a um pedido, enquanto `UNIQUE` impede dois pagamentos para o mesmo pedido. A obrigatoriedade inversa — todo pedido possuir um pagamento — não é garantida por essas restrições isoladamente e exige controle adicional. A RN15 passou a definir pagamento único no ato, sem fiado ou divisão, como **decisão documental da solução**; o momento da cobrança, a situação dos pedidos cancelados e o mecanismo de integridade continuam a exigir alinhamento com a equipe de modelagem.
 
 **Relacionamentos 1:N — Fornecedor e Compra; Produto e Movimentacao_Estoque**
 
@@ -833,7 +833,7 @@ Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quant
 | P3 — Estoque e necessidade de reposição acompanhados visualmente | A validar no modelo lógico (produtos e movimentações de estoque) | Pendente — Gxx |
 | KPIs gerenciais | A definir com base nas tabelas finais, com fórmula e período | Pendente — Gxx por KPI |
 
-**Atenção:** esta tabela registra pendências de rastreabilidade, não comprova consultas existentes nem resolução dos problemas.
+**Atenção:** esta tabela registra pendências de rastreabilidade, não comprova consultas existentes nem resolução dos problemas. O alerta de estoque mínimo definido na RN07 depende de campo ainda ausente no modelo lógico e de futura consulta gerencial Gxx.
 
 ---
 
@@ -893,7 +893,7 @@ O brModelo Web apresenta as cardinalidades `(mín, máx)` nas extremidades das l
 
 Assim, os dois relacionamentos N:N do DER foram convertidos em **duas relações 1:N cada**, por meio de `Contem` e `Adquire`. As participações mínimas conceituais de pelo menos um item por pedido ou compra não são asseguradas automaticamente pelas chaves estrangeiras.
 
-**Atenção ao relacionamento Pedido–Pagamento:** o brModelo mostra uma ligação 1:N porque `Pagamento.id_pedido` é uma FK. Entretanto, o DER conceitual estabelece **1:1**. Para limitar a associação a no máximo um pagamento por pedido, o SQL MySQL deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. Isso não obriga, por si só, que todo pedido já possua um pagamento; essa regra depende de controle adicional e de validação caso o estabelecimento aceite pagamentos divididos ou posteriores.
+**Atenção ao relacionamento Pedido–Pagamento:** o brModelo mostra uma ligação 1:N porque `Pagamento.id_pedido` é uma FK. Entretanto, o DER conceitual estabelece **1:1**. Para limitar a associação a no máximo um pagamento por pedido, o SQL MySQL deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. Isso não obriga, por si só, que todo pedido já possua um pagamento; a RN15 prevê pagamento único no ato e a RN14 permite cancelar antes do preparo. A implementação deverá definir os estados e quando um pedido pode ficar sem pagamento, sem alterar automaticamente o diagrama existente.
 
 **Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para os campos de preços e valores financeiros. Na implementação física **MySQL**, deverá ser adotado preferencialmente `DECIMAL(12,2)` para esses valores. As demais restrições, como obrigatoriedade (`NOT NULL`), unicidade (`UNIQUE`), domínios (`CHECK`) e valores padrão (`DEFAULT`), **não estão representadas visualmente no diagrama** e devem ser especificadas no [dicionário de dados](dicionario_dados_conceitual.html), vinculado na seção 5, e implementadas no script SQL da seção 3. Restrições ainda dependentes da confirmação das regras de negócio não devem ser apresentadas como já implementadas.
 
@@ -985,6 +985,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Trechos rejeitados ou corrigidos | Não foram inventados volumes de operação, vínculos entre tabelas, consultas SQL, modelo lógico ou comprovação da entrevista. Os itens não disponíveis foram marcados como pendentes |
 | Justificativa da escolha final | Manter a documentação existente, eliminar a estrutura de Entrega 1 como índice principal e não atribuir a terceiros decisões técnicas ainda não validadas |
 | Reflexão crítica | O texto de IA organiza a documentação, mas não substitui validação presencial, auditoria do DER, aprovação do grupo ou execução dos scripts SQL |
+
+---
+
+### Consolidação das regras de negócio — 02/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — conferência do repositório e atualização documental das RN07, RN08, RN10, RN11, RN14 e RN15 |
+| Motivação | Consolidar decisões do integrante e alinhar levantamento, requisitos, dicionário e README sem confundir proposta com rotina observada |
+| Prompt(s) utilizados | “vamos revisar as pendencias, faça a separação”; respostas sobre reposição, recebimento, cancelamento, pagamentos, ingredientes e funcionários; correção “Minto sobre a RN10, nao vamos controlar ingredientes da cozinha”; “beleza pode abrir um pr com todas as correções, apenas faça o favor de verificar o atual estado do repositorio antes” |
+| Resposta recebida | Classificação das regras por nível de confirmação e proposta de ajustes documentais, com identificação das mudanças que dependem de DER/modelo lógico/SQL |
+| Fontes verificadas | README e modelo lógico atuais da branch main; levantamento, fontes originais e complementares; issue #1 da Entrega 1 e esqueleto obrigatório da Entrega 2 |
+| Trechos rejeitados/corrigidos | Excluída a proposta intermediária de controlar ingredientes; mantida RN10 original. Não se atribui 12 pedidos/hora a uma medição de campo nem se considera o novo estoque mínimo implementado |
+| Justificativa da escolha final | Preservar o escopo aprovado pelo integrante e as contribuições técnicas recentes, sem substituir validação com o responsável |
+| Reflexão crítica | Decisões de projeto não comprovam práticas atuais; alterações em requisitos podem exigir revisão do modelo e do dicionário, e as obrigações legais permanecem independentes da confirmação do responsável |
 
 ---
 
