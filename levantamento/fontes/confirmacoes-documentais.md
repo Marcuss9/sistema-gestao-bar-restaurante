@@ -16,7 +16,7 @@ Fonte: informações fornecidas pelo integrante nas conversas de revisão docume
 | Referência | Informação/decisão recebida | Natureza e uso |
 |---|---|---|
 | Equipe | “são 4 funcionarios” | Informação complementar do integrante; conferir se inclui o proprietário, pois fontes anteriores divergiam |
-| Volume | “media de 12 pedidos por hora” apresentada como possibilidade, seguida de discussão sobre excesso | Registrar **somente estimativa de horário de pico**, não volume observado/confirmado nem média do expediente |
+| Volume | Em discussão anterior surgiu a hipótese de “12 pedidos por hora”, mas o integrante esclareceu depois que **não conhece os volumes reais** | **Desconsiderar** os 12 pedidos/hora como média ou pico do estabelecimento; registrar ausência de dados confiáveis |
 | RN07 | “Cadastrar estoque mínimo por produto e alertar quando estiver baixo” | Decisão do sistema: mínimo configurável por produto comercializado; alerta quando saldo ≤ mínimo |
 | RN08 | “Conferem e registram a diferença para resolver com o fornecedor” | Decisão de registrar divergências; não confirma processamento de entregas parciais |
 | RN14 | “Sim, antes do preparo” sobre cancelamentos | Decisão do sistema de permitir cancelamento comum antes do preparo; não modifica o caso de prato errado originalmente relatado |
@@ -24,6 +24,14 @@ Fonte: informações fornecidas pelo integrante nas conversas de revisão docume
 | RN10 | Resposta intermediária de controlar ingredientes foi **revogada**: “nao vamos controlar ingredientes da cozinha” | Manter o escopo anterior: estoque somente dos produtos comercializados |
 | RN11 | “Não, somente controlar permissões de acesso” | Não vincular executor em cada operação; perfis de acesso necessários |
 
-Estas decisões deverão ser refletidas em RF/RN e revisadas pelos responsáveis pelos modelos e SQL. **Não foram implantadas nem confirmadas em entrevista.**
+## Complementações posteriores no mesmo dia
+
+| Referência | Informação recebida | Uso documental |
+|---|---|---|
+| Identificação | “Identificação que temos é apenas o 'Ceará', apelido do proprietário.” | Proprietário conhecido apenas pelo apelido “Ceará”; **nome civil não informado** e condição de entrevistado não comprovada |
+| Volumes | “Os volumes nao da pra saber.” | **Nenhuma média real de pedidos, compras, vendas ou entregas está disponível.** Descartar a hipótese anterior de 12 pedidos/hora para caracterização |
+| RN16 — cardápio semanal | Imagem de cardápio anexada pelo integrante nesta conversa | Fonte transcrita em [cardapio-semanal-transcricao.md](cardapio-semanal-transcricao.md). A imagem apresenta segunda a sábado, **duas entradas de sexta-feira** e colunas PF/COM.; vigência, significado de COM. e erro gráfico ainda incertos |
+
+Estas decisões deverão ser refletidas em RF/RN e revisadas pelos responsáveis pelos modelos e SQL. **Não foram implantadas nem confirmadas em entrevista.** A transcrição não substitui o arquivo original do cardápio, que ainda precisa ser incluído no repositório como evidência.
 
 A adoção do limite de dez minutos não define raio em quilômetros nem uma integração de mapas. Os demais dados desconhecidos permanecem pendentes no levantamento.
