@@ -64,7 +64,7 @@ Entre as principais necessidades identificadas estão:
 * registrar movimentações de entrada e saída do estoque.
 
 **Volumes operacionais**
-As fontes originais informam aproximadamente 20 anos de funcionamento. O integrante informou quatro funcionários e sugeriu **12 pedidos por hora apenas como estimativa de período de pico**, não como média observada do expediente ou volume confirmado pelo responsável. Ainda faltam pedidos reais por dia/semana, dias e horas de funcionamento, entregas, produtos ativos e compras por período para justificar a massa fictícia da Entrega 2. **Não se apresentam estimativas como medições reais.**
+As fontes originais informam aproximadamente 20 anos de funcionamento e o integrante informou **quatro funcionários**. Em 02/11/2026, o integrante esclareceu que **não dispõe de volumes operacionais verificáveis**: pedidos por dia/hora/semana, entregas e compras por período, produtos ativos e movimento real não foram quantificados. A hipótese anterior de 12 pedidos/hora **não será utilizada como dado do estabelecimento, nem como média ou pico informado pela organização**. Para a massa fictícia da Entrega 2, escolher cenários simulados e identificá-los explicitamente como tais, sem atribuí-los à entrevista.
 
 **Escopo do sistema e abrangência da organização**
 O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores e movimentações de estoque. A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
@@ -84,18 +84,18 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
   ![Fotos da visita](docs/imagens/Image04.jpeg)
 * Endereço: R. Inês Monteiro, 157 - Artur Alvim, São Paulo - SP, 03568-030
 * Telefone: (11) 98109-1622
-* Responsável identificado como "Ceará"; nome completo e função a confirmar.
+* Proprietário identificado somente pelo apelido **“Ceará”**, conforme informação complementar do integrante em 02/11/2026; **nome civil não informado**. Ainda falta comprovar se ele foi o entrevistado e registrar os metadados da entrevista.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a comprovação da entrevista ainda estão pendentes. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
+**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a comprovação da entrevista ainda estão pendentes. O cardápio semanal fornecido nesta revisão foi [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md), mas **a imagem original do cardápio ainda não foi incluída nesta branch**. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
 
 ##### Relato da entrevista e fontes do levantamento
 
-O [levantamento organizado](levantamento/levantamento.md) é o documento Markdown separado requerido pelo Esqueleto 2. Ele sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt) e as [confirmações documentais de 28/10/2026](levantamento/fontes/confirmacoes-documentais.md). Essas confirmações de um integrante não constituem nova entrevista com o restaurante.
+O [levantamento organizado](levantamento/levantamento.md) é o documento Markdown separado requerido pelo Esqueleto 2. Ele sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt), as [complementações de 28/10 e 02/11/2026](levantamento/fontes/confirmacoes-documentais.md) e a [transcrição do cardápio semanal fornecido pelo integrante](levantamento/fontes/cardapio-semanal-transcricao.md). O envio do cardápio e as informações do integrante não constituem nova entrevista com o restaurante.
 
 | Informação exigida | Registro comprovável e pendência |
 |---|---|
-| Responsável entrevistado | Identificado pelo apelido **“Ceará”**; nome completo e função pendentes |
+| Proprietário / responsável | Conhecido pelo apelido **“Ceará”**, identificado como proprietário pelo integrante; nome completo desconhecido e condição de entrevistado a comprovar |
 | Contato do responsável | Telefone comercial informado na caracterização; contato específico a confirmar |
 | Data e horário | Não informados nas fontes |
 | Local da entrevista | Visita ao estabelecimento documentada, mas local e contexto exatos da entrevista a confirmar |
@@ -109,7 +109,7 @@ O [levantamento organizado](levantamento/levantamento.md) é o documento Markdow
 
 **Confirmações após a Entrega 1:** um integrante confirmou em 28/10/2026 o aceite de vale-refeição, a ausência de frete próprio e que o cliente solicita e paga o transporte por aplicativo. O limite de até dez minutos a pé é **estimativa adotada como critério do projeto**, não uma medição ou confirmação formal do responsável.
 
-**Pendências para completar a entrevista:** nome e função do entrevistado, telefone de contato, data, integrantes participantes, local, observações presenciais, eventual vínculo com o estabelecimento, volumes de operação e foto da entrevista no local. Se for necessária nova visita, registrar data, participantes e alterações em relação à Entrega 1.
+**Pendências para completar a entrevista:** nome civil do proprietário/entrevistado, confirmação de quem participou da entrevista, telefone de contato, data, integrantes presentes, local, observações presenciais, eventual vínculo com o estabelecimento e foto da entrevista no local. **Volumes reais indisponíveis** foram registrados como limitação documental, sem números inferidos. Se for necessária nova visita, registrar data, participantes e alterações em relação à Entrega 1.
 
 ##### Tratamento dos apontamentos da Entrega 1
 
@@ -195,7 +195,19 @@ A solução proposta deverá permitir maior visibilidade sobre as entradas e sa�
 
 ##### Cardápio e preços
 
-O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. No sistema proposto, o cadastro utiliza identificador, nome, categoria e preço atual do produto. A programação dos pratos e a frequência de atualização de preços não foram informadas. O preço praticado em cada item já foi representado no modelo lógico como `preco_unitario_pedido`, mas falta sua representação conceitual; o preço atual do cadastro não substitui o histórico.
+O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. Uma imagem de **cardápio semanal enviada pelo integrante em 02/11/2026** traz os pratos e valores abaixo. A [transcrição integral, incluindo acompanhamentos e ressalvas](levantamento/fontes/cardapio-semanal-transcricao.md) foi registrada separadamente; a imagem original ainda precisa ser adicionada ao repositório.
+
+| Dia indicado na imagem | Prato | PF | COM. |
+|---|---|---:|---:|
+| Segunda-feira | Picadinho | R$ 25,00 | R$ 40,00 |
+| Terça-feira | Bife de panela | R$ 25,00 | R$ 40,00 |
+| Quarta-feira | Feijoada | R$ 35,00 | R$ 70,00 |
+| Quinta-feira | Frango ao molho com macarrão | R$ 25,00 | R$ 40,00 |
+| Sexta-feira | Peixe com purê de batatas | R$ 35,00 | R$ 50,00 |
+| Sexta-feira (segunda ocorrência) | Rabada | R$ 25,00 | R$ 40,00 |
+| Sábado | Feijoada | R$ 35,00 | R$ 70,00 |
+
+**Limites:** a fonte repete **sexta-feira** e não indica domingo; não se presume qual dia seria correto para Rabada. As colunas aparecem como **PF** e **COM.**, sem significado detalhado para “COM.”. Não há data de vigência dos valores, horário de oferta ou confirmação de disponibilidade atual. O modelo lógico contém um preço atual por Produto e ainda precisa decidir como representar as duas modalidades comerciais e a disponibilidade por dia para aplicar RN16. O preço praticado em cada item já é preservado no modelo lógico como `preco_unitario_pedido`, mas falta sua representação conceitual; o preço atual do cadastro não substitui o histórico.
 
 ##### Reposição, recebimento e conferência
 
@@ -292,12 +304,12 @@ As regras a seguir estão separadas em **regras operacionais**, **regras propost
 
 ##### Exceções, regras propostas e decisões pendentes
 
-A RN13 continua proposta e a RN16 requer confirmação dos dias de pratos especiais. As **RN14 e RN15 foram definidas como decisões do projeto em 02/11/2026**, sem comprovação de uma nova entrevista: cancelamento somente antes de iniciar o preparo e pagamento no ato, único, sem fiado ou divisão. Detalhes de estorno e do procedimento para pedido preparado incorretamente permanecem pendentes.
+A RN13 continua proposta e a RN16 possui **cardápio semanal documental**, com duas entradas de sexta-feira e sem informação sobre vigência ou horários. As **RN14 e RN15 foram definidas como decisões do projeto em 02/11/2026**, sem comprovação de uma nova entrevista: cancelamento somente antes de iniciar o preparo e pagamento no ato, único, sem fiado ou divisão. Detalhes de estorno e do procedimento para pedido preparado incorretamente permanecem pendentes.
 
 * **RN13 — Venda com estoque insuficiente (proposta):** Para produtos controlados em estoque, a confirmação de uma venda não deverá gerar saldo negativo. Quantidades insuficientes deverão ser revisadas; o tratamento de exceções e diferenças entre saldo físico e registrado depende de validação com o estabelecimento.
 * **RN14 — Pedido errado, cancelamento ou troca:** O relato original informa que, diante de prato preparado incorretamente, os funcionários podem consumi-lo e o estabelecimento arca com a diferença, ou o cliente aceita o prato e paga seu valor. **Decisão do projeto (02/11/2026):** o cancelamento comum de pedido é permitido **somente antes do início do preparo**, com registro da ocorrência e preservação do histórico. A exceção de prato errado não é tratada automaticamente como cancelamento comum. Estornos, autorizações, diferenças de valores e efeito no estoque dependem de regras complementares.
 * **RN15 — Pagamento único e no ato (decisão do projeto):** Para a solução proposta, o pagamento deverá ser realizado no ato da operação, em **uma única modalidade por pedido**, sem fiado, parcelamento interno ou divisão entre formas de pagamento. A informação é decisão do integrante em 02/11/2026, não confirmação registrada em entrevista. O momento exato em relação ao preparo e o tratamento de pedidos cancelados antes de pagar ou já pagos ainda exigem definição; a equipe deve conferir a correspondência com a cardinalidade Pedido–Pagamento.
-* **RN16 — Pratos especiais por dia:** A oferta de pratos especiais deverá respeitar os dias da semana definidos pelo restaurante. Os dias específicos e o modo de atualizar essa disponibilidade devem ser confirmados antes de criar uma validação automática.
+* **RN16 — Pratos especiais por dia:** O sistema deverá respeitar a oferta anunciada por dia no [cardápio semanal fornecido pelo integrante](levantamento/fontes/cardapio-semanal-transcricao.md), preservando pratos e preços como dados documentais sem vigência confirmada. A imagem contém **duas ocorrências de sexta-feira** (peixe com purê e rabada); não se pode decidir que uma delas corresponde a outro dia. O horário da oferta, o significado de “COM.” e o procedimento de atualização de preços/disponibilidade ainda precisam de validação. O modelo lógico atual não dispõe de atributo próprio para dia ou variante de preço, exigindo decisão dos responsáveis técnicos antes de automatizar a RN16.
 
 ##### Restrições legais, sanitárias, fiscais e de privacidade
 
@@ -913,9 +925,9 @@ Cada consulta gerencial precisa ter código `G01`, `G02` etc., pergunta respondi
 
 **Pendente — equipe responsável pela implementação e testes.** Disponibilizar dados **fictícios**, consistentes com o levantamento, em script `.sql` (integrado ao script principal ou separado, preferencialmente em `docs/`).
 
-Justificar a quantidade de registros por tabela com os volumes reais validados na caracterização da organização. Incluir cenários variados para demonstrar consultas gerenciais e auditorias (por exemplo, períodos diferentes, modalidades de pagamento, pedidos com situações distintas e níveis de estoque diferentes).
+Justificar a quantidade de registros por tabela com cenários fictícios coerentes com os processos documentados, **declarando que os volumes reais não foram informados**. Incluir cenários variados para demonstrar consultas gerenciais e auditorias (por exemplo, períodos diferentes, modalidades de pagamento, pedidos com situações distintas e níveis de estoque diferentes). **Não atribuir os números sintéticos a uma média observada no restaurante.**
 
-**Dependência documental:** os volumes de pedidos, vendas, compras e produtos ativos ainda não foram quantificados nas fontes disponíveis; não atribuir números fictícios ao porte da organização como se fossem observados.
+**Limitação documental:** o integrante confirmou que não dispõe de volumes operacionais verificáveis. Os volumes de pedidos, vendas, compras e produtos ativos não foram quantificados; usar massa sintética ilustrativa, identificada como simulação, e registrar esta limitação na justificativa da Entrega 2.
 
 ---
 
