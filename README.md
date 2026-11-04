@@ -23,7 +23,7 @@ Esta seção apresenta a revisão da **mesma organização real utilizada na Ent
 
 **Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
 
-**Situação:** a documentação foi ampliada e o modelo lógico da seção 1.2 já possui quantidade e preço unitário nas tabelas `Contem` e `Adquire`. Entretanto, o **DER conceitual vinculado nesta seção ainda não contém esses atributos nos relacionamentos N:N**. Permanecem pendentes a validação presencial de volumes, dados e foto da entrevista, a conciliação das novas regras com o modelo lógico e a abrangência dos gastos. A RN15 já foi definida documentalmente como pagamento único no ato, sem fiado. Correções textuais não devem ser confundidas com aprovação do DER ou implementação do sistema.
+**Situação:** os diagramas publicados nesta branch foram atualizados para incluir a entidade conceitual `Despesa` e a nona tabela homônima no modelo lógico, ligada a `Compra` pelo relacionamento `Origina`. `Contem` e `Adquire` permanecem como **relacionamentos N:N** no DER (sem entidades conceituais homônimas e sem atributos próprios desenhados, por decisão do grupo), mas se transformam em **tabelas associativas com quantidade e preço unitário** no lógico. Essa opção deixa uma divergência explícita com a orientação do Esqueleto 2 sobre os atributos de relacionamentos. O dicionário HTML ainda documenta oito tabelas e precisa ser atualizado para incluir `Despesa`; o SQL revisado também ainda precisa ser versionado e validado no MySQL. Permanecem as pendências de entrevistas, evidências, volumes reais, estoque mínimo (RN07), conferência de recebimentos (RN08) e validação da operação financeira. A RN15 é decisão documental do projeto: pagamento único, no ato, sem fiado.
 
 #### Caracterização da Organização
 
@@ -50,11 +50,11 @@ Os problemas passam a ser identificados para rastreabilidade documental:
 
 | Código | Problema identificado | Requisitos relacionados | Limite atual |
 |---|---|---|---|
-| P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | Quantidade e preço por item já constam no modelo lógico; faltam no DER conceitual e nas consultas gerenciais Gxx |
-| P2 | Entradas e saídas financeiras dispersas entre papel e extratos | RF07, RF14 | Contas do estabelecimento e data de pagamento das compras não estão plenamente representadas |
+| P1 | Ausência de registro individual das vendas e de visão dos recebimentos do dia | RF02–RF06 | `Contem` tem quantidade/preço no lógico e há consultas G01/G05/G07 no script preparado, ainda fora da `main`; atributos não desenhados no relacionamento do DER por decisão do grupo |
+| P2 | Entradas e saídas financeiras dispersas entre papel e extratos | RF07, RF14 | Entidade/tabela `Despesa` agora representa obrigações pagas ou pendentes, com ou sem vínculo a `Compra`; consultas G09–G12 propostas no SQL ainda não versionado; validação operacional pendente |
 | P3 | Estoque e necessidade de reposição acompanhados visualmente | RF09–RF12 | Decidido: estoque mínimo configurável e alerta por produto comercializado; falta incorporar o campo no DER/modelo lógico/dicionário e definir unidades, saldo inicial e ajustes |
 
-Esses códigos ainda precisam ser vinculados às tabelas finais e consultas Gxx pela equipe responsável pelo modelo lógico e SQL. Não há consultas implementadas nesta revisão.
+Os vínculos P1–P3 com as tabelas e consultas projetadas estão identificados na seção 1.6. As consultas do SQL corrigido ainda não são artefato da branch `main`: sua disponibilidade e execução no MySQL dependem de inclusão do arquivo e teste final.
 
 Entre as principais necessidades identificadas estão:
 * visualizar quanto dinheiro foi movimentado no dia;
@@ -67,9 +67,9 @@ Entre as principais necessidades identificadas estão:
 As fontes originais informam aproximadamente 20 anos de funcionamento e o integrante informou **quatro funcionários**. Em 02/11/2026, o integrante esclareceu que **não dispõe de volumes operacionais verificáveis**: pedidos por dia/hora/semana, entregas e compras por período, produtos ativos e movimento real não foram quantificados. A hipótese anterior de 12 pedidos/hora **não será utilizada como dado do estabelecimento, nem como média ou pico informado pela organização**. Para a massa fictícia da Entrega 2, escolher cenários simulados e identificá-los explicitamente como tais, sem atribuí-los à entrevista.
 
 **Escopo do sistema e abrangência da organização**
-O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores e movimentações de estoque. A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
+O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores, movimentações de estoque e **obrigações financeiras** (`Despesa`: compras parceladas, contas e outros desembolsos). A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
 
-O Esqueleto 2 exige cobertura dos dados relevantes de **toda a organização**. A estrutura atual, embora represente vendas, compras e estoque de produtos comercializados, **não cobre integralmente contas do estabelecimento, efetivos pagamentos de compras e registros de divergência na conferência dos recebimentos**. O controle informatizado de ingredientes da cozinha foi expressamente **excluído da RN10 por decisão de escopo do projeto**, sem negar que o restaurante adquire e utiliza esses ingredientes. A lacuna financeira compromete sobretudo a solução completa do problema **P2**. Antes de encerrar a revisão, o grupo deve confirmar quais dados e estruturas adicionais são necessários com o responsável. Não se presume que processos sem evidência deixem de existir.
+O Esqueleto 2 exige cobertura dos dados relevantes de **toda a organização**. A inclusão de `Despesa` amplia a cobertura de P2 ao distinguir valor comprado, obrigação pendente e saída efetivamente paga; **isso não equivale a comprovação do fluxo real da organização**, pois prazos, pagamentos parciais e tipos de contas não foram validados presencialmente. A estrutura ainda não registra de forma completa **divergências na conferência dos recebimentos (RN08)** nem o **estoque mínimo/alerta (RN07)**. O controle informatizado de ingredientes da cozinha foi expressamente excluído pela RN10, sem negar que eles são adquiridos e utilizados. A delimitação do escopo deve ser justificada perante o professor e confirmada com o responsável.
 
 **Justificativa da escolha**
 O estabelecimento foi escolhido por apresentar uma operação real, de pequeno porte e com processos suficientemente definidos para a elaboração de um modelo conceitual de banco de dados.
@@ -118,16 +118,16 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 | Apontamento da correção da E1 | O que mudou no trabalho / situação | Por quê |
 |---|---|---|
 | **Critério 8 — regras de negócio** insuficientes e sem restrições legais, fiscais e sanitárias | **Revisão documental realizada:** RN13–RN20 acrescentadas, distinguindo práticas descritas, propostas e obrigações; validação de algumas regras continua pendente | Regras precisam ser verificáveis e relacionadas ao funcionamento e às obrigações aplicáveis |
-| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Revisão documental realizada:** HTML alinhado às 8 tabelas e 37 colunas da seção 2, incluindo Contem e Adquire, PKs/FKs, nulidade, unicidade, CHECK propostos, DEFAULT e rastreabilidade RN/RF. Mantidos convenções MySQL, cardinalidades, fluxos, índices, LGPD e logs | Representar os dados e restrições pretendidas sem confundir propostas com SQL implementado |
-| **Critério 10 — Pedido–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_pedido` e `preco_unitario_pedido` à tabela lógica `Contem`; o DER conceitual ainda não mostra esses atributos no relacionamento | Sem os atributos no conceito, não há descrição completa de cada item vendido |
-| **Critério 10 — Compra–Produto N:N sem quantidade/preço por item** | **Parcial:** adicionados `quantidade_comprada` e `preco_unitario_compra` à tabela lógica `Adquire`; o DER conceitual ainda não mostra esses atributos no relacionamento | Preservar a quantidade e o custo unitário de cada aquisição |
+| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Parcial:** HTML existente detalha as 8 tabelas anteriores e 37 colunas, incluindo `Contem`/`Adquire`; a nova tabela `Despesa` (9 colunas) **ainda precisa entrar no arquivo HTML**, com suas restrições e relacionamentos | O dicionário físico final deve corresponder às 9 tabelas / 46 colunas da versão lógica, sem confundir proposta com SQL executado |
+| **Critério 10 — Pedido–Produto N:N sem quantidade/preço por item** | **Parcial / decisão do grupo:** `Contem` permanece um losango N:N sem esses atributos no DER; `quantidade_pedido` e `preco_unitario_pedido` estão na tabela lógica `Contem` | A conversão física preserva os itens vendidos, mas a representação conceitual difere da notação de atributos dos relacionamentos prevista no Esqueleto 2 |
+| **Critério 10 — Compra–Produto N:N sem quantidade/preço por item** | **Parcial / decisão do grupo:** `Adquire` permanece um losango N:N sem esses atributos no DER; `quantidade_comprada` e `preco_unitario_compra` estão na tabela lógica `Adquire` | Preserva quantidade e custo no lógico, mas não representa esses atributos no losango conceitual conforme o esqueleto |
 | **Critério 5 — processos de cardápio, recebimento, contas e reposição parcialmente descritos** | **Parcial:** descrições ampliadas com base no levantamento; horários de pratos especiais, recebimentos parciais, pagamentos de contas e critérios de reposição seguem sem validação | Evitar inventar rotinas e reconhecer dados não cobertos pelo modelo |
-| **Pedido–Pagamento 1:1 impede pagamento dividido** | **Pendente de decisão:** mantida a cardinalidade conceitual original; o modelo lógico descreve a futura restrição `UNIQUE`, se o 1:1 for confirmado | Pagamento dividido ou posterior só pode alterar o modelo depois de confirmada sua prática |
+| **Pedido–Pagamento 1:1 impede pagamento dividido** | **Decisão de projeto RN15:** pagamento único no ato, sem fiado nem divisão; a FK `Pagamento.id_pedido` deverá ser `UNIQUE` no MySQL, mas isso não obriga todo pedido a estar pago | Manter a cardinalidade máxima e distinguir pedidos cancelados/em preparo, conforme RN14, da conclusão com pagamento |
 | **Movimentações sem referência direta à origem** | **Pendente:** permanece `motivo_movimentacao` textual, sem FK para Pedido ou Compra | Rastreabilidade da operação pode exigir vínculos adicionais |
-| **Cobertura de despesas, contas e desembolsos** | **Pendente:** `Compra` indica aquisição e `Pagamento` indica recebimento de vendas, sem representação de todas as saídas efetivamente pagas | O problema P2 requer distinguir valores comprados, devidos e pagos |
+| **Cobertura de despesas, contas e desembolsos** | **Revisão gráfica:** `Despesa` incluída no DER e no lógico, com `Origina` associado a `Compra` e campos de vencimento, situação e pagamento. O SQL corrigido correspondente ainda está fora do repositório | Diferenciar compras, obrigações a pagar e saídas efetivamente pagas para P2 |
 | **Comprovação da entrevista e volumes operacionais** | **Pendente:** faltam dados do entrevistado, foto específica, datas e números do movimento | A Entrega 2 exige comprovação da entrevista e volumes para fundamentar a massa de dados |
 
-**Resultado:** os apontamentos sobre regras e dicionário foram tratados **documentalmente**. Os apontamentos N:N estão tratados **no modelo lógico**, mas ainda **não no DER conceitual**; as demais decisões e evidências permanecem registradas como pendentes. Não se declara revisão concluída nem aprovação do DER.
+**Resultado:** o DER e o lógico foram atualizados com `Despesa`; o grupo decidiu manter `Contem` e `Adquire` apenas como **relacionamentos** no conceitual (e **tabelas** no lógico). Os atributos de quantidade e preço, ausentes dos losangos, permanecem uma **diferença em relação ao Esqueleto 2**, registrada sem afirmar atendimento integral. O dicionário, o SQL versionado e as evidências ainda requerem conclusão e validação.
 
 
 ---
@@ -219,7 +219,7 @@ Na solução proposta, compras identificam fornecedor, data e valor total; as mo
 
 São anotados gastos com fornecedores, supermercado e contas do estabelecimento. O fechamento relatado é mensal, com uso de extratos para comparação com os gastos. Não há registro diário individualizado das vendas.
 
-A necessidade de visualizar entradas e saídas exige distinguir valor vendido, valor recebido, valor comprado e valor efetivamente pago. Datas de vencimento/pagamento, categorias das contas, taxas e controles de dinheiro não foram informados. A cobertura das contas e dos pagamentos das compras precisa ser discutida com a equipe de modelagem; esta revisão não cria entidade Despesa.
+A necessidade de visualizar entradas e saídas exige distinguir valor vendido, valor recebido, valor comprado e valor efetivamente pago. Para isso, o modelo atualizado contém `Despesa`, com valor, categoria (`compra`, `conta`, `outra`), vencimento, situação (`paga`, `pendente`) e data/forma de pagamento quando quitada. Despesas originadas de compras podem ser parcelas; contas operacionais não precisam referenciar uma compra. **Essa é a solução modelada pelo grupo, não uma descrição de controle já praticado pelo restaurante.** Critérios de parcelamento, prazos, categorias reais e conciliação continuam sujeitos à validação.
 
 ##### Pedido errado
 
@@ -246,18 +246,18 @@ Os requisitos descrevem a solução proposta, não funcionalidades implantadas. 
 
 * **RF01 — Cadastrar produtos:** Registrar identificador, nome, categoria, preço atual de venda, saldo e **estoque mínimo configurável** de cada produto comercializado sujeito a controle. Ingredientes de cozinha permanecem fora do escopo (RN10). O campo de estoque mínimo ainda precisa ser incorporado ao modelo e ao dicionário; categorias e unidades devem ser validadas.
 * **RF02 — Registrar pedidos:** Registrar identificador único, data/hora, tipo de atendimento, situação e observação opcional; para entrega, registrar endereço. A solução deve distinguir pedido ainda não iniciado na cozinha de pedido em preparo, para aplicar a RN14; os estados e sua representação no modelo precisam ser definidos.
-* **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. Os atributos por item já foram incorporados à tabela lógica `Contem`; falta representá-los no DER conceitual revisado.
+* **RF03 — Registrar os itens de um pedido:** Associar um ou mais produtos ao pedido, com quantidade e preço unitário praticado. `Contem` representa o relacionamento N:N no DER e vira tabela associativa com esses atributos no lógico; o grupo optou por não desenhá-los como atributos do losango conceitual.
 * **RF04 — Registrar a forma de pagamento:** Registrar identificador, valor recebido, uma única modalidade (dinheiro, crédito, débito, vale-refeição ou Pix) e data/hora, associado ao pedido. A RN15 define pagamento no ato, sem fiado nem divisão; a equipe técnica deve tratar pedidos cancelados antes de pagamento e o momento exato da cobrança.
 * **RF05 — Registrar vendas:** Identificar a operação comercial pelo Pedido e seus itens, preservando quantidade e preço praticado, e relacionar os recebimentos. Não confundir valor vendido com valor recebido.
 * **RF06 — Consultar movimentação diária:** Consultar valores recebidos por data e forma de pagamento, utilizando valor e data/hora de Pagamento. A data de venda utiliza Pedido e deve ser distinguida da data de recebimento.
-* **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. Os atributos por item já foram incorporados à tabela lógica `Adquire`; falta representá-los no DER conceitual revisado.
+* **RF07 — Registrar compras:** Registrar identificador, fornecedor, data e valor total, com produtos, quantidades e preços de aquisição por item. `Adquire` permanece como relacionamento N:N no DER e recebe esses atributos na tabela associativa lógica; `Compra` pode originar obrigações registradas em `Despesa`.
 * **RF08 — Registrar fornecedores:** Registrar identificador, nome e classificação do fornecedor, incluindo distribuidores recorrentes e supermercados; o domínio da classificação deve ser validado.
 * **RF09 — Acompanhar necessidade de abastecimento:** Cadastrar e consultar o estoque mínimo de cada produto controlado, comparar com o saldo disponível e **alertar quando o saldo for menor ou igual ao mínimo** (RN07). O processo atual é visual; o parâmetro e o alerta são decisões do sistema proposto, ainda não refletidas integralmente no modelo lógico.
 * **RF10 — Registrar recebimento de produtos:** Registrar produto, quantidade esperada, quantidade efetivamente recebida, diferença identificada, data e referência à compra/documento para conferência e resolução junto ao fornecedor (RN08). A forma de registrar entregas parciais/devoluções e os vínculos no modelo ainda dependem da equipe técnica e validação operacional.
 * **RF11 — Registrar movimentações de estoque:** Registrar identificador, produto, entrada/saída, quantidade positiva, data/hora e motivo. A origem em venda, compra, perda ou ajuste deve ter sua representação definida pela equipe.
 * **RF12 — Consultar informações de estoque:** Consultar saldo por produto e histórico de entradas/saídas com quantidade, data/hora e motivo. A conciliação exige definir saldo inicial e unidades.
 * **RF13 — Registrar pedidos para entrega:** Identificar o tipo de atendimento e o endereço do pedido, respeitando a área adotada na RN03, a entrega local sem frete da RN12 e o transporte contratado pelo cliente da RN05. A representação da modalidade de retirada/entrega precisa ser alinhada ao modelo.
-* **RF14 — Consultar entradas e saídas financeiras:** Consultar recebimentos e gastos por período, distinguindo compras, contas e pagamentos. O modelo atual cobre Pagamento e Compra, mas ainda não representa integralmente as contas nem os desembolsos; essa lacuna precisa ser resolvida pela equipe para atender P2.
+* **RF14 — Consultar entradas e saídas financeiras:** Consultar recebimentos (`Pagamento`) e desembolsos/obrigações (`Despesa`) por período, separando compras, contas, parcelas pagas e pendentes. O novo vínculo opcional `Despesa.id_compra` permite associar parcelas a compras; fluxos G09–G12 estão previstos no SQL corrigido ainda não versionado na `main`. Não confundir fluxo de caixa líquido com lucro contábil.
 
 ##### Requisitos Não Funcionais
 Os seguintes requisitos são propostos para a solução, não constituindo características atualmente observadas na organização:
@@ -332,7 +332,7 @@ Por decisões de escopo, a modelagem desta entrega não prevê cadastro independ
 
 #### Dicionário de Dados Conceitual
 
-Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.html), arquivo único com **as 8 tabelas e 37 colunas do modelo lógico relacional** (seção 2), incluindo `Contem` e `Adquire` com chaves compostas. Cada coluna documenta tipo MySQL, obrigatoriedade, PK/FK, unicidade, domínio/CHECK, DEFAULT e regras RN/RF associadas. Os campos monetários do brModelo (FLOAT) são descritos como `DECIMAL(12,2)` no MySQL; tamanhos de VARCHAR são propostas físicas. **Restrições documentadas ainda não equivalem a SQL implementado.** As tabelas de atributos resumidas abaixo apresentam apenas as seis entidades do DER **conceitual**, sem substituir o dicionário completo do modelo lógico.
+Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.html). **Situação do arquivo atual:** documenta as 8 tabelas anteriores, com 37 colunas e restrições físicas propostas; **ainda não documenta a nona tabela `Despesa` e suas 9 colunas**. A versão final deverá conter **9 tabelas / 46 colunas**, incluindo as chaves, nulidade, domínios, `CHECK`, `UNIQUE`, valores padrão e referências de `Despesa`. Os valores monetários são representados como `FLOAT` no brModelo e deverão utilizar `DECIMAL(12,2)` no SQL MySQL. As tabelas abaixo sintetizam **as sete entidades conceituais** do novo DER; não substituem o dicionário HTML atualizado.
 
 
 ##### Produto
@@ -376,7 +376,7 @@ Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.
 | data_compra | Data de realização da compra | Obrigatório |
 | preco_total_compra | Preço total da compra | Deve corresponder à soma dos itens adquiridos |
 
-A referência ao fornecedor da compra será implementada no **modelo lógico** com `Compra.id_fornecedor`; no DER conceitual, ela é expressa pelo relacionamento Compra–Fornecedor, não por uma FK desenhada na entidade.
+A referência ao fornecedor da compra aparece no **modelo lógico** em `Compra.id_fornecedor`; no DER conceitual, é expressa pelo relacionamento Compra–Fornecedor, sem FK desenhada na entidade. Da mesma forma, `id_compra` é uma FK **opcional** em `Despesa` somente no modelo lógico.
 
 ##### Movimentacao_Estoque
 | Atributo | Descrição | Regra de negócio associada |
@@ -386,6 +386,20 @@ A referência ao fornecedor da compra será implementada no **modelo lógico** c
 | quantidade_movimentada | Quantidade de itens movimentados | Deve ser positiva |
 | data_hora_movimentacao | Data e horário da movimentação | Obrigatório |
 | motivo_movimentacao | Motivo da entrada ou saída | Ex: Compra, Venda, Perda, Ajuste |
+
+##### Despesa
+| Atributo | Descrição | Regra / restrição proposta |
+|---|---|---|
+| id_despesa | Identificador da obrigação financeira | Identificador único |
+| categoria_despesa | Tipo de obrigação: compra, conta ou outra | Classificação por origem |
+| descricao_despesa | Descrição da parcela ou conta | Obrigatória |
+| valor_despesa | Valor da obrigação | Positivo |
+| data_vencimento | Vencimento da obrigação | Obrigatório |
+| status_despesa | Situação financeira | Paga ou pendente |
+| data_pagamento | Data da quitação | Apenas quando paga |
+| forma_pagamento | Modalidade usada na quitação | Apenas quando paga |
+
+O vínculo conceitual com `Compra` é o relacionamento `Origina`; sua FK opcional `id_compra` aparece apenas no modelo lógico. A obrigação pode ser parcela de compra ou conta não vinculada a compra. A associação conceitual prevê uma ou mais despesas por compra, sujeita a validação de integridade além da FK.
 
 ---
 
@@ -413,11 +427,13 @@ A partir do levantamento realizado e das necessidades identificadas no estabelec
 
 - **Movimentacao_Estoque:** representa os registros de entrada e saída dos produtos, permitindo acompanhar e justificar as alterações ocorridas no estoque.
 
+- **Despesa:** representa obrigações financeiras do estabelecimento, pagas ou pendentes, como parcelas de compras, contas e outros desembolsos.
+
 As entidades **Cliente** e **Funcionario** não foram incluídas no modelo conceitual por decisão de escopo anterior. O anexo relata ausência de nome do cliente nos pedidos e de cargos fixos; a dispensa de cadastro permanente e de identificação de executor precisa ter sua justificativa validada. Nos pedidos destinados à entrega, as informações necessárias são registradas diretamente no próprio Pedido.
 
 Também não foi criada uma entidade **Venda**, pois o Pedido já representa a operação comercial realizada pelo estabelecimento.
 
-Os relacionamentos `Contem` (Pedido–Produto) e `Adquire` (Compra–Produto) continuam N:N no DER conceitual. No modelo lógico, eles já foram convertidos nas tabelas associativas homônimas, equivalentes às estruturas `Item_Pedido` e `Item_Compra`. Os quatro atributos de quantidade e preço já existem na conversão lógica, mas ainda devem ser desenhados nos relacionamentos conceituais.
+Os relacionamentos `Contem` (Pedido–Produto) e `Adquire` (Compra–Produto) continuam como losangos N:N no DER conceitual. **Por decisão do grupo, os atributos de quantidade e preço não serão desenhados nesses losangos**; no lógico, surgem nas tabelas associativas homônimas, equivalentes a estruturas de itens. Essa distinção não deve ser confundida com conformidade integral à notação solicitada pelo Esqueleto 2. O relacionamento `Origina` liga `Compra` a `Despesa` no conceitual.
 
 ##### Atributos e classificações
 
@@ -431,19 +447,18 @@ Os atributos definidos para cada entidade são:
 | **Fornecedor** | `id_fornecedor`, `nome_fornecedor`, `tipo_fornecedor` |
 | **Compra** | `id_compra`, `data_compra`, `preco_total_compra` |
 | **Movimentacao_Estoque** | `id_movimentacao`, `tipo_movimentacao`, `quantidade_movimentada`, `data_hora_movimentacao`, `motivo_movimentacao` |
+| **Despesa** | `id_despesa`, `categoria_despesa`, `descricao_despesa`, `valor_despesa`, `data_vencimento`, `status_despesa`, `data_pagamento`, `forma_pagamento` |
 
 Os identificadores iniciados por `id_` identificam as entidades. Os relacionamentos conceituais são convertidos em chaves estrangeiras apenas no modelo lógico.
 
-**Atributos dos relacionamentos N:N pendentes no DER conceitual revisado:**
+**Atributos de itens representados somente no modelo lógico, por decisão do grupo:**
 
-| Relacionamento conceitual | Atributo que deve ser acrescentado | Finalidade |
+| Relacionamento do DER | Tabela lógica gerada | Atributos próprios da associação |
 |---|---|---|
-| Pedido — **Contem** — Produto | `quantidade_pedido` | Quantidade do produto vendido em cada pedido |
-| Pedido — **Contem** — Produto | `preco_unitario_pedido` | Preço unitário praticado naquela venda |
-| Compra — **Adquire** — Produto | `quantidade_comprada` | Quantidade do produto adquirida na compra |
-| Compra — **Adquire** — Produto | `preco_unitario_compra` | Preço unitário de aquisição |
+| Pedido — **Contem** — Produto | `Contem` | `quantidade_pedido`, `preco_unitario_pedido` |
+| Compra — **Adquire** — Produto | `Adquire` | `quantidade_comprada`, `preco_unitario_compra` |
 
-Na notação do brModelo exigida pelo Esqueleto 2, esses atributos devem estar **ligados aos losangos dos relacionamentos**, ou às entidades associativas adequadas se o grupo optar por essa representação. Não se desenham FKs no DER conceitual.
+O grupo decidiu manter os losangos sem esses atributos gráficos; isso **não satisfaz integralmente** a indicação do Esqueleto 2 de ligar atributos de relacionamentos aos losangos (ou usar entidade associativa adequada). A documentação explicita a decisão sem alterar o arquivo de imagem nem desenhar FKs no DER.
 
 No Pedido, `observacao_pedido` é opcional, pois nem todo pedido necessita de uma observação adicional. O atributo `endereco_entrega_pedido` também é opcional, sendo necessário apenas quando o tipo de atendimento corresponder a uma entrega.
 
@@ -473,7 +488,7 @@ Um **Pedido contém um ou vários Produtos**, enquanto um Produto pode estar pre
 - Pedido: `(1,n)`
 - Produto: `(0,n)`
 
-É um relacionamento **N:N**. O diagrama conceitual ainda deve representar no losango `Contem` a quantidade e o preço unitário praticado.
+É um relacionamento **N:N**. O grupo mantém o losango `Contem` sem atributos gráficos; quantidade e preço unitário estão na tabela lógica, com a ressalva de notação do Esqueleto 2.
 
 ###### Pedido — Pagamento
 
@@ -495,7 +510,7 @@ Uma **Compra adquire um ou vários Produtos**, enquanto um Produto pode estar pr
 - Compra: `(1,n)`
 - Produto: `(0,n)`
 
-É um relacionamento **N:N**. O diagrama conceitual ainda deve representar no losango `Adquire` a quantidade e o preço unitário de aquisição.
+É um relacionamento **N:N**. O grupo mantém o losango `Adquire` sem atributos gráficos; quantidade e custo unitário estão na tabela lógica, com a ressalva de notação do Esqueleto 2.
 
 ###### Fornecedor — Compra
 
@@ -507,6 +522,12 @@ Um **Fornecedor pode estar relacionado a nenhuma ou várias Compras**, enquanto 
 - Compra: `(1,1)`
 
 Esse relacionamento permite identificar o fornecedor responsável por cada aquisição realizada pelo estabelecimento.
+
+###### Compra — Despesa (Origina)
+
+Uma **Compra pode originar uma ou mais Despesas**, correspondentes às parcelas ou obrigações financeiras previstas; uma **Despesa pode corresponder a nenhuma ou a uma Compra**, pois contas e outras saídas financeiras não precisam resultar de uma compra cadastrada.
+
+**Cardinalidades conceituais da regra de negócio:** uma compra gera `(1,n)` despesas; uma despesa se relaciona a `(0,1)` compra. A participação mínima de uma despesa por compra **não é automaticamente garantida por uma FK** e precisa ser conferida pela implementação/auditoria. A decisão foi representada no DER atualizado pelo relacionamento `Origina`; não há FK no diagrama conceitual.
 
 ##### Restrições e políticas organizacionais aplicadas ao modelo
 
@@ -530,29 +551,28 @@ As seguintes regras e características observadas no estabelecimento influenciar
 
 - Toda movimentação de estoque deve estar relacionada a um Produto e deve permitir identificar se ocorreu uma **entrada ou saída**, a quantidade movimentada, a data e hora e o motivo da movimentação.
 
-- A necessidade de reposição não é representada por uma entidade específica. O acompanhamento é realizado por meio da quantidade disponível de cada Produto e dos registros existentes em `Movimentacao_Estoque`.
+- A necessidade de reposição não é representada por entidade própria. A RN07 exige estoque mínimo configurável e alerta, mas o campo ainda não está nos diagramas ou no SQL corrigido; o saldo cadastrado e as movimentações permitem apenas acompanhamento parcial.
 
-- Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no conceito. A conversão lógica em `Contem` e `Adquire` já existe; resta representar seus atributos diretamente nos relacionamentos do DER conceitual.
+- Despesas são obrigações financeiras com vencimento, situação de pagamento e eventual vínculo a `Compra`, distintas dos recebimentos de vendas registrados em `Pagamento`.
+
+- Os relacionamentos entre **Pedido e Produto** e entre **Compra e Produto** permanecem como N:N no conceito. O grupo optou por deixar os atributos de quantidade/preço somente nas tabelas lógicas `Contem` e `Adquire`, reconhecendo a diferença em relação ao esqueleto.
 ---
 
 ---
 
 #### Diagrama Entidade-Relacionamento (DER)
 
-**DER conceitual existente (versão da Entrega 1, ainda não revisada graficamente):**
+**DER conceitual atualizado — sete entidades e seis relacionamentos**, incluindo `Despesa` e `Origina`:
 
-![DER conceitual existente](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
+![DER conceitual atualizado do Esquina dos Amigos](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
 
-O DER original utiliza notação do **brModelo**: entidades em retângulos, relacionamentos em losangos, identificadores em círculos preenchidos, atributos comuns em círculos vazios e cardinalidades mínimas/máximas dos dois lados. Contém seis entidades e cinco relacionamentos, sem FKs desenhadas e sem generalização/especialização. O grupo ainda deve confirmar a versão exata do software usada para produzir o arquivo original; a modelagem lógica foi elaborada no brModelo Web.
+O diagrama segue a notação visual do brModelo: entidades em retângulos, relacionamentos em losangos, chaves identificadoras com círculos preenchidos, atributos comuns com círculos vazios e cardinalidades mínimas/máximas. A representação atual inclui `Pedido`, `Pagamento`, `Produto`, `Fornecedor`, `Compra`, `Movimentacao_Estoque` e `Despesa`. A nova entidade possui oito atributos conceituais; a FK `id_compra` é introduzida somente na conversão lógica.
 
-**Revisão do DER exigida pela Issue #1 e pelo Esqueleto 2 (Caso A):** acrescentar `quantidade_pedido` e `preco_unitario_pedido` ligados ao relacionamento `Contem`; acrescentar `quantidade_comprada` e `preco_unitario_compra` ligados a `Adquire`. Também é possível representá-los por entidades associativas, desde que a notação siga o exemplo do Esqueleto. A imagem acima **ainda não mostra essas correções**, apesar de elas constarem do modelo lógico.
+**Relação Compra–Despesa:** o DER representa a regra `Origina`: uma compra dá origem a uma ou mais despesas e uma despesa pertence a zero ou uma compra. O modelo lógico gerado automaticamente pelo brModelo Web exibe as ligações segundo a FK, e nem todas as participações opcionais/máximas podem ser ajustadas graficamente; as regras físicas pretendidas são documentadas nas seções 1.2, 1.3 e 2.
 
-Após a atualização gráfica, substituir a versão vinculada pelo **DER conceitual revisado** e conferir novamente cardinalidades, atributos e correspondência com as seções 1.2–1.4. Enquanto isso, a exigência do Esqueleto 2 de apresentar o DER revisado permanece **pendente**, sem simular aprovação ou alteração do diagrama.
+**Decisão gráfica do grupo:** `Contem` e `Adquire` são losangos de relacionamentos N:N, **não entidades adicionais no DER**. Quantidade e preço unitário foram registrados **apenas nas tabelas associativas do modelo lógico**. O Esqueleto 2, porém, orienta que atributos de relacionamentos apareçam ligados aos losangos ou às entidades associativas conceituais. Portanto, essa escolha permanece **ponto de atenção de conformidade**, mesmo com a conversão lógica correta.
 
-
----
-
----
+O modelo lógico foi elaborado no **brModelo Web**. A versão exata do programa usada na edição original do DER não está especificada nas fontes; o grupo deve confirmá-la antes da entrega.
 
 #### Justificativa Técnica
 
@@ -560,145 +580,96 @@ A modelagem proposta busca transformar os principais processos atualmente execut
 
 A entidade **Produto** é necessária porque os produtos comercializados representam elementos centrais das vendas e do controle de estoque.
 
-A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N permanece no conceitual e já foi convertida em `Contem` no lógico. O DER gráfico ainda precisa mostrar quantidade e preço por item.
+A entidade **Pedido** representa a operação comercial realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos que compõem cada pedido. A cardinalidade N:N permanece no conceitual e já foi convertida em `Contem` no lógico. A representação de quantidade e preço está restrita à tabela lógica `Contem`, por decisão do grupo (com ressalva sobre o Esqueleto 2).
 
 A entidade **Pagamento** foi separada do pedido para representar explicitamente a forma pela qual uma operação comercial foi recebida, contemplando dinheiro, cartão de crédito, cartão de débito, vale refeição e Pix.
 
 Não foi criada uma entidade **Venda** separada porque não existe uma necessidade identificada de distinguir uma venda de seu pedido. O pedido representa a operação comercial e pode ser associado ao pagamento correspondente.
 
-A entidade **Compra** representa uma aquisição realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra. A cardinalidade N:N já foi convertida em `Adquire` no modelo lógico, mas a versão conceitual ainda necessita dos atributos de quantidade e preço de aquisição.
+A entidade **Compra** representa uma aquisição realizada pelo estabelecimento e seu relacionamento com **Produto** permite representar os produtos adquiridos em cada compra. A cardinalidade N:N já foi convertida em `Adquire` no lógico, e seus atributos de quantidade e custo ficaram ausentes do losango conceitual por decisão do grupo.
 
 A entidade **Fornecedor** permite registrar a origem das compras e representar fornecedores recorrentes, como Ambev, Heineken e Coca-Cola, além de outros estabelecimentos utilizados para aquisição de produtos e ingredientes.
 
 O controle de estoque foi incluído como uma necessidade da solução proposta para os produtos comercializados, embora atualmente seja realizado de maneira informal. A entidade **Movimentacao_Estoque** permite rastrear cada entrada e saída individual, garantindo que o saldo seja justificável com base em motivos reais, como vendas, compras e quebras.
 
-Não foram criadas entidades conceituais independentes denominadas **Item_Pedido** e **Item_Compra**, pois `Contem` e `Adquire` são relações N:N convertidas em tabelas associativas no modelo lógico. O DER conceitual continua precisando representar quantidade e preço nos respectivos relacionamentos. Não existem entidades próprias de **Reposição** ou **Despesa**; a ausência de dados de contas e desembolsos permanece uma lacuna a resolver para atender P2. A equipe deve confirmar a abrangência antes da implementação SQL.
+Não foram criadas entidades conceituais denominadas **Item_Pedido** e **Item_Compra**: `Contem` e `Adquire` são relacionamentos N:N convertidos em tabelas lógicas. A entidade conceitual **Despesa** foi adicionada para representar obrigações e pagamentos de compras e contas do estabelecimento, com o relacionamento opcional `Origina` com `Compra`. Não há entidade própria de **Reposição**; a RN07 e a RN08 ainda exigem evolução de campos/fluxos. Os atributos dos relacionamentos N:N permanecem ausentes do DER por decisão do grupo, em desconformidade com a orientação específica do esqueleto.
 
 A entidade **Funcionário** não foi incluída no modelo atual. Todos podem desempenhar diferentes tarefas, mas isso não demonstra, por si só, que a identificação do executor seja desnecessária. A decisão deve ser confirmada com o responsável, sem alterar o DER nesta revisão.
 
 A entidade **Cliente** não foi incluída como cadastro independente por decisão do modelo atual. As anotações relatam ausência de nome nos pedidos, mas a necessidade de cadastro permanente deve ser confirmada. Para pedidos destinados à entrega, as informações necessárias podem ser associadas diretamente ao pedido.
 
-A estrutura proposta busca solucionar uma das principais dores identificadas: a dificuldade de visualizar de maneira simples quanto foi movimentado em determinado dia. Com pedidos e pagamentos estruturados, juntamente com compras e movimentações de estoque, torna-se possível organizar e consultar as informações necessárias para o acompanhamento das operações do estabelecimento.
+A estrutura proposta busca solucionar uma das principais dores identificadas: a dificuldade de visualizar de maneira simples quanto foi movimentado em determinado dia. Com pedidos, recebimentos, compras, despesas e movimentações de estoque estruturados, torna-se possível propor consultas sobre entrada e saída de caixa, obrigações pendentes e operações do estabelecimento, sem presumir que o banco físico já esteja executado.
 
 ---
 
 ### 1.2 Conversão do Modelo Conceitual para o Modelo Lógico
 
-A conversão do modelo conceitual para o modelo lógico do sistema de gestão do Bar e Restaurante Esquina dos Amigos foi realizada utilizando o brModelo Web, com o objetivo de transformar as entidades, os atributos e os relacionamentos do Diagrama Entidade-Relacionamento (DER) em uma estrutura relacional adequada à implementação em banco de dados MySQL.
-
-O processo preservou as seis entidades principais do modelo conceitual e acrescentou duas tabelas associativas para representar os relacionamentos muitos-para-muitos (N:N), resultando em oito tabelas no modelo lógico apresentado.
+A conversão foi realizada com apoio do **brModelo Web**. O DER possui **sete entidades conceituais**, incluindo `Despesa`, e dois relacionamentos N:N (`Contem` e `Adquire`) convertidos em tabelas associativas. Assim, o modelo lógico atual compreende **nove tabelas e oito chaves estrangeiras**. Não se criaram entidades conceituais independentes para `Contem` e `Adquire`, conforme a decisão do grupo.
 
 #### Entidades → Tabelas
 
-Cada entidade identificada no modelo conceitual foi convertida em uma tabela correspondente, mantendo sua finalidade dentro do sistema.
-
-| Entidade | Tabela | Finalidade |
+| Entidade conceitual | Tabela lógica | Responsabilidade |
 |---|---|---|
-| Pedido | `Pedido` | Armazenar as informações dos pedidos realizados. |
-| Pagamento | `Pagamento` | Registrar os valores, formas e datas dos pagamentos. |
-| Produto | `Produto` | Armazenar os produtos comercializados e suas informações de estoque. |
-| Compra | `Compra` | Registrar as compras realizadas pelo estabelecimento. |
-| Fornecedor | `Fornecedor` | Armazenar a identificação e a classificação dos fornecedores. |
-| Movimentacao_Estoque | `Movimentacao_Estoque` | Registrar as entradas e saídas dos produtos no estoque. |
+| Pedido | `Pedido` | Dados operacionais dos pedidos |
+| Pagamento | `Pagamento` | Recebimentos vinculados aos pedidos |
+| Produto | `Produto` | Cadastro, preço atual e saldo dos produtos comercializados |
+| Compra | `Compra` | Compras realizadas e fornecedor |
+| Fornecedor | `Fornecedor` | Identificação e classificação dos fornecedores |
+| Movimentacao_Estoque | `Movimentacao_Estoque` | Entradas e saídas de produtos |
+| Despesa | `Despesa` | Obrigações financeiras pagas ou pendentes, com eventual origem em compra |
 
-Além dessas tabelas, foram criadas `Contem` e `Adquire`, responsáveis por representar os relacionamentos N:N entre Pedido e Produto e entre Compra e Produto, respectivamente.
-
-Dessa forma, as entidades principais permanecem independentes, enquanto as tabelas associativas permitem estabelecer as ligações necessárias sem repetir registros cadastrais.
+Além dessas sete tabelas, os relacionamentos **Pedido–Contem–Produto** e **Compra–Adquire–Produto** originaram as tabelas associativas `Contem` e `Adquire`.
 
 #### Atributos → Colunas
 
-Os atributos das seis entidades do DER foram convertidos em colunas de suas respectivas tabelas. Na conversão dos relacionamentos N:N, foram acrescentados os atributos `quantidade_pedido` e `preco_unitario_pedido` em `Contem`, bem como `quantidade_comprada` e `preco_unitario_compra` em `Adquire`. Esses dados descrevem cada item da operação, não o cadastro geral do produto, e sua inclusão ainda deverá ser refletida no DER conceitual revisado.
-
-Os identificadores foram definidos como `INT`, os atributos textuais como `VARCHAR`, as quantidades inteiras como `INT` e as informações temporais como `DATE` ou `DATETIME`.
-
-Para os atributos monetários, o diagrama no brModelo utiliza `FLOAT`, incluindo os preços unitários das tabelas associativas. Na implementação física em MySQL, deverá ser utilizado preferencialmente `DECIMAL(12,2)` para representar preços e valores financeiros com precisão decimal. Essa adequação de tipos diz respeito ao script SQL, ainda não implementado nesta seção.
-
-A organização das colunas ficou definida da seguinte maneira:
-
-| Tabela | Colunas e tipos de dados |
+| Tabela | Colunas e tipos representados no modelo lógico (brModelo) |
 |---|---|
-| `Pedido` | `id_pedido` INT, `data_hora_pedido` DATETIME, `tipo_atendimento_pedido` VARCHAR, `status_pedido` VARCHAR, `observacao_pedido` VARCHAR, `endereco_entrega_pedido` VARCHAR |
-| `Pagamento` | `id_pagamento` INT, `id_pedido` INT, `forma_pagamento` VARCHAR, `data_hora_pagamento` DATETIME, `preco_total_pagamento` FLOAT |
-| `Produto` | `id_produto` INT, `nome_produto` VARCHAR, `categoria_produto` VARCHAR, `preco_venda_produto` FLOAT, `quantidade_estoque_produto` INT |
-| `Compra` | `id_compra` INT, `id_fornecedor` INT, `preco_total_compra` FLOAT, `data_compra` DATE |
-| `Fornecedor` | `id_fornecedor` INT, `tipo_fornecedor` VARCHAR, `nome_fornecedor` VARCHAR |
-| `Movimentacao_Estoque` | `id_movimentacao` INT, `id_produto` INT, `tipo_movimentacao` VARCHAR, `quantidade_movimentada` INT, `data_hora_movimentacao` DATETIME, `motivo_movimentacao` VARCHAR |
-| `Contem` | `id_pedido` INT, `id_produto` INT, `quantidade_pedido` INT, `preco_unitario_pedido` FLOAT |
-| `Adquire` | `id_compra` INT, `id_produto` INT, `quantidade_comprada` INT, `preco_unitario_compra` FLOAT |
+| `Pedido` | `id_pedido` INT; `data_hora_pedido` DATETIME; `tipo_atendimento_pedido` VARCHAR; `status_pedido` VARCHAR; `observacao_pedido` VARCHAR; `endereco_entrega_pedido` VARCHAR |
+| `Pagamento` | `id_pagamento` INT; `id_pedido` INT; `forma_pagamento` VARCHAR; `data_hora_pagamento` DATETIME; `preco_total_pagamento` FLOAT |
+| `Produto` | `id_produto` INT; `nome_produto` VARCHAR; `categoria_produto` VARCHAR; `preco_venda_produto` FLOAT; `quantidade_estoque_produto` INT |
+| `Compra` | `id_compra` INT; `id_fornecedor` INT; `preco_total_compra` FLOAT; `data_compra` DATE |
+| `Fornecedor` | `id_fornecedor` INT; `tipo_fornecedor` VARCHAR; `nome_fornecedor` VARCHAR |
+| `Movimentacao_Estoque` | `id_movimentacao` INT; `id_produto` INT; `tipo_movimentacao` VARCHAR; `quantidade_movimentada` INT; `data_hora_movimentacao` DATETIME; `motivo_movimentacao` VARCHAR |
+| `Contem` | `id_pedido` INT; `id_produto` INT; `quantidade_pedido` INT; `preco_unitario_pedido` FLOAT |
+| `Adquire` | `id_compra` INT; `id_produto` INT; `quantidade_comprada` INT; `preco_unitario_compra` FLOAT |
+| `Despesa` | `id_despesa` INT; `id_compra` INT (FK opcional); `categoria_despesa` VARCHAR; `descricao_despesa` VARCHAR; `valor_despesa` FLOAT; `data_vencimento` DATE; `status_despesa` VARCHAR; `data_pagamento` DATE; `forma_pagamento` VARCHAR |
 
-Em `Contem`, `quantidade_pedido` registra quantas unidades do produto foram vendidas e `preco_unitario_pedido` preserva o preço praticado naquele pedido, mesmo que o preço atual do cadastro mude. Em `Adquire`, `quantidade_comprada` registra a quantidade adquirida e `preco_unitario_compra` preserva o custo unitário daquela compra. Esses atributos permitem detalhar os itens que compõem os valores totais das operações, atendendo aos RF03, RF05 e RF07.
+A tabela `Despesa` possui **oito atributos próprios no conceitual** e **nove colunas no lógico**, pois a coluna `id_compra` é criada como FK opcional na conversão de `Origina`. `Contem` e `Adquire` recebem, no lógico, quantidade e preço unitário por item, preservando o histórico de valores mesmo se `Produto.preco_venda_produto` mudar. Por decisão do grupo, esses atributos **não foram desenhados nos losangos** do DER, embora o esqueleto os exija no conceito.
 
-Os atributos `id_pedido` em Pagamento, `id_fornecedor` em Compra e `id_produto` em Movimentacao_Estoque foram acrescentados como chaves estrangeiras durante a conversão dos relacionamentos.
-
-Nas tabelas associativas, os identificadores das entidades relacionadas foram utilizados tanto como chaves estrangeiras quanto como componentes das chaves primárias compostas.
-
-Os campos `observacao_pedido` e `endereco_entrega_pedido` permanecem opcionais conforme as condições definidas no modelo conceitual. A obrigatoriedade condicional do endereço para pedidos destinados à entrega deverá ser tratada na implementação.
+No brModelo, campos monetários aparecem como `FLOAT`; na implementação física MySQL devem ser `DECIMAL(12,2)`. Identificadores e quantidades inteiras utilizam `INT`, datas `DATE` ou `DATETIME`. Campos de texto exigem comprimento `VARCHAR(N)` definido no SQL. `observacao_pedido`, `endereco_entrega_pedido` (fora de entregas), `Despesa.id_compra`, `data_pagamento` e `Despesa.forma_pagamento` podem ser opcionais segundo as regras aplicáveis.
 
 #### Relacionamentos → Chaves
 
-Os relacionamentos presentes no DER foram convertidos em chaves estrangeiras ou tabelas associativas, de acordo com suas cardinalidades.
-
-| Relacionamento | Conversão realizada |
+| Relacionamento do DER | Conversão relacional |
 |---|---|
-| Pedido — Gera — Pagamento | Adição de `id_pedido` como FK em `Pagamento`. |
-| Pedido — Contem — Produto | Criação da tabela associativa `Contem`, com FKs para Pedido e Produto e atributos de quantidade e preço unitário praticado. |
-| Compra — Adquire — Produto | Criação da tabela associativa `Adquire`, com FKs para Compra e Produto e atributos de quantidade e preço unitário de aquisição. |
-| Compra — Realiza — Fornecedor | Adição de `id_fornecedor` como FK em `Compra`. |
-| Produto — Registra — Movimentacao_Estoque | Adição de `id_produto` como FK em `Movimentacao_Estoque`. |
+| Pedido — Gera — Pagamento | `Pagamento.id_pedido` como FK, com unicidade pretendida pela RN15 |
+| Pedido — Contem — Produto | Tabela `Contem`, PK composta (`id_pedido`, `id_produto`), ambas FKs |
+| Compra — Adquire — Produto | Tabela `Adquire`, PK composta (`id_compra`, `id_produto`), ambas FKs |
+| Compra — Realiza — Fornecedor | `Compra.id_fornecedor` como FK obrigatória |
+| Produto — Registra — Movimentacao_Estoque | `Movimentacao_Estoque.id_produto` como FK obrigatória |
+| Compra — Origina — Despesa | `Despesa.id_compra` como FK **opcional** para `Compra.id_compra` |
 
-No relacionamento entre Pedido e Pagamento, optou-se por manter as tabelas separadas, apesar da cardinalidade 1:1 do modelo conceitual. Essa decisão permite distinguir as informações operacionais do pedido das informações financeiras do pagamento, facilitando a organização e a manutenção do sistema.
-
-Nos relacionamentos 1:N, as chaves estrangeiras foram posicionadas nas tabelas correspondentes ao lado muitos.
-
-Já os relacionamentos N:N foram convertidos em tabelas associativas, permitindo que um registro de uma entidade se relacione com diversos registros da outra.
+A referência ao fornecedor não se repete em `Despesa`: despesas associadas a uma compra alcançam o fornecedor por `Compra`. Contas e outras despesas independentes podem ter `id_compra = NULL`.
 
 #### Cardinalidades
 
-As cardinalidades do modelo conceitual foram tratadas conforme as regras de conversão para o modelo relacional.
+- **Pedido–Pagamento (1:1 pretendido):** um pedido admite no máximo um registro de pagamento, conforme RN15. `Pagamento.id_pedido NOT NULL UNIQUE` impede dois pagamentos por pedido e pagamentos órfãos, mas não obriga automaticamente todo pedido a estar pago. Pedidos cancelados ou em preparo exigem tratamento específico.
+- **Fornecedor–Compra (1:N):** cada compra referencia um fornecedor; um fornecedor pode ter várias compras ou nenhuma.
+- **Produto–Movimentacao_Estoque (1:N):** cada movimentação referencia um produto; um produto pode ter várias movimentações ou nenhuma.
+- **Pedido–Produto e Compra–Produto (N:N):** convertidos por `Contem` e `Adquire` em dois relacionamentos 1:N por associação; FKs, isoladamente, não obrigam cada pedido ou compra a ter pelo menos um item.
+- **Compra–Despesa (1:N com origem opcional):** uma compra pode gerar várias obrigações/parcelas; uma despesa pode não resultar de compra (`id_compra = NULL`) ou referenciar somente uma. A regra conceitual de uma ou mais despesas por compra deve ser verificada adicionalmente, pois a FK não a impõe.
 
-**Relacionamento 1:1 — Pedido e Pagamento**
-
-No DER, cada Pedido está associado a exatamente um Pagamento, e cada Pagamento pertence a exatamente um Pedido.
-
-Durante a conversão, as entidades foram mantidas separadas, com a chave estrangeira `id_pedido` na tabela `Pagamento`. O brModelo Web exibe visualmente essa ligação como 1:N no modelo lógico gerado e não permite ajustar manualmente essas cardinalidades nessa representação; isso não altera, por si só, a regra 1:1 estabelecida no DER conceitual.
-
-Para limitar a associação a no máximo um pagamento por pedido, a implementação MySQL deverá definir `Pagamento.id_pedido` como FK com `UNIQUE` e `NOT NULL`. O `NOT NULL` exige que todo pagamento faça referência a um pedido, enquanto `UNIQUE` impede dois pagamentos para o mesmo pedido. A obrigatoriedade inversa — todo pedido possuir um pagamento — não é garantida por essas restrições isoladamente e exige controle adicional. A RN15 passou a definir pagamento único no ato, sem fiado ou divisão, como **decisão documental da solução**; o momento da cobrança, a situação dos pedidos cancelados e o mecanismo de integridade continuam a exigir alinhamento com a equipe de modelagem.
-
-**Relacionamentos 1:N — Fornecedor e Compra; Produto e Movimentacao_Estoque**
-
-No relacionamento entre Fornecedor e Compra, um fornecedor pode estar associado a várias compras, enquanto cada compra pertence obrigatoriamente a um fornecedor. Por isso, a chave estrangeira `id_fornecedor` foi adicionada à tabela Compra.
-
-Da mesma forma, um produto pode possuir várias movimentações de estoque, mas cada movimentação corresponde a um único produto. Assim, a chave estrangeira `id_produto` foi adicionada à tabela Movimentacao_Estoque.
-
-Essa estratégia permite representar os relacionamentos sem criar tabelas intermediárias desnecessárias.
-
-**Relacionamentos N:N — Pedido e Produto; Compra e Produto**
-
-No relacionamento entre Pedido e Produto, um pedido deve conter um ou mais produtos, enquanto um produto pode aparecer em diferentes pedidos.
-
-Para representar essa associação, foi criada a tabela `Contem`, com `id_pedido` e `id_produto` como componentes da chave primária composta e, simultaneamente, chaves estrangeiras. Foram acrescentados `quantidade_pedido` e `preco_unitario_pedido` para registrar os itens vendidos.
-
-No relacionamento entre Compra e Produto, uma compra deve incluir um ou mais produtos, e um produto pode ser adquirido em diferentes compras.
-
-Para esse relacionamento, foi criada a tabela `Adquire`, com `id_compra` e `id_produto` como componentes da chave primária composta e, simultaneamente, chaves estrangeiras. Foram acrescentados `quantidade_comprada` e `preco_unitario_compra` para registrar os itens adquiridos.
-
-As tabelas associativas transformam cada relacionamento N:N em dois relacionamentos 1:N.
-
-**Observação sobre as cardinalidades convertidas:** as cardinalidades exibidas automaticamente pelo brModelo no diagrama lógico refletem as FKs geradas, não necessariamente todas as restrições mínimas e máximas do DER. Em especial, a associação 1:1 de Pedido e Pagamento requer a restrição `UNIQUE` descrita acima. A exigência de ao menos um produto por pedido ou por compra não é garantida automaticamente pelas FKs das tabelas `Contem` e `Adquire`; deverá ser assegurada na implementação do sistema.
+**Limitação visual do brModelo Web:** as cardinalidades exibidas automaticamente no modelo lógico seguem a representação gerada a partir da FK e podem mostrar `(1,1) — (0,n)` mesmo quando uma FK é opcional ou há `UNIQUE`. O grupo manteve a representação gráfica gerada pela ferramenta e esclarece as regras reais de nulidade e unicidade por meio desta documentação e do futuro SQL, sem afirmar que a figura, isoladamente, expressa todas as participações mínimas e máximas do DER.
 
 #### Generalização/especialização (se houver)
 
-O modelo conceitual do sistema não apresenta relacionamentos de generalização ou especialização entre entidades.
-
-Todas as entidades foram definidas de maneira independente, com atributos e responsabilidades próprias. Portanto, não foi necessário aplicar estratégias como tabela única, tabela por entidade ou tabelas exclusivas para entidades especializadas.
+O DER não possui hierarquias de generalização ou especialização. As sete entidades conceituais são independentes nesse aspecto; portanto, não foi necessário escolher entre tabela única, tabela por entidade ou apenas especializações.
 
 ### 1.3 Definição de Chaves Primárias e Estrangeiras
 
-As chaves primárias (PKs) e estrangeiras (FKs) foram identificadas a partir das oito tabelas do modelo lógico descrito na seção 1.2. As PKs identificam exclusivamente os registros, enquanto as FKs representam os relacionamentos entre as tabelas e permitem preservar a integridade referencial. As definições abaixo descrevem o modelo planejado; a efetiva aplicação das restrições deverá ser comprovada no script SQL MySQL.
+O modelo lógico atualizado tem **nove tabelas**, **nove chaves primárias** (sete simples e duas compostas) e **oito FKs**. A implementação física deve manter coerência com os nomes representados no diagrama e com os tipos documentados.
 
 #### Chaves Primárias (PKs)
-
-As seis tabelas principais utilizam chaves primárias simples. As tabelas associativas `Contem` e `Adquire`, originadas dos relacionamentos N:N do DER, utilizam chaves primárias compostas pelos identificadores dos registros relacionados.
 
 | Tabela | Chave primária (PK) | Tipo |
 |---|---|---|
@@ -708,16 +679,15 @@ As seis tabelas principais utilizam chaves primárias simples. As tabelas associ
 | `Compra` | `id_compra` | Simples |
 | `Fornecedor` | `id_fornecedor` | Simples |
 | `Movimentacao_Estoque` | `id_movimentacao` | Simples |
-| `Contem` | `id_pedido`, `id_produto` | Composta |
-| `Adquire` | `id_compra`, `id_produto` | Composta |
+| `Despesa` | `id_despesa` | Simples |
+| `Contem` | (`id_pedido`, `id_produto`) | Composta |
+| `Adquire` | (`id_compra`, `id_produto`) | Composta |
 
-As chaves primárias compostas impedem a repetição da mesma combinação de pedido e produto em `Contem`, ou de compra e produto em `Adquire`. Os atributos `quantidade_pedido` e `preco_unitario_pedido`, em `Contem`, e `quantidade_comprada` e `preco_unitario_compra`, em `Adquire`, descrevem cada associação e não integram essas chaves. Todas as colunas de chave primária devem possuir valores não nulos e identificar combinações únicas.
+As PKs identificam cada registro. As chaves compostas de `Contem` e `Adquire` impedem repetir a mesma combinação de pedido/produto ou compra/produto; quantidade e preço são atributos da associação, não da PK.
 
 #### Chaves Estrangeiras (FKs)
 
-Foram definidas sete chaves estrangeiras, distribuídas entre cinco tabelas. Cada FK referencia a chave primária da respectiva tabela relacionada.
-
-| Tabela de origem | Chave estrangeira (FK) | Tabela referenciada | Chave referenciada |
+| Tabela de origem | FK | Tabela referenciada | PK referenciada |
 |---|---|---|---|
 | `Pagamento` | `id_pedido` | `Pedido` | `id_pedido` |
 | `Compra` | `id_fornecedor` | `Fornecedor` | `id_fornecedor` |
@@ -726,20 +696,17 @@ Foram definidas sete chaves estrangeiras, distribuídas entre cinco tabelas. Cad
 | `Contem` | `id_produto` | `Produto` | `id_produto` |
 | `Adquire` | `id_compra` | `Compra` | `id_compra` |
 | `Adquire` | `id_produto` | `Produto` | `id_produto` |
+| `Despesa` | `id_compra` | `Compra` | `id_compra` |
 
-As tabelas `Pedido`, `Produto` e `Fornecedor` não possuem chaves estrangeiras no modelo lógico atual; suas chaves primárias são referenciadas pelas demais tabelas. Em `Contem` e `Adquire`, as FKs também compõem as respectivas PKs, de modo que a mesma associação não seja duplicada.
+As FKs de `Pagamento`, `Compra`, `Movimentacao_Estoque` e as componentes das PKs de `Contem`/`Adquire` são obrigatórias. **A FK `Despesa.id_compra` admite NULL** para contas e outras despesas independentes; para `categoria_despesa = 'compra'`, a implementação proposta exige referência válida a uma compra. A FK `Pagamento.id_pedido` requer ainda `UNIQUE` para implementar a cardinalidade máxima 1:1 da RN15, sem garantir sozinha pagamento obrigatório para pedidos concluídos.
 
-O relacionamento **Pedido–Pagamento** foi definido como **1:1 no DER conceitual**, embora o brModelo mostre automaticamente uma ligação 1:N na representação lógica. Para preservar a cardinalidade máxima de um pagamento por pedido no MySQL, a FK `Pagamento.id_pedido` deverá possuir `UNIQUE` e `NOT NULL`. Isso garante que cada pagamento esteja vinculado a um pedido e que um pedido tenha **no máximo um pagamento**; a obrigatoriedade inversa de todo pedido possuir pagamento exige controle adicional, pois não é assegurada somente pela FK.
-
-Nos relacionamentos obrigatórios **Compra–Fornecedor** e **Movimentacao_Estoque–Produto**, as FKs `Compra.id_fornecedor` e `Movimentacao_Estoque.id_produto` deverão ser `NOT NULL`. Os identificadores das PKs compostas de `Contem` e `Adquire` também não podem ser nulos. A exigência de pelo menos um produto para cada pedido e compra depende de uma regra adicional de integridade, não sendo garantida apenas por essas FKs.
-
-As restrições `UNIQUE`, `NOT NULL` e outras regras de integridade deverão ser detalhadas no dicionário de dados e implementadas no script SQL. Sua justificativa completa, vinculada às regras de negócio pertinentes, pertence à seção 1.5.
+**Restrições complementares:** a lógica de situações e datas em `Despesa` (`paga` exige data e forma; `pendente` não as preenche), os valores positivos, o vínculo condicional da categoria `compra`, a existência de itens e a conferência dos totais devem ser especificados no dicionário e implementados/testados no MySQL. O HTML atual ainda precisa ser atualizado com a nona tabela.
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
 A análise de normalização do sistema de gestão do Bar e Restaurante Esquina dos Amigos segue os conceitos do material didático **Normalização em Banco de Dados e Eliminação de Redundâncias** (Prof. Cid Andrade, 2026.2): identificação das chaves e dependências funcionais, verificação da atomicidade (1FN), eliminação de dependências parciais (2FN) e eliminação de dependências transitivas (3FN).
 
-A análise considera as **oito tabelas do modelo lógico** da seção 1.2 e as chaves documentadas na seção 1.3: `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor`, `Movimentacao_Estoque`, `Contem` e `Adquire`. Como não foi documentada uma relação universal anterior, os exemplos de dados não normalizados abaixo são **ilustrações dos problemas evitados**, e não afirmações de que o grupo criou e depois decompôs uma tabela universal.
+A análise considera as **nove tabelas do modelo lógico** da seção 1.2 e as chaves documentadas na seção 1.3: `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor`, `Movimentacao_Estoque`, `Despesa`, `Contem` e `Adquire`. Como não foi documentada uma relação universal anterior, os exemplos de dados não normalizados abaixo são **ilustrações dos problemas evitados**, e não afirmações de que o grupo criou e depois decompôs uma tabela universal.
 
 #### 1FN — Eliminação de grupos repetitivos/atributos multivalorados
 
@@ -754,7 +721,7 @@ No sistema, um mesmo pedido pode conter vários produtos. Uma estrutura que arma
 | `Compra` | `id_compra` | Dados gerais da compra, como fornecedor, data e valor total |
 | `Adquire` | (`id_compra`, `id_produto`) | `quantidade_comprada` e `preco_unitario_compra` para cada produto adquirido |
 
-Da mesma forma, cada entrada ou saída de estoque é registrada em uma linha de `Movimentacao_Estoque`, com seu próprio identificador, produto, tipo, quantidade, data/hora e motivo, em vez de reunir um histórico de movimentações em um campo de `Produto`.
+Da mesma forma, cada entrada ou saída de estoque é registrada em uma linha de `Movimentacao_Estoque`, com seu próprio identificador, produto, tipo, quantidade, data/hora e motivo, em vez de reunir um histórico de movimentações em um campo de `Produto`. Em `Despesa`, cada obrigação ou parcela ocupa seu próprio registro, sem listas de parcelas, vencimentos ou pagamentos em uma coluna de `Compra`.
 
 Os demais atributos das entidades são representados como valores individuais de seus respectivos tipos (`INT`, `VARCHAR`, `DATE` ou `DATETIME`, além dos campos monetários representados como `FLOAT` no brModelo). A aplicação da 1FN depende também de gravar um único valor válido por coluna; o modelo não prevê listas de produtos ou fornecedores em um campo textual.
 
@@ -764,7 +731,7 @@ Os demais atributos das entidades são representados como valores individuais de
 
 A Segunda Forma Normal (2FN) exige o atendimento à 1FN e que nenhum atributo não chave dependa apenas de parte de uma chave candidata composta. Uma dependência funcional `X → Y` significa que um valor de `X` determina unicamente um valor de `Y`.
 
-As tabelas `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque` possuem **chaves primárias simples**. Assim, não apresentam dependências parciais em relação a essas chaves. A verificação específica concentra-se nas duas tabelas associativas com chaves compostas:
+As tabelas `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor`, `Movimentacao_Estoque` e `Despesa` possuem **chaves primárias simples**. Assim, não apresentam dependências parciais em relação a essas chaves. A verificação específica concentra-se nas duas tabelas associativas com chaves compostas:
 
 | Tabela associativa | Chave primária composta | Atributos não chave que dependem da combinação completa |
 |---|---|---|
@@ -807,10 +774,11 @@ Também se observa que:
 - `Contem` registra os dados de cada item vendido, sem repetir atributos cadastrais de `Produto` ou informações gerais de `Pedido`.
 - `Adquire` registra os dados de cada item adquirido, sem repetir nome/classificação do fornecedor ou atributos cadastrais de `Produto`.
 - `Pagamento` mantém os dados do recebimento separados dos atributos operacionais de `Pedido`, referenciando-o por `id_pedido`.
+- `Despesa` guarda vencimento, quitação, valor e categoria da obrigação em cada registro, referenciando `Compra` opcionalmente por `id_compra`, sem duplicar nome do fornecedor ou valor total da compra. `id_despesa → id_compra` não deve ser usado para duplicar os demais atributos da compra na despesa.
 
 A presença de chaves estrangeiras não configura, por si só, violação da 3FN: as dependências problemáticas surgiriam se atributos de outras entidades fossem duplicados **dentro da mesma tabela** em lugar de serem acessados pelos relacionamentos.
 
-**Resultado da 3FN:** considerando as dependências funcionais documentadas, não foram identificadas dependências transitivas que exijam decompor novamente as oito tabelas. Essa conclusão diz respeito às dependências conhecidas do modelo atual e deverá ser reavaliada caso novas regras de negócio ou atributos sejam incorporados.
+**Resultado da 3FN:** considerando as dependências funcionais documentadas, não foram identificadas dependências transitivas que exijam decompor novamente as nove tabelas. Essa conclusão diz respeito às dependências conhecidas do modelo atual e deverá ser reavaliada caso novas regras de negócio ou atributos sejam incorporados.
 
 #### Justificativa do processo de normalização
 
@@ -826,42 +794,75 @@ Por exemplo, uma alteração em `nome_fornecedor` ocorre em `Fornecedor`, sem ex
 
 **Cuidados que a normalização não resolve sozinha:** `preco_total_compra` deve permanecer coerente com a soma das quantidades multiplicadas pelos preços unitários dos itens em `Adquire`. Além disso, o saldo registrado em `quantidade_estoque_produto` precisa ser conciliado com os movimentos de `Movimentacao_Estoque` e com o saldo inicial, ainda pendente de definição. Essas consistências entre tabelas não representam, por si só, dependências transitivas internas que obriguem nova decomposição para 3FN; exigem regras de atualização e integridade na implementação. Da mesma forma, alcançar a 3FN não garante automaticamente conformidade com formas normais mais avançadas.
 
-Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quanto às dependências funcionais analisadas**, mantendo seis tabelas principais e duas associativas. Não foi necessário criar novas tabelas exclusivamente para essa normalização. A verificação definitiva deverá considerar as regras de negócio ainda pendentes, as restrições implementadas no MySQL e os testes com os dados do sistema.
+Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quanto às dependências funcionais analisadas**, mantendo sete tabelas provenientes das entidades conceituais e duas tabelas associativas. Não foi necessário criar novas tabelas exclusivamente para essa normalização. A verificação definitiva deverá considerar as regras de negócio ainda pendentes, as restrições implementadas no MySQL e os testes com os dados do sistema.
 
 ### 1.5 Justificativas Técnicas das Decisões
 
-**Pendente — equipe responsável pelo modelo lógico e pelo SQL.** Justificar a escolha das PKs, das FKs, as relações e as restrições `NOT NULL`, `UNIQUE`, `CHECK` e `DEFAULT` efetivamente implementadas, vinculando-as às regras de negócio `RNxx` quando pertinente. Explicar também eventuais decisões arquiteturais. As justificativas **conceituais da Entrega 1**, preservadas na seção 1.1, não substituem esta análise do modelo lógico.
+**Chaves primárias.** As sete tabelas correspondentes a entidades conceituais utilizam identificadores simples `INT`, que permitem referência estável aos registros. As tabelas `Contem` e `Adquire` utilizam PKs compostas, pois cada combinação identifica um item de pedido ou de compra no modelo adotado.
+
+**Chaves estrangeiras e relacionamentos.** As oito FKs preservam a integridade referencial entre pedidos/pagamentos, compras/fornecedores, produtos/movimentações, itens e origens de despesas. `Despesa.id_compra` é **opcional**: obrigações da categoria `compra` referenciam a compra correspondente; contas de energia e outras despesas operacionais podem não ter origem em `Compra`. O campo foi inserido somente no lógico, respeitando a distinção entre DER e modelo relacional. `Pagamento.id_pedido` será `UNIQUE` conforme a decisão RN15 de não dividir pagamentos; ainda é necessário distinguir pedidos concluídos e cancelados.
+
+**Restrições de integridade propostas para o SQL MySQL.**
+
+| Restrição | Aplicação | Fundamento / limite |
+|---|---|---|
+| `PRIMARY KEY` e `FOREIGN KEY` | Identificação e vínculos das nove tabelas | RN06, RN09 e relacionamentos do DER |
+| `NOT NULL` | Identificadores e campos obrigatórios | Evitar registros incompletos |
+| `UNIQUE(Pagamento.id_pedido)` | No máximo um pagamento por pedido | RN15; não garante pagamento em todo pedido |
+| `CHECK` de modalidade | Dinheiro, crédito, débito, vale-refeição ou Pix | RN01 |
+| `CHECK` de valores e quantidades | Valores não negativos; quantidades de itens positivas | RF03, RF07, RF11; não concilia estoque automaticamente |
+| `CHECK` condicional da entrega | Endereço válido quando `tipo_atendimento_pedido = 'entrega'` | RF02, RF13 |
+| `CHECK` de situação da despesa | `paga` exige data e forma; `pendente` não admite esses campos | Proposta de consistência financeira para P2/RF14 |
+| `CHECK` de origem da despesa | Categoria `compra` exige `id_compra`; `conta`/`outra` não exige vínculo | Evitar confundir despesa de compra e conta independente |
+
+**Decisões arquiteturais.** `Despesa` foi separada de `Compra` para permitir várias parcelas por compra e obrigações sem compra, e de `Pagamento` porque o último registra **recebimentos** de pedidos, não desembolsos. Não há entidade `Venda` (o pedido representa a operação), `Cliente` ou `Funcionario` independente, conforme o escopo documentado. A representação monetária `FLOAT` do brModelo é convertida para `DECIMAL(12,2)` no script físico para evitar imprecisão em valores financeiros.
+
+**Limites ainda não solucionados apenas pelo modelo:** RN07 (estoque mínimo configurável e alerta), RN08 (divergências de recebimentos), conciliação entre saldo cadastrado e movimentações, obrigatoriedade de pelo menos um item por pedido/compra, validação integral de regras RN14/RN16 e controle de acesso RNF04/RN20. O script corrigido encontra-se fora da `main` até ser incluído como arquivo `.sql`; a documentação dessas decisões não comprova sua execução no MySQL.
 
 ### 1.6 Proposta de Arquitetura Analítica para BI e IA
 
-**Pendente — equipe responsável pelas consultas e pela análise de BI/IA.** Definir KPIs calculáveis a partir das tabelas finais, com fórmula, período e meta (quando disponível), além de aplicações de BI e IA coerentes com os dados realmente registrados. Cada KPI exige consulta gerencial `Gxx` no script SQL.
+**Objetivo analítico.** A estrutura permite propor indicadores para vendas, recebimentos, despesas pagas e pendentes, volume de compras e situação do estoque, com consultas gerenciais do script SQL corrigido. O banco relacional poderá alimentar relatórios e dashboards (BI); aplicações de IA, como previsão de demanda, dependem de histórico suficiente, dados confiáveis e validação das limitações do processo real. Os dados demonstrativos são fictícios e não representam desempenho real do estabelecimento.
 
-**Rastreabilidade inicial dos problemas levantados** (as tabelas e consultas serão preenchidas após a implementação; códigos de problemas foram preservados):
+**Indicadores propostos (metas a definir com o responsável):**
 
-| Problema ou KPI | Tabelas envolvidas | Consulta no script SQL |
+| KPI | Fórmula / unidade | Período | Consulta prevista |
+|---|---|---|---|
+| Recebimento diário | `SUM(preco_total_pagamento)` / R$ | Dia da quitação | G01 |
+| Ticket médio recebido | `SUM(preco_total_pagamento) / COUNT(pagamentos)` / R$ | Dia do recebimento | G07 |
+| Saldo de caixa diário | Recebimentos menos despesas efetivamente pagas / R$ | Dia | G09 |
+| Total de obrigações pendentes | `SUM(valor_despesa)` em despesas `pendente` / R$ | Posição na data da consulta | G10 (lista; total pode ser calculado somando os registros) |
+| Desembolso por categoria | `SUM(valor_despesa)` das despesas `paga` / R$ | Mês de pagamento | G11 |
+| Produtos com saldo zero | Contagem dos produtos com `quantidade_estoque_produto = 0` / unidades cadastradas | Posição na data da consulta | G04 (lista; total por contagem) |
+
+**Nota:** os indicadores que dependem de somar/contar resultados de consultas de listagem (G04 e G10) precisam ser explicitados como consulta agregada se o professor exigir que cada KPI seja retornado **diretamente** em uma linha de SQL. A RN07 exige **estoque mínimo configurável e alerta quando saldo ≤ mínimo**, mas o atributo ainda não está no modelo; G04 identifica somente saldo igual a zero, **não substitui** o indicador completo de estoque baixo.
+
+**Rastreabilidade dos problemas e indicadores aos dados:**
+
+| Problema ou KPI | Tabelas que dão suporte | Consulta gerencial prevista no SQL corrigido |
 |---|---|---|
-| P1 — Ausência de registro individual das vendas e de visão dos recebimentos do dia | A validar no modelo lógico (pedidos, itens e pagamentos) | Pendente — Gxx |
-| P2 — Entradas e saídas financeiras dispersas entre papel e extratos | A validar no modelo lógico (recebimentos, compras, contas e pagamentos de despesas) | Pendente — Gxx |
-| P3 — Estoque e necessidade de reposição acompanhados visualmente | A validar no modelo lógico (produtos e movimentações de estoque) | Pendente — Gxx |
-| KPIs gerenciais | A definir com base nas tabelas finais, com fórmula e período | Pendente — Gxx por KPI |
+| P1 — registro de vendas/recebimentos | `Pedido`, `Contem`, `Produto`, `Pagamento` | G01, G02, G05, G07 |
+| P2 — entradas, saídas e obrigações | `Pagamento`, `Despesa`, `Compra`, `Fornecedor` | G09, G10, G11, G12 (G03/G08 mostram compras, não pagamentos) |
+| P3 — estoque e reposição | `Produto`, `Movimentacao_Estoque` | G04 e G06; falta consulta de estoque mínimo configurável exigido pela RN07 |
+| KPI de recebimentos diários | `Pagamento` | G01 |
+| KPI de ticket médio por recebimento | `Pagamento` | G07 |
+| KPI de saldo de caixa diário | `Pagamento`, `Despesa` | G09 |
+| KPI de despesas pendentes | `Despesa` | G10, com soma agregada pendente de explicitação |
+| KPI de desembolso por categoria | `Despesa` | G11 |
+| KPI de produtos sem estoque | `Produto` | G04, com contagem pendente de explicitação |
 
-**Atenção:** esta tabela registra pendências de rastreabilidade, não comprova consultas existentes nem resolução dos problemas. O alerta de estoque mínimo definido na RN07 depende de campo ainda ausente no modelo lógico e de futura consulta gerencial Gxx.
-
----
+**Limitação de entrega:** as referências Gxx apontam para a versão corrigida do script **ainda não versionada nesta branch**. Para o esqueleto, a rastreabilidade só estará comprovada após o `.sql` existir no repositório, ser executado no MySQL e retornar os resultados correspondentes. As metas e os volumes reais não foram informados; portanto, não foram inventados.
 
 ## 2. Modelo Lógico Relacional
 
-O modelo lógico relacional do sistema de gestão do **Bar e Restaurante Esquina dos Amigos** foi elaborado no **brModelo Web**, utilizando a notação de modelo lógico indicada no Esqueleto da Entrega 2. O diagrama final é apresentado como arquivo de imagem separado, armazenado no repositório em [`docs/imagens/ModeloLogicoRelacional.png`](docs/imagens/ModeloLogicoRelacional.png).
+O [modelo lógico relacional atualizado](docs/imagens/ModeloLogicoRelacional.png) foi elaborado no **brModelo Web**, de acordo com a notação visual exigida na Entrega 2. O diagrama apresenta **9 tabelas, 46 colunas, 9 PKs e 8 FKs**, incluindo `Despesa` (originada da nova entidade conceitual) e as tabelas associativas `Contem` e `Adquire` (originadas dos dois relacionamentos N:N).
 
-![Modelo Lógico Relacional — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
-
-O diagrama apresenta **oito tabelas** — seis correspondentes às entidades principais (`Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor` e `Movimentacao_Estoque`) e duas associativas (`Contem` e `Adquire`), originadas da conversão dos relacionamentos N:N do DER conceitual. Os elementos exigidos pelo Esqueleto 2 (tabelas, colunas com tipos, PKs, FKs e cardinalidades convertidas) estão visíveis na imagem e detalhados a seguir.
+![Modelo lógico relacional atualizado — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
 
 ### Tabelas e atributos (colunas com tipos de dados)
 
-A tabela abaixo reproduz os **nomes dos atributos e os tipos exibidos no diagrama lógico do brModelo Web**, sem antecipar as modificações de tipos previstas para o SQL físico em MySQL.
+A relação abaixo transcreve as colunas do modelo lógico; no diagrama `FLOAT` representa valores monetários, e o SQL MySQL deve utilizar `DECIMAL(12,2)`. Os tamanhos dos `VARCHAR` são definidos na implementação física, não na figura.
 
-| Tabela | Atributos (colunas) e tipos de dados |
+| Tabela | Atributos (colunas) e tipos |
 |---|---|
 | `Pedido` | `id_pedido` INT; `data_hora_pedido` DATETIME; `tipo_atendimento_pedido` VARCHAR; `status_pedido` VARCHAR; `observacao_pedido` VARCHAR; `endereco_entrega_pedido` VARCHAR |
 | `Pagamento` | `id_pagamento` INT; `id_pedido` INT; `forma_pagamento` VARCHAR; `data_hora_pagamento` DATETIME; `preco_total_pagamento` FLOAT |
@@ -871,83 +872,95 @@ A tabela abaixo reproduz os **nomes dos atributos e os tipos exibidos no diagram
 | `Movimentacao_Estoque` | `id_movimentacao` INT; `id_produto` INT; `tipo_movimentacao` VARCHAR; `quantidade_movimentada` INT; `data_hora_movimentacao` DATETIME; `motivo_movimentacao` VARCHAR |
 | `Contem` | `id_pedido` INT; `id_produto` INT; `quantidade_pedido` INT; `preco_unitario_pedido` FLOAT |
 | `Adquire` | `id_compra` INT; `id_produto` INT; `quantidade_comprada` INT; `preco_unitario_compra` FLOAT |
+| `Despesa` | `id_despesa` INT; `id_compra` INT; `categoria_despesa` VARCHAR; `descricao_despesa` VARCHAR; `valor_despesa` FLOAT; `data_vencimento` DATE; `status_despesa` VARCHAR; `data_pagamento` DATE; `forma_pagamento` VARCHAR |
 
 ### Chaves primárias e estrangeiras
 
-
-
-| Tabela | Chave primária (PK) | Chaves estrangeiras (FKs) |
+| Tabela | Chave primária | Chave(s) estrangeira(s) |
 |---|---|---|
 | `Pedido` | `id_pedido` | — |
-| `Pagamento` | `id_pagamento` | `id_pedido` → `Pedido(id_pedido)` |
+| `Pagamento` | `id_pagamento` | `id_pedido` → `Pedido.id_pedido` |
 | `Produto` | `id_produto` | — |
-| `Compra` | `id_compra` | `id_fornecedor` → `Fornecedor(id_fornecedor)` |
+| `Compra` | `id_compra` | `id_fornecedor` → `Fornecedor.id_fornecedor` |
 | `Fornecedor` | `id_fornecedor` | — |
-| `Movimentacao_Estoque` | `id_movimentacao` | `id_produto` → `Produto(id_produto)` |
-| `Contem` | (`id_pedido`, `id_produto`) | `id_pedido` → `Pedido(id_pedido)`; `id_produto` → `Produto(id_produto)` |
-| `Adquire` | (`id_compra`, `id_produto`) | `id_compra` → `Compra(id_compra)`; `id_produto` → `Produto(id_produto)` |
+| `Movimentacao_Estoque` | `id_movimentacao` | `id_produto` → `Produto.id_produto` |
+| `Contem` | (`id_pedido`, `id_produto`) | FKs `id_pedido`, `id_produto` |
+| `Adquire` | (`id_compra`, `id_produto`) | FKs `id_compra`, `id_produto` |
+| `Despesa` | `id_despesa` | `id_compra` → `Compra.id_compra` (**opcional**) |
 
-Nas tabelas associativas, os campos identificadores são marcados simultaneamente como **PK e FK**. Os atributos `quantidade_pedido` e `preco_unitario_pedido` pertencem a `Contem`, e `quantidade_comprada` e `preco_unitario_compra` pertencem a `Adquire`. As descrições da conversão e das dependências funcionais estão nas seções 1.2 a 1.4.
+Nas tabelas associativas, as FKs também compõem as PKs. O `id_compra` de `Despesa` pode ser nulo quando a obrigação representar conta ou outra saída financeira não vinculada a uma compra; para parcelas de compras, deve referenciar uma compra existente.
 
 ### Cardinalidades já convertidas
 
-O brModelo Web apresenta as cardinalidades `(mín, máx)` nas extremidades das ligações após a conversão para o modelo relacional. A tabela reproduz essas marcações **na ordem em que as tabelas são nomeadas**, com a primeira marcação próxima à tabela da esquerda e a segunda próxima à tabela da direita.
-
-| Ligação entre tabelas | Marcações no diagrama (esquerda — direita) | Relacionamento representado |
+| Ligação no modelo lógico | Marcações gráficas da conversão | Regra lógica/física pretendida |
 |---|---|---|
-| `Pedido` — `Pagamento` | `(1,1) — (0,n)` | 1:N gerado a partir da FK `Pagamento.id_pedido`; **1:1 previsto no DER**, a restringir no SQL |
-| `Pedido` — `Contem` | `(1,1) — (0,n)` | Um item `Contem` pertence a um único pedido; um pedido pode ter vários itens |
-| `Produto` — `Contem` | `(1,1) — (0,n)` | Um item `Contem` referencia um único produto; um produto pode aparecer em vários pedidos |
-| `Compra` — `Adquire` | `(1,1) — (0,n)` | Um item `Adquire` pertence a uma única compra; uma compra pode ter vários itens |
-| `Produto` — `Adquire` | `(1,1) — (0,n)` | Um item `Adquire` referencia um único produto; um produto pode aparecer em várias compras |
-| `Fornecedor` — `Compra` | `(1,1) — (0,n)` | Cada compra referencia um fornecedor; um fornecedor pode participar de várias compras |
-| `Produto` — `Movimentacao_Estoque` | `(1,1) — (0,n)` | Cada movimentação referencia um produto; um produto pode ter várias movimentações |
+| `Pedido` — `Pagamento` | `(1,1) — (0,n)` | No máximo um pagamento por pedido, por `UNIQUE(Pagamento.id_pedido)`; RN15 |
+| `Pedido` — `Contem` | `(1,1) — (0,n)` | Um item pertence a um pedido; um pedido pode ter muitos itens |
+| `Produto` — `Contem` | `(1,1) — (0,n)` | Um item referencia um produto; um produto pode estar em vários pedidos |
+| `Compra` — `Adquire` | `(1,1) — (0,n)` | Um item pertence a uma compra; uma compra pode ter muitos itens |
+| `Produto` — `Adquire` | `(1,1) — (0,n)` | Um item referencia um produto; um produto pode aparecer em várias compras |
+| `Fornecedor` — `Compra` | `(1,1) — (0,n)` | Cada compra referencia um fornecedor; um fornecedor pode ter várias compras |
+| `Produto` — `Movimentacao_Estoque` | `(1,1) — (0,n)` | Cada movimento referencia um produto; um produto pode ter muitos movimentos |
+| `Compra` — `Despesa` | `(1,1) — (0,n)` no brModelo gerado | `Despesa.id_compra` **pode ser NULL**, e uma compra pode ter várias despesas; a participação obrigatória da despesa em compra não é imposta |
 
-Assim, os dois relacionamentos N:N do DER foram convertidos em **duas relações 1:N cada**, por meio de `Contem` e `Adquire`. As participações mínimas conceituais de pelo menos um item por pedido ou compra não são asseguradas automaticamente pelas chaves estrangeiras.
+**Limitação do aplicativo:** a cardinalidade da ligação `Compra–Despesa` no modelo lógico foi mantida como o brModelo Web a gerou, pois o grupo informou que o aplicativo não permite ajustá-la manualmente. O desenho reflete a posição da FK, mas não codifica a sua nulidade opcional. A regra conceitual `Origina` está no DER e será implementada pela FK opcional no MySQL. Também para `Pedido–Pagamento`, a figura pode mostrar uma ligação 1:N, embora `UNIQUE` limite a associação a 1:1 na implementação.
 
-**Atenção ao relacionamento Pedido–Pagamento:** o brModelo mostra uma ligação 1:N porque `Pagamento.id_pedido` é uma FK. Entretanto, o DER conceitual estabelece **1:1**. Para limitar a associação a no máximo um pagamento por pedido, o SQL MySQL deverá aplicar `NOT NULL` e `UNIQUE` à FK `Pagamento.id_pedido`. Isso não obriga, por si só, que todo pedido já possua um pagamento; a RN15 prevê pagamento único no ato e a RN14 permite cancelar antes do preparo. A implementação deverá definir os estados e quando um pedido pode ficar sem pagamento, sem alterar automaticamente o diagrama existente.
-
-**Tipos e restrições de integridade:** o brModelo exibe `FLOAT` para valores monetários; o [dicionário HTML](dicionario_dados_conceitual.html) atualizado especifica `DECIMAL(12,2)` como tipo físico MySQL, além de nulidade, chaves, UNIQUE, CHECK propostos e DEFAULT por coluna, nas **8 tabelas**. Os comprimentos `VARCHAR(N)` são propostas de implementação, pois o diagrama apresenta `VARCHAR` sem tamanho. As constraints não aparecem visualmente no modelo lógico e **ainda deverão ser implementadas e testadas no script SQL** da seção 3; valores pendentes de validação não devem ser tratados como regras finais.
+**Restrições de integridade adicionais** (`NOT NULL`, `UNIQUE`, `CHECK`, valores padrão e regras condicionais) não aparecem no modelo lógico gráfico. O [dicionário HTML](dicionario_dados_conceitual.html) precisa ser sincronizado com a nona tabela `Despesa`; o SQL corrigido precisa ser disponibilizado na `main` e testado antes de ser declarado implementado. Não foram incorporados aos diagramas, até aqui, o atributo de estoque mínimo (RN07) nem o registro completo de divergências no recebimento (RN08).
 
 ---
 
 ## 3. Script SQL Completo
 
-**Pendente — equipe responsável pela implementação SQL.** Disponibilizar o arquivo `.sql` no repositório (preferencialmente `docs/script.sql`) e adicionar o link aqui somente quando existir.
+**Arquivo `.sql` ainda não adicionado à branch `main`.** A versão corrigida preparada para a Entrega 2 foi projetada para **MySQL 8.0.16+**, com **9 tabelas, 8 FKs** e a nova tabela `Despesa`. Para cumprir o esqueleto, o arquivo deve ser versionado no repositório (preferencialmente `docs/script.sql`) e vinculado aqui somente quando esse caminho existir.
 
-**SGBD exigido:** MySQL. O script deverá executar desde banco vazio e conter `CREATE DATABASE`, `CREATE TABLE`, restrições de integridade, `INSERT`, `SELECT` com `JOIN`, `UPDATE`, `DELETE`, consultas gerenciais e consultas de auditoria.
+**Estrutura prevista do script, na ordem do esqueleto:** `CREATE DATABASE`, `CREATE TABLE`, constraints, `INSERT INTO`, `SELECT` com `JOIN`, `UPDATE`, `DELETE`, consultas gerenciais e de auditoria. O arquivo corrigido em preparação contém **J01–J03** (junções), **G01–G12** (gerenciais), **A01–A05** (auditoria vinculada a RNxx) e **D01–D10** (diagnósticos complementares associados a requisitos/consistência).
 
-Cada consulta gerencial precisa ter código `G01`, `G02` etc., pergunta respondida e indicação do problema/KPI atendido. Cada consulta de auditoria precisa ter código `A01`, `A02` etc., pergunta respondida e regra `RNxx` verificada. Registrar o resultado do teste de execução integral antes da entrega.
+**Função da nova tabela:** `Despesa` contém `id_despesa` (PK), `id_compra` (FK opcional), categoria, descrição, valor, vencimento, status, data de pagamento e forma de pagamento. A categoria `compra` exige um vínculo com `Compra`; as categorias `conta` e `outra` representam despesas independentes. A regra de `paga` exige data e modalidade; `pendente` não tem esses campos preenchidos.
+
+**Restrições e validações pendentes:** o script apaga tabelas de um **banco de teste** antes de recriá-las; não deve ser executado em um banco com dados reais. O grupo deve testá-lo integralmente no MySQL Workbench a partir de banco vazio, verificar as contagens e as consultas e documentar evidências de execução. A criação do diagrama e o preparo do texto SQL **não comprovam** sua execução.
 
 ---
 
 ## 4. Massa de Dados
 
-**Pendente — equipe responsável pela implementação e testes.** Disponibilizar dados **fictícios**, consistentes com o levantamento, em script `.sql` (integrado ao script principal ou separado, preferencialmente em `docs/`).
+A massa de dados da versão corrigida **ainda não versionada** é inteiramente **fictícia**, concebida para testar vendas, recebimentos, compras, contas, obrigações pendentes e movimentações do estoque. O SQL preparado contém **120 registros finais previstos** após `UPDATE` e `DELETE`, distribuídos por nove tabelas:
 
-Justificar a quantidade de registros por tabela com cenários fictícios coerentes com os processos documentados, **declarando que os volumes reais não foram informados**. Incluir cenários variados para demonstrar consultas gerenciais e auditorias (por exemplo, períodos diferentes, modalidades de pagamento, pedidos com situações distintas e níveis de estoque diferentes). **Não atribuir os números sintéticos a uma média observada no restaurante.**
+| Tabela | Registros fictícios previstos |
+|---|---:|
+| `Pedido` | 14 |
+| `Pagamento` | 12 |
+| `Produto` | 10 |
+| `Compra` | 8 |
+| `Fornecedor` | 5 |
+| `Movimentacao_Estoque` | 16 |
+| `Contem` | 26 |
+| `Adquire` | 18 |
+| `Despesa` | 11 |
+| **Total** | **120** |
 
-**Limitação documental:** o integrante confirmou que não dispõe de volumes operacionais verificáveis. Os volumes de pedidos, vendas, compras e produtos ativos não foram quantificados; usar massa sintética ilustrativa, identificada como simulação, e registrar esta limitação na justificativa da Entrega 2.
+Inclui pedidos concluídos, em preparo e cancelados; diferentes formas de recebimento; contas e parcelas pagas/pendentes; fornecedores sem compras; produtos com saldo zero; e dados em datas distintas. Essas situações apoiam consultas Gxx e Axx/Dxx, mas o teste definitivo no MySQL ainda precisa ser registrado.
+
+**Justificativa e limite de volume:** os volumes operacionais reais **não foram informados** pelo responsável e não podem ser inferidos. Assim, o tamanho da massa demonstra relacionamentos, situações e variedade de processos, **não uma proporção estatística comprovada do movimento do restaurante**. Antes da avaliação, o grupo deverá obter números reais de referência se possível e justificar a escolha sem atribuir médias fictícias à organização, como orienta a seção 1.1 do Esqueleto 2.
 
 ---
 
 ## 5. Repositório GitHub
 
-Este repositório centraliza o relatório e os artefatos da Entrega 2. O trabalho será corrigido com base no conteúdo da branch `main`.
+Este repositório reúne os artefatos da Entrega 2; o professor avaliará exclusivamente o conteúdo da branch `main`. Os links abaixo apontam apenas para arquivos efetivamente existentes nesta branch.
 
-| Artefato exigido | Localização | Situação |
+| Artefato exigido | Localização | Situação atual |
 |---|---|---|
-| Relatório Técnico Final | [README.md](README.md) | Estrutura da Entrega 2 organizada; seções técnicas pendentes identificadas |
-| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 8 tabelas, 37 colunas, PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
-| DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Versão existente da Entrega 1; revisão técnica pendente |
-| Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Presente na branch `main`; diagrama lógico final (brModelo Web) |
-| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Presente, com pendências de validação indicadas |
-| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/) e [docs/imagens/](docs/imagens/) | Presentes parcialmente; comprovação específica da entrevista e formatos das fotos a verificar |
-| Script SQL MySQL | Link a inserir após criação | Pendente |
-| Massa de dados fictícia | Link a inserir após criação | Pendente |
-| Apresentação final | Link a inserir após criação | Pendente |
+| Relatório Técnico Final | [README.md](README.md) | Estrutura 1.1–1.6 e 2–7 atualizada para sete entidades e nove tabelas |
+| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Desatualizado:** descreve 8 tabelas/37 colunas; faltam `Despesa`, sua FK opcional e suas restrições (total previsto 9/46) |
+| DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
+| Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
+| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Disponível, com limites de entrevista e volumes documentados; precisa incorporar eventual validação da nova modelagem financeira |
+| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Evidência da entrevista ainda pendente; fotografias atuais têm extensão `.jpeg` |
+| Script SQL MySQL | Arquivo `.sql` a adicionar e vincular | **Pendente na `main`**; arquivo corrigido foi elaborado fora do repositório |
+| Massa de dados fictícia | Integrada ao futuro arquivo SQL | **Pendente na `main`**; previsão de 120 registros na proposta corrigida |
+| Apresentação final | Arquivo e link a inserir | Pendente |
 
-As fotos atuais estão no repositório com extensão `.jpeg`. O enunciado exige arquivos **JPG ou PNG**; o grupo deve conferir a adequação dos arquivos e adicionar, quando disponível, a foto da entrevista com o responsável no local. Também deve manter histórico de commits distribuído entre os integrantes, com os nomes e usuários de GitHub identificáveis na tabela inicial.
+Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável dos integrantes. Permanecem pendentes nome civil/contato do entrevistado, data e comprovação fotográfica da entrevista no ambiente da organização, adequação do formato das fotos exigidas e validação das decisões de escopo e do novo relacionamento financeiro.
 
 ---
 
@@ -1027,6 +1040,20 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Ajustes e limites | INT mantido nos IDs e quantidades; FLOAT monetário convertido para DECIMAL(12,2). Tamanhos VARCHAR propostos, não inferidos como definitivos. Nenhuma coluna extra foi incluída para RN07/RN08 porque ainda não consta no modelo lógico |
 | Justificativa | Preservar os nomes/colunas da versão lógica e explicitar o que depende de confirmação ou SQL; não inventar DEFAULT, UNIQUE nominal ou status de pedido |
 | Reflexão crítica | Um dicionário de constraints não assegura execução no MySQL; consistência de totais, saldos e obrigatoriedade de itens exige mecanismos adicionais e teste do script |
+
+---
+
+### Atualização do README após inclusão de Despesa — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — comparação dos diagramas e revisão documental do Relatório Técnico Final |
+| Motivação | Sincronizar o README com os novos diagramas e com o escopo financeiro P2, preservando as regras RN/RF do levantamento |
+| Solicitação do integrante | “Arrumei a cardinalidade. Não irei adicionar contem e adquire no DER, vou deixar apenas no logico. Não irei mexer na cardinalidade do modelo lógico, pois o brmodelo não permite. Adicionei as imagens corretas dos diagramas no repositorio. Agora, seguindo todas as restrições do repositório, utilizando os documentos como base e toda a documentação e referência, atualize o README para que esteja incluso as atualizações.” |
+| Referências conferidas | README da `main`, diagramas vinculados no repositório e fornecidos pelo integrante, `levantamento/levantamento.md`, confirmações documentais, transcrição do cardápio, dicionário HTML, Esqueleto 2 e estrutura do SQL corrigido discutido com o grupo |
+| Resposta produzida | Atualização das seções 1.1–1.6 e 2–5 para sete entidades conceituais, nove tabelas lógicas, nova FK opcional, análise de normalização e rastreabilidade de P2 |
+| Correções, limites e escolha final | Não foram acrescentadas entidades `Contem`/`Adquire` ao DER nem alterada a cardinalidade gráfica automática do lógico. Foi registrada a divergência entre atributos não desenhados nos losangos e a orientação do esqueleto. O dicionário e o SQL ainda não foram alterados na `main` |
+| Reflexão crítica | A documentação não deve presumir teste de SQL, conclusão do dicionário ou confirmação das práticas financeiras em campo. A escolha gráfica do grupo pode não atender integralmente ao requisito de notação conceitual |
 
 ---
 
