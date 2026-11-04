@@ -856,7 +856,7 @@ Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quant
 
 O [modelo lógico relacional atualizado](docs/imagens/modelo_logico_02.png) foi elaborado no **brModelo Web**, de acordo com a notação visual exigida na Entrega 2. O diagrama apresenta **9 tabelas, 46 colunas, 9 PKs e 8 FKs**, incluindo `Despesa` (originada da nova entidade conceitual) e as tabelas associativas `Contem` e `Adquire` (originadas dos dois relacionamentos N:N).
 
-![Modelo lógico relacional atualizado — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
+![Modelo lógico relacional atualizado — brModelo Web](docs/imagens/modelo_logico_02.png)
 
 ### Tabelas e atributos (colunas com tipos de dados)
 
