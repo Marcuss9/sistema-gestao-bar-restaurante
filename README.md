@@ -564,7 +564,7 @@ As seguintes regras e características observadas no estabelecimento influenciar
 
 **DER conceitual atualizado — sete entidades e seis relacionamentos**, incluindo `Despesa` e `Origina`:
 
-![DER conceitual atualizado do Esquina dos Amigos](docs/imagens/DER_entrega_02.jpg)
+![DER conceitual atualizado do Esquina dos Amigos](docs/imagens/DER_entrega_02.png)
 
 O diagrama segue a notação visual do brModelo: entidades em retângulos, relacionamentos em losangos, chaves identificadoras com círculos preenchidos, atributos comuns com círculos vazios e cardinalidades mínimas/máximas. A representação atual inclui `Pedido`, `Pagamento`, `Produto`, `Fornecedor`, `Compra`, `Movimentacao_Estoque` e `Despesa`. A nova entidade possui oito atributos conceituais; a FK `id_compra` é introduzida somente na conversão lógica.
 
