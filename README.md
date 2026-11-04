@@ -564,7 +564,7 @@ As seguintes regras e características observadas no estabelecimento influenciar
 
 **DER conceitual atualizado — sete entidades e seis relacionamentos**, incluindo `Despesa` e `Origina`:
 
-![DER conceitual atualizado do Esquina dos Amigos](docs/imagens/DER_esquina_dos_amigos_v2.jpg)
+![DER conceitual atualizado do Esquina dos Amigos](docs/imagens/DER_entrega_02.jpg)
 
 O diagrama segue a notação visual do brModelo: entidades em retângulos, relacionamentos em losangos, chaves identificadoras com círculos preenchidos, atributos comuns com círculos vazios e cardinalidades mínimas/máximas. A representação atual inclui `Pedido`, `Pagamento`, `Produto`, `Fornecedor`, `Compra`, `Movimentacao_Estoque` e `Despesa`. A nova entidade possui oito atributos conceituais; a FK `id_compra` é introduzida somente na conversão lógica.
 
@@ -854,7 +854,7 @@ Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quant
 
 ## 2. Modelo Lógico Relacional
 
-O [modelo lógico relacional atualizado](docs/imagens/ModeloLogicoRelacional.png) foi elaborado no **brModelo Web**, de acordo com a notação visual exigida na Entrega 2. O diagrama apresenta **9 tabelas, 46 colunas, 9 PKs e 8 FKs**, incluindo `Despesa` (originada da nova entidade conceitual) e as tabelas associativas `Contem` e `Adquire` (originadas dos dois relacionamentos N:N).
+O [modelo lógico relacional atualizado](docs/imagens/modelo_logico_02.png) foi elaborado no **brModelo Web**, de acordo com a notação visual exigida na Entrega 2. O diagrama apresenta **9 tabelas, 46 colunas, 9 PKs e 8 FKs**, incluindo `Despesa` (originada da nova entidade conceitual) e as tabelas associativas `Contem` e `Adquire` (originadas dos dois relacionamentos N:N).
 
 ![Modelo lógico relacional atualizado — brModelo Web](docs/imagens/ModeloLogicoRelacional.png)
 
