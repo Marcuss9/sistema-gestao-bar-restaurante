@@ -12,10 +12,10 @@
 
 | Nome completo | RGM | Usuário do GitHub |
 |---|---|---|
-| Cauã Francisco Gomes da Silva | 47485990 | A confirmar pelo integrante |
-| João Pedro Liberato de Oliveira | 46801375 | A confirmar pelo integrante |
-| Marcus Vinicius dos Santos Cruz | 46690069 | A confirmar pelo integrante |
-| João Vitor Gonçalves De Oliveira | 47391111 | A confirmar pelo integrante |
+| Cauã Francisco Gomes da Silva | 47485990 | cauafgs14-ux |
+| João Pedro Liberato de Oliveira | 46801375 | joaa0 |
+| Marcus Vinicius dos Santos Cruz | 46690069 | Marcuss9 |
+| João Vitor Gonçalves De Oliveira | 47391111 | ojoaovitor88 |
 
 ### 1.1 Revisão do Modelo Conceitual
 
