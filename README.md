@@ -1070,6 +1070,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ---
 
+### Revisão posterior à normalização — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| **Ferramenta e etapa** | ChatGPT — revisão das seções 1.2, 1.3 e 1.4 do README após a elaboração da análise de normalização (1FN, 2FN e 3FN). |
+| **Motivação** | Verificar se a conversão do modelo conceitual para o lógico, a definição das chaves e a explicação das formas normais estavam coerentes com o Esqueleto da Entrega 2 e com o modelo adotado pelo grupo. |
+| **Prompt utilizado** | “Agora analise os pontos 1.2, 1.3 e 1.4 e veja se está correto.” |
+| **Resposta recebida** | A IA considerou adequadas as explicações de conversão, a relação de nove chaves primárias e oito estrangeiras e os exemplos de 1FN, 2FN e 3FN. Identificou um erro textual no resultado da 2FN: o README mencionava “oito tabelas”, embora o modelo lógico possua nove. Recomendou corrigir essa contagem e esclarecer, na seção 1.2, o alcance da cardinalidade Pedido–Pagamento e a representação das compras de ingredientes não controlados em estoque. |
+| **Fontes consultadas e verificadas** | README da branch `main`, Esqueleto da Entrega 2 e DER conceitual fornecido pelo integrante. A revisão comparou a documentação, sem executar o script SQL no MySQL. |
+| **Trechos rejeitados ou corrigidos** | A recomendação de trocar “oito tabelas” por “nove tabelas” foi identificada, mas ainda não foi aplicada à seção 1.4 nesta etapa. Nenhuma sugestão de alterar o DER, criar entidades conceituais `Contem`/`Adquire` ou modificar as chaves foi adotada nessa revisão, preservando as decisões do grupo. |
+| **Justificativa da escolha final** | Manter a estrutura das seções e as tabelas associativas `Contem` e `Adquire` apenas no modelo lógico, conforme a decisão do grupo, registrando correções pontuais e ressalvas que ainda precisam ser avaliadas. |
+| **Reflexão crítica** | A IA ajuda a identificar incoerências de redação e modelagem, mas suas avaliações não comprovam a execução do banco, a validade de todas as regras de negócio ou o atendimento integral ao esqueleto. As recomendações devem ser confrontadas com os diagramas, os documentos da disciplina e as decisões do grupo antes de serem aplicadas. |
+
+---
+
 ## 7. Apresentação Corporativa Final
 
 **Pendente — apresentação do grupo.** Preparar um pitch de **8 minutos**, com slides de leitura visual clara, na ordem exigida:
