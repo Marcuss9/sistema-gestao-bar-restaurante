@@ -797,72 +797,69 @@ Por exemplo, uma alteração em `nome_fornecedor` ocorre em `Fornecedor`, sem ex
 Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quanto às dependências funcionais analisadas**, mantendo sete tabelas provenientes das entidades conceituais e duas tabelas associativas. Não foi necessário criar novas tabelas exclusivamente para essa normalização. A verificação definitiva deverá considerar as regras de negócio ainda pendentes, as restrições implementadas no MySQL e os testes com os dados do sistema.
 
 ### 1.5 Justificativas Técnicas das Decisões
-1. Justificativa das decisões de banco de dados
 
-Chaves Primárias (PK)
+Esta seção justifica as decisões do **modelo lógico de nove tabelas** e sua implementação proposta no arquivo [`docs/script.sql`](docs/script.sql), considerando o DER conceitual, os requisitos RFxx/RNFxx e as regras RNxx registrados na seção 1.1. `Contem` e `Adquire` são **relacionamentos N:N no DER** e **tabelas associativas no lógico**, conforme a decisão do grupo. A existência do script na `main` foi confirmada; sua execução integral no MySQL ainda precisa ser comprovada.
 
-Foram utilizadas chaves primárias para identificar cada registro de forma única, evitando duplicidade e facilitando a consulta dos dados. Nas tabelas principais, foram utilizadas chaves do tipo "INT AUTO_INCREMENT", como em Pedido, Produto, Fornecedor, Pagamento, Compra e Despesa.
+#### Escolha e justificativa das chaves primárias
 
-Nas tabelas associativas Contem e Adquire, foram utilizadas chaves primárias compostas, formadas pelos identificadores dos dois registros relacionados. Essa escolha impede que o mesmo produto seja cadastrado duas vezes no mesmo pedido ou na mesma compra.
-
-Chaves Estrangeiras (FK)
-
-As chaves estrangeiras foram utilizadas para garantir a integridade referencial entre as tabelas. Elas impedem que sejam registrados pagamentos para pedidos inexistentes, compras sem fornecedores cadastrados ou movimentações de estoque vinculadas a produtos inexistentes.
-
-Relacionamentos
-
-O banco de dados utiliza relacionamentos de um para muitos (1:N) e muitos para muitos (N:N).
-
-- Um fornecedor pode possuir várias compras.
-- Um pedido pode possuir vários produtos.
-- Um produto pode aparecer em vários pedidos.
-- Uma compra pode possuir vários produtos.
-- Um produto pode participar de várias compras.
-- Um produto pode possuir várias movimentações de estoque.
-- Um pedido pode possuir um pagamento, conforme a restrição UNIQUE aplicada em Pagamento.
-
-As tabelas Contem e Adquire foram criadas para representar os relacionamentos entre pedidos, produtos, compras e produtos, armazenando também quantidades e preços unitários.
-
-Restrições de integridade
-
-Foram utilizadas restrições "NOT NULL", "UNIQUE", "CHECK" e "FOREIGN KEY" para manter a consistência dos dados.
-
-Essas regras impedem, por exemplo, quantidades negativas, preços abaixo de zero, modalidades de pagamento não permitidas e registros com relacionamentos inválidos.
-
-Decisões de arquitetura
-
-O banco foi desenvolvido utilizando MySQL 8.0.16 ou superior e o mecanismo InnoDB, que oferece suporte a transações e chaves estrangeiras.
-
-Também foram criados índices para facilitar consultas por datas e relacionamentos. A tabela Despesa foi adicionada como uma extensão para permitir o controle de obrigações financeiras pagas e pendentes, inclusive despesas que não estão relacionadas a compras.
-
-2. Implementação e auditoria
-
-O script SQL contempla a criação do banco de dados, das tabelas, das restrições de integridade e a inserção de dados fictícios para testes.
-
-Foram desenvolvidas consultas com "SELECT" e "JOIN", comandos "UPDATE" e "DELETE", além de consultas gerenciais e auditorias para verificar possíveis inconsistências.
-
-As auditorias A01 a A05 verificam regras relacionadas aos pagamentos, fornecedores, estoque e identificação dos pedidos. Já os diagnósticos D01 a D10 verificam situações como pedidos sem produtos, compras sem itens e divergências entre valores registrados.
-
-**Chaves primárias.** As sete tabelas correspondentes a entidades conceituais utilizam identificadores simples `INT`, que permitem referência estável aos registros. As tabelas `Contem` e `Adquire` utilizam PKs compostas, pois cada combinação identifica um item de pedido ou de compra no modelo adotado.
-
-**Chaves estrangeiras e relacionamentos.** As oito FKs preservam a integridade referencial entre pedidos/pagamentos, compras/fornecedores, produtos/movimentações, itens e origens de despesas. `Despesa.id_compra` é **opcional**: obrigações da categoria `compra` referenciam a compra correspondente; contas de energia e outras despesas operacionais podem não ter origem em `Compra`. O campo foi inserido somente no lógico, respeitando a distinção entre DER e modelo relacional. `Pagamento.id_pedido` será `UNIQUE` conforme a decisão RN15 de não dividir pagamentos; ainda é necessário distinguir pedidos concluídos e cancelados.
-
-**Restrições de integridade propostas para o SQL MySQL.**
-
-| Restrição | Aplicação | Fundamento / limite |
+| Tabela | Chave primária | Justificativa |
 |---|---|---|
-| `PRIMARY KEY` e `FOREIGN KEY` | Identificação e vínculos das nove tabelas | RN06, RN09 e relacionamentos do DER |
-| `NOT NULL` | Identificadores e campos obrigatórios | Evitar registros incompletos |
-| `UNIQUE(Pagamento.id_pedido)` | No máximo um pagamento por pedido | RN15; não garante pagamento em todo pedido |
-| `CHECK` de modalidade | Dinheiro, crédito, débito, vale-refeição ou Pix | RN01 |
-| `CHECK` de valores e quantidades | Valores não negativos; quantidades de itens positivas | RF03, RF07, RF11; não concilia estoque automaticamente |
-| `CHECK` condicional da entrega | Endereço válido quando `tipo_atendimento_pedido = 'entrega'` | RF02, RF13 |
-| `CHECK` de situação da despesa | `paga` exige data e forma; `pendente` não admite esses campos | Proposta de consistência financeira para P2/RF14 |
-| `CHECK` de origem da despesa | Categoria `compra` exige `id_compra`; `conta`/`outra` não exige vínculo | Evitar confundir despesa de compra e conta independente |
+| `Pedido` | `id_pedido` | Distingue cada operação comercial, independentemente de mesa, comanda ou cadastro de cliente (RN09). |
+| `Pagamento` | `id_pagamento` | Identifica o recebimento como registro próprio, permitindo armazenar forma, valor e data/hora; o vínculo com o pedido é definido separadamente. |
+| `Produto` | `id_produto` | Identifica de forma estável os produtos cadastrados, mesmo que nome, categoria ou preço atual sejam alterados. |
+| `Fornecedor` | `id_fornecedor` | Diferencia distribuidores e supermercados, evitando utilizar nomes comerciais mutáveis como identificadores. |
+| `Compra` | `id_compra` | Identifica cada aquisição, inclusive quando um fornecedor possui diversas compras em datas diferentes. |
+| `Movimentacao_Estoque` | `id_movimentacao` | Identifica cada evento de entrada ou saída, sem confundi-lo com o produto movimentado. |
+| `Despesa` | `id_despesa` | Identifica cada obrigação ou parcela, permitindo despesas vinculadas a compras e despesas independentes. |
+| `Contem` | (`id_pedido`, `id_produto`) | Identifica o produto dentro de um pedido e impede a repetição do mesmo par; quantidade e preço praticado pertencem à associação. |
+| `Adquire` | (`id_compra`, `id_produto`) | Identifica o produto dentro de uma compra e impede a repetição do mesmo par; quantidade e custo unitário pertencem à associação. |
 
-**Decisões arquiteturais.** `Despesa` foi separada de `Compra` para permitir várias parcelas por compra e obrigações sem compra, e de `Pagamento` porque o último registra **recebimentos** de pedidos, não desembolsos. Não há entidade `Venda` (o pedido representa a operação), `Cliente` ou `Funcionario` independente, conforme o escopo documentado. A representação monetária `FLOAT` do brModelo é convertida para `DECIMAL(12,2)` no script físico para evitar imprecisão em valores financeiros.
+As sete chaves simples foram definidas no SQL como `INT NOT NULL AUTO_INCREMENT`, enquanto as duas chaves compostas usam os identificadores das respectivas tabelas relacionadas. **Limitação da decisão:** nas associativas, o mesmo produto aparece no máximo uma vez por pedido ou compra; novas linhas independentes para o mesmo produto exigiriam outra estrutura de identificação.
 
-**Limites ainda não solucionados apenas pelo modelo:** RN07 (estoque mínimo configurável e alerta), RN08 (divergências de recebimentos), conciliação entre saldo cadastrado e movimentações, obrigatoriedade de pelo menos um item por pedido/compra, validação integral de regras RN14/RN16 e controle de acesso RNF04/RN20. O script corrigido encontra-se fora da `main` até ser incluído como arquivo `.sql`; a documentação dessas decisões não comprova sua execução no MySQL.
+#### Escolha e justificativa das chaves estrangeiras
+
+| FK (tabela de origem) | Referência | Justificativa e regra |
+|---|---|---|
+| `Pagamento.id_pedido` | `Pedido.id_pedido` | Associa o recebimento à operação comercial. É `NOT NULL` e `UNIQUE`, permitindo **no máximo um** pagamento por pedido (RN15); isso não obriga todo pedido a estar pago. |
+| `Compra.id_fornecedor` | `Fornecedor.id_fornecedor` | Exige fornecedor cadastrado para cada compra (RN06), sem duplicar seus dados cadastrais. |
+| `Movimentacao_Estoque.id_produto` | `Produto.id_produto` | Vincula cada entrada ou saída ao produto movimentado (RF11), permitindo consultar seu histórico. |
+| `Contem.id_pedido` | `Pedido.id_pedido` | Impede itens associados a pedidos inexistentes e compõe a PK da associação. |
+| `Contem.id_produto` | `Produto.id_produto` | Impede itens associados a produtos inexistentes e compõe a PK da associação (RF03). |
+| `Adquire.id_compra` | `Compra.id_compra` | Impede itens associados a compras inexistentes e compõe a PK da associação. |
+| `Adquire.id_produto` | `Produto.id_produto` | Impede itens associados a produtos inexistentes e compõe a PK da associação (RF07). |
+| `Despesa.id_compra` | `Compra.id_compra` | É **opcional**: despesas de compras referenciam sua origem, enquanto contas e outras despesas independentes não precisam de compra cadastrada (P2/RF14). |
+
+As FKs das tabelas `Pagamento`, `Compra`, `Movimentacao_Estoque`, `Contem` e `Adquire` exigem referências válidas. Em `Despesa`, `id_compra` admite `NULL`, conforme a natureza da obrigação. As relações conceituais N:N tornam-se duas ligações 1:N por tabela associativa. Para a relação `Compra`–`Despesa`, a FK permite várias despesas para a mesma compra, mas **não obriga** cada compra a possuir uma despesa. Para `Pedido`–`Pagamento`, a combinação de FK e `UNIQUE` não implementa, sozinha, a participação mínima obrigatória representada no DER; a regra operacional ainda deve ser conciliada com pedidos em preparo ou cancelados.
+
+#### Restrições de integridade e fundamentos
+
+| Recurso no SQL | Aplicação encontrada | Justificativa / alcance |
+|---|---|---|
+| `PRIMARY KEY`, `FOREIGN KEY` e `NOT NULL` | Identificadores, relações e campos obrigatórios | Preservar identificação e referências existentes, conforme RN06/RN09; não garantem automaticamente a existência de itens em todo pedido ou compra. |
+| `UNIQUE(Pagamento.id_pedido)` | Um registro de pagamento, no máximo, por pedido | Decisão RN15 de pagamento único; não valida por si só o momento da quitação. |
+| `CHECK` de modalidades | `Pagamento.forma_pagamento`: dinheiro, crédito, débito, vale-refeição ou Pix | Restringir as modalidades de **recebimento** à RN01; as formas de quitação de despesas têm validação diferente. |
+| `CHECK` de valores e quantidades | Preços e saldos cadastrais não negativos; quantidades de itens/movimentos positivas; `Despesa.valor_despesa > 0` | Evitar valores inválidos na própria linha; não atualizar automaticamente o estoque nem conferir totais entre tabelas. |
+| `CHECK` de tipo, status e texto | Tipo de atendimento, tipo de movimentação, campos não vazios e categorias de despesas | Restringir domínios documentados; `status_pedido` é validado como **não vazio**, sem uma lista completa de estados. |
+| `CHECK` de entrega | Endereço preenchido quando o pedido é de entrega | Atender parcialmente RF02/RF13; não verifica geograficamente a área prevista na RN03. |
+| `CHECK` de `Despesa` | `paga` exige data e modalidade; `pendente` exige ambas nulas; categoria `compra` exige vínculo com `Compra` | Distinguir obrigação pendente de desembolso realizado e evitar origem financeira contraditória (P2/RF14). |
+
+A integridade referencial das FKs do script impede vínculos com registros inexistentes; os índices declarados apoiam consultas por datas, produto e relações. Os campos monetários utilizam `DECIMAL(12,2)` no MySQL, em lugar do `FLOAT` exibido no brModelo, para representar valores decimais com precisão adequada ao contexto financeiro. O script adota `utf8mb4`, mecanismo `InnoDB` e MySQL **8.0.16+**, versão a partir da qual as restrições `CHECK` são efetivamente aplicadas.
+
+#### Decisões de modelagem e arquitetura
+
+- **`Pedido` representa a venda:** não foi criada tabela `Venda` independente, pois o modelo utiliza os itens de `Contem` e os recebimentos de `Pagamento` para representar a operação (P1).
+- **`Contem` e `Adquire` preservam dados históricos dos itens:** quantidade e preço unitário pertencem ao registro da associação, de modo que alterações no preço atual de `Produto` não reescrevam o valor praticado em pedidos anteriores.
+- **`Compra`, `Despesa` e `Pagamento` têm finalidades distintas:** `Compra` registra aquisições, `Despesa` registra obrigações financeiras pagas ou pendentes (inclusive sem compra) e `Pagamento` registra recebimentos de pedidos (P1/P2). Uma compra pode originar várias parcelas; pagamentos parciais de uma mesma parcela não foram modelados.
+- **`Movimentacao_Estoque` registra entradas e saídas:** seu `motivo_movimentacao` é textual e não constitui uma FK para `Pedido` ou `Compra`. O controle estruturado de ingredientes da cozinha permanece fora do escopo (RN10); o registro financeiro de gastos com ingredientes requer tratamento coerente com essa delimitação.
+- **Escopo sem cadastros independentes de `Cliente` e `Funcionario`:** segue as decisões documentadas, sem afirmar que a ausência dessas entidades implementa autenticação ou permissões (RN11/RNF04/RN20).
+
+#### Limitações que permanecem para validação
+
+O [script versionado](docs/script.sql) contém as operações de criação, carga, consulta, atualização, exclusão e auditoria, mas **ainda não há evidência de execução integral no MySQL Workbench**. As auditorias `A01`–`A05` e os diagnósticos `D01`–`D10` apoiam a conferência, sem substituir testes de rejeição de dados inválidos nem regras de negócio não implementadas.
+
+Permanecem incompletos: **RN07** (atributo de estoque mínimo e alerta), **RN08** (quantidades esperadas/recebidas e divergências), rastreabilidade da origem de movimentos, conciliação de saldos com estoque inicial, garantia de ao menos um item por pedido/compra, tratamento integral de cancelamentos/estornos (RN14), ofertas por dia (RN16) e controle de acesso (RNF04/RN20). Essas limitações são documentadas, não presumidas como resolvidas pela existência do SQL.
+
+---
 
 ### 1.6 Proposta de Arquitetura Analítica para BI e IA
 
@@ -990,44 +987,68 @@ As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento 
 
 ## 4. Massa de Dados
 
-A massa de dados da versão corrigida **ainda não versionada** é inteiramente **fictícia**, concebida para testar vendas, recebimentos, compras, contas, obrigações pendentes e movimentações do estoque. O SQL preparado contém **120 registros finais previstos** após `UPDATE` e `DELETE`, distribuídos por nove tabelas:
+A massa de dados **já está incluída** no arquivo [`docs/script.sql`](docs/script.sql), versionado na branch `main`, na etapa `INSERT INTO`. **Não há segundo arquivo de carga:** o mesmo script cria as tabelas, insere os registros fictícios e executa os exemplos de `SELECT`, `UPDATE` e `DELETE` previstos na seção 3. Nenhum registro representa observação real da operação do restaurante.
 
-| Tabela | Registros fictícios previstos |
-|---|---:|
-| `Pedido` | 14 |
-| `Pagamento` | 12 |
-| `Produto` | 10 |
-| `Compra` | 8 |
-| `Fornecedor` | 5 |
-| `Movimentacao_Estoque` | 16 |
-| `Contem` | 26 |
-| `Adquire` | 18 |
-| `Despesa` | 11 |
-| **Total** | **120** |
+#### Quantidades previstas por tabela
 
-Inclui pedidos concluídos, em preparo e cancelados; diferentes formas de recebimento; contas e parcelas pagas/pendentes; fornecedores sem compras; produtos com saldo zero; e dados em datas distintas. Essas situações apoiam consultas Gxx e Axx/Dxx, mas o teste definitivo no MySQL ainda precisa ser registrado.
+| Tabela | Registros finais previstos | Papel na demonstração |
+|---|---:|---|
+| `Pedido` | 14 | Pedidos presenciais e de entrega, concluídos, em preparo e cancelado |
+| `Pagamento` | 12 | Recebimentos em diferentes modalidades, associados aos pedidos com pagamento |
+| `Produto` | 10 | Cadastro com categorias, preços e saldos variados, incluindo um produto com estoque zero |
+| `Compra` | 8 | Aquisições em datas e fornecedores distintos |
+| `Fornecedor` | 5 | Distribuidores, supermercados e fornecedor cadastrado sem compras |
+| `Movimentacao_Estoque` | 16 | Exemplos de entradas e saídas em datas diferentes |
+| `Contem` | 26 | Itens dos pedidos, com quantidade e preço unitário praticado |
+| `Adquire` | 18 | Itens das compras, com quantidade e custo unitário |
+| `Despesa` | 11 | Obrigações de compras e contas independentes, pagas ou pendentes |
+| **Total** | **120** | **Contagem final esperada após o `UPDATE` e o `DELETE`** |
 
-**Justificativa e limite de volume:** segundo informação complementar repassada pelo integrante, o proprietário **não conseguiu afirmar uma média confiável de clientes ou pedidos** por dia, semana ou mês. Os volumes operacionais reais, portanto, **não foram quantificados** e não podem ser inferidos. Assim, o tamanho da massa demonstra relacionamentos, situações e variedade de processos, **não uma proporção estatística comprovada do movimento do restaurante**. Caso não seja possível obter números reais de referência, justificar o uso de dados sintéticos explicitamente como cenários simulados, sem atribuir médias fictícias à organização.
+O script também insere temporariamente um produto de teste (`id_produto = 99`) e o exclui por `DELETE`; ele **não integra os dez produtos finais**. A operação `UPDATE` modifica o status do pedido 4 e não altera a quantidade de linhas. A consulta de conferência ao final de `docs/script.sql` permite comparar as contagens obtidas com as previstas acima. **Esses números foram conferidos no texto do script, não por execução do banco.**
+
+#### Variedade e coerência dos cenários
+
+Os registros foram construídos para permitir consultas sobre **P1** (vendas e recebimentos), **P2** (compras, despesas e caixa) e **P3** (estoque). A massa contém, entre outros cenários, pedidos de entrega com endereço, pedido cancelado e pedido em preparo sem pagamento, modalidades dinheiro/crédito/débito/Pix/vale-refeição, obrigações `paga` e `pendente`, contas não vinculadas a `Compra` e fornecedores sem compras.
+
+Para testar preços históricos, o pedido 9 registra `preco_unitario_pedido = 8,50` para um produto cujo preço atual cadastrado é `9,00`. A carga inclui itens associados a pedidos e compras por meio de `Contem`/`Adquire`, e despesas vinculadas ou não a compras. As datas de vendas e compras fictícias concentram-se em **outubro de 2026**, havendo vencimentos de obrigações em novembro. As consultas `Gxx`, `Axx` e `Dxx` foram previstas para explorar essa variedade e verificar inconsistências.
+
+**Limites de coerência operacional:** as movimentações de estoque representam apenas parte do histórico; não existe saldo inicial documentado que permita reconstruir o saldo atual exclusivamente pela soma de entradas e saídas. A RN07 e a RN08 não estão integralmente modeladas, de modo que essa massa **não demonstra** alerta por estoque mínimo configurável nem o registro completo de divergências de recebimento.
+
+#### Justificativa do dimensionamento e origem dos dados
+
+O estabelecimento é descrito como de pequeno porte, e o integrante informou quatro funcionários, com pendência sobre a inclusão do proprietário nessa contagem. Conforme o [levantamento documentado](levantamento/levantamento.md), **o proprietário não conseguiu informar volumes verificáveis** de clientes, pedidos, entregas, compras ou produtos ativos. Portanto, **120 registros foram escolhidos como cenário didático de pequena escala**, suficiente para ilustrar as nove tabelas, os relacionamentos e diferentes situações de operação; **não há fundamento para afirmar equivalência proporcional ao movimento real**. A quantidade de registros por tabela é uma decisão de demonstração e deverá ser comparada a volumes reais caso a organização consiga fornecê-los.
+
+Todos os nomes de fornecedores usados na massa, endereços de entrega, valores, datas e movimentações são **fictícios**. A origem e os limites de eventuais sugestões de IA para a massa devem permanecer documentados na seção 6, sem atribuir dados sintéticos à entrevista.
+
+#### Conferência necessária antes da entrega
+
+É preciso executar o arquivo completo **somente em uma base MySQL de testes**, começando pela criação das tabelas, registrar o resultado da consulta final de contagens, demonstrar resultados relevantes das consultas `Jxx`/`Gxx` e verificar as auditorias `Axx`/`Dxx`. O próprio script usa `DROP TABLE IF EXISTS` e pode apagar dados existentes da base selecionada. **A disponibilização do SQL e a contagem textual não comprovam execução, retorno não vazio das consultas gerenciais nem ausência efetiva de inconsistências.**
 
 ---
 
 ## 5. Repositório GitHub
 
-Este repositório reúne os artefatos da Entrega 2; o professor avaliará exclusivamente o conteúdo da branch `main`. Os links abaixo apontam apenas para arquivos efetivamente existentes nesta branch.
+O **`README.md` da raiz da branch `main` é o Relatório Técnico Final**, conforme o Esqueleto da Entrega 2. Os demais arquivos permanecem em seus próprios caminhos e estão vinculados abaixo. O inventário foi conferido na `main` desta revisão; a presença do arquivo não equivale à aprovação de seu conteúdo ou à execução do SQL.
 
-| Artefato exigido | Localização | Situação atual |
+| Artefato exigido ou de apoio | Localização na `main` | Situação verificada / pendência |
 |---|---|---|
-| Relatório Técnico Final | [README.md](README.md) | Estrutura 1.1–1.6 e 2–7 atualizada para sete entidades e nove tabelas |
-| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 9 tabelas, 46 colunas, incluindo Despesa e Origina; PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
-| DER conceitual | [docs/imagens/DER_entrega_02.png](docs/imagens/DER_entrega_02.png) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
-| Modelo lógico | [docs/imagens/modelo_logico_02.png](docs/imagens/modelo_logico_02.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
-| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Entrevista com Ceará em 07/09/2026; respostas, equipe e fotos referenciadas; volumes reais desconhecidos e validação financeira pendente |
-| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Respostas e quatro fotos da visita existentes; cardápio semanal visível em Image04.jpeg; equipe identificada no README/issue #1 |
-| Script SQL MySQL | Arquivo `.sql` a adicionar e vincular | **Pendente na `main`**; arquivo corrigido foi elaborado fora do repositório |
-| Massa de dados fictícia | Integrada ao futuro arquivo SQL | **Pendente na `main`**; previsão de 120 registros na proposta corrigida |
-| Apresentação final | Arquivo e link a inserir | Pendente |
+| Relatório Técnico Final | [`README.md`](README.md) | Presente na raiz, organizado nas seções exigidas; questões de modelagem e comprovação ainda registradas. |
+| Dicionário de Dados HTML | [`dicionario_dados_conceitual.html`](dicionario_dados_conceitual.html) | Arquivo presente, com nove tabelas descritas, incluindo `Despesa`; a compatibilidade final de cada campo e restrição deve ser conferida com `docs/script.sql`. |
+| DER conceitual | [`docs/imagens/DER_entrega_02.png`](docs/imagens/DER_entrega_02.png) | Presente; inclui `Despesa` e o relacionamento `Origina`. `Contem`/`Adquire` permanecem relacionamentos N:N, por decisão do grupo; seus atributos de quantidade/preço não estão desenhados nos losangos, ressalva de notação já documentada. |
+| Modelo lógico relacional | [`docs/imagens/modelo_logico_02.png`](docs/imagens/modelo_logico_02.png) | Presente; documenta nove tabelas. As limitações de representação gráfica das cardinalidades e as regras físicas pretendidas são explicadas nas seções 1.2, 1.3 e 2. |
+| Script SQL completo (MySQL) | **[`docs/script.sql`](docs/script.sql)** | **Presente na `main`**: criação, restrições, carga, `JOIN`, `UPDATE`, `DELETE`, gerenciais `G01`–`G16`, auditorias `A01`–`A05` e diagnósticos `D01`–`D10`. Execução integral ainda não comprovada. |
+| Massa de dados fictícia | [`docs/script.sql`](docs/script.sql) — `INSERT INTO` | **Incluída no próprio SQL**; são previstos 120 registros finais, sujeitos à conferência por execução. Não há arquivo de massa separado. |
+| Levantamento organizado | [`levantamento/levantamento.md`](levantamento/levantamento.md) | Documenta processos, entrevista e origem das informações; volumes operacionais reais continuam indisponíveis. |
+| Fontes do levantamento | [`levantamento/fontes/`](levantamento/fontes/) | Contém perguntas e respostas, confirmações documentais e transcrição do cardápio. |
+| Evidências da visita | [`levantamento/evidencias.md`](levantamento/evidencias.md) e [`docs/imagens/`](docs/imagens/) | Quatro fotos JPEG da visita (`Image01.jpeg`–`Image04.jpeg`) e índice descritivo presentes; não há identificação comprovada do entrevistado nas fotos, segundo a correção da Entrega 1. |
+| Fluxograma | [`docs/imagens/fluxograma.jpeg`](docs/imagens/fluxograma.jpeg) | Arquivo complementar presente, vinculado na seção 1.1. |
+| Apresentação corporativa final | Sem arquivo correspondente na `main` | **Pendente:** produzir e vincular a apresentação de acordo com a seção 7 do esqueleto. |
 
-Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável. **O entrevistado foi Ceará, proprietário que se apresenta por esse nome; a entrevista foi realizada.** A data é **07/09/2026**, conforme confirmação do integrante; participantes do projeto e fotos da visita já estão registrados nas fontes indicadas. Horário, presença individual e identidade das pessoas fotografadas não são deduzidos. Permanecem as validações de modelagem e SQL.
+**Evidências do estabelecimento e rastreabilidade.** A [documentação do levantamento](levantamento/levantamento.md) registra a entrevista em **07/09/2026** com **Ceará**, proprietário que se identifica por esse nome, conforme confirmação do integrante. Os quatro membros do projeto estão identificados na seção Integrantes; o registro não especifica quem esteve pessoalmente na entrevista nem seu horário. As quatro fotografias documentam a visita; o [índice de evidências](levantamento/evidencias.md) distingue o que elas mostram do que não comprovam. A extensão `.jpeg` identifica imagens no formato JPEG, enquanto o esqueleto menciona arquivos JPG/PNG: confirmar eventual exigência literal de extensão antes da submissão, sem alterar ou apagar as fotos originais.
+
+**Histórico de colaboração.** A avaliação considera a `main` e o histórico de commits. A equipe deve conferir se as contribuições são identificáveis por integrante e se a distribuição de trabalho está registrada de maneira compatível com os critérios do esqueleto; a mera existência de commits não comprova participação equilibrada.
+
+**Verificações finais ainda necessárias:** confirmar a execução integral de `docs/script.sql` em MySQL e anexar evidências dos resultados; conferir dicionário e diagramas contra a versão física; tratar os limites RN07/RN08/RN14/RN16; obter, se possível, números operacionais reais para fundamentar a escala de dados; e adicionar a apresentação final. Registros de uso de IA devem ser mantidos na seção 6, com prompts, respostas, verificações e correções efetivamente realizadas.
 
 ---
 
