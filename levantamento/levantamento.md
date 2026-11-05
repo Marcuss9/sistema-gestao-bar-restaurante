@@ -1,6 +1,6 @@
 # Levantamento — Bar e Restaurante Esquina dos Amigos
 
-Revisão documental inicial: 28/10/2026; consolidação de decisões do integrante: 02/11/2026. Este texto organiza as fontes e **não substitui validação de campo**. As decisões de sistema são diferenciadas das informações relatadas sobre a rotina atual.
+Revisão documental inicial: 28/10/2026; decisões complementares de 02/11/2026; esclarecimento do integrante sobre a entrevista em 04/11/2026. **A entrevista com Ceará, proprietário, foi realizada** e suas respostas constam em F01. Este texto organiza as fontes e separa o relato do estabelecimento das decisões posteriores do projeto. Metadados e foto específica são requisitos adicionais de comprovação, não condição para reconhecer a entrevista realizada.
 
 ## 1. Fontes e situação
 
@@ -15,7 +15,7 @@ Revisão documental inicial: 28/10/2026; consolidação de decisões do integran
 
 ## 2. Organização e porte
 
-O Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial com aproximadamente vinte anos de funcionamento. O README informa endereço na R. Inês Monteiro, 157, São Paulo/SP. Em 02/11/2026, o integrante identificou o **proprietário** pelo apelido **“Ceará”**, sem informar o nome civil. Não há evidência documental suficiente para afirmar quem participou da entrevista. Endereço e telefone do estabelecimento estão no README.
+O Bar e Restaurante Esquina dos Amigos é um estabelecimento comercial com aproximadamente vinte anos de funcionamento. O README registra endereço na R. Inês Monteiro, 157, São Paulo/SP. **O proprietário se identifica como Ceará e foi entrevistado**, conforme esclarecimento do integrante em 04/11/2026. As respostas estão em [perguntas e respostas](fontes/perguntas-e-respostas.txt). Não se deve tratá-lo como não identificado por ausência de outro nome civil. O endereço e o telefone comercial estão no README.
 
 As anotações originais informam três funcionários; o README anterior registra quatro pessoas incluindo o proprietário. **Em 02/11/2026, o integrante informou quatro funcionários**; esse é o dado complementar adotado, mas resta esclarecer com o responsável se inclui o proprietário. Todos podem executar as tarefas demandadas, sem funções fixas.
 
@@ -28,15 +28,15 @@ O integrante esclareceu em 02/11/2026 que **não dispõe de volumes operacionais
 | Metadado | Situação |
 |---|---|
 | Data e horário da entrevista | Não informados nas fontes |
-| Proprietário / entrevistado | O proprietário é conhecido como “Ceará”, sem nome civil informado; ainda não foi comprovada a identidade de quem respondeu à entrevista |
+| Entrevistado | **Ceará**, proprietário e nome pelo qual se identifica; entrevista realizada, com respostas registradas em F01 |
 | Integrantes presentes | Não informados |
-| Local exato da entrevista | O trabalho relata visita ao estabelecimento; confirmar onde ocorreu a entrevista |
+| Local exato da entrevista | Entrevista realizada no levantamento do estabelecimento; endereço comercial conhecido, mas local exato da conversa não consta de F01 |
 | Vínculo dos integrantes com a organização | Não informado |
 | Foto da entrevista | Pendente; a avaliação informa que as fotos existentes não mostram o responsável |
 
 ### Informações relatadas
 
-A síntese operacional nas seções seguintes deriva de F01 e das complementações identificadas em F02. Não é transcrição de áudio e não registra uma nova visita.
+A síntese operacional nas seções seguintes deriva da **entrevista realizada com Ceará**, registrada em F01, e das complementações do integrante identificadas em F02. Trata-se de anotações escritas, não transcrição de áudio; as decisões posteriores não configuram uma segunda entrevista.
 
 ### Observação presencial
 
@@ -123,8 +123,8 @@ A presença das RN17–RN20 não certifica conformidade do estabelecimento nem i
 
 ## 7. Pendências para retorno ao responsável
 
-1. Validar com o responsável os quatro funcionários informados pelo integrante, incluindo se o proprietário integra a contagem. Identificar formalmente quem concedeu a entrevista; o proprietário foi referido apenas pelo apelido “Ceará” e seu nome civil é desconhecido.
-2. Obter comprovação específica da entrevista no local e identificar achados observados.
+1. **Entrevista e identificação já estabelecidas:** o entrevistado é **Ceará**, proprietário que se identifica por esse nome. Complementar, se disponíveis, data/horário, participantes e local exato da conversa, que não constam das anotações. Esclarecer se os quatro funcionários informados incluem o proprietário.
+2. Localizar ou acrescentar a foto específica da entrevista solicitada pelo esqueleto, além de distinguir o que foi relatado do que foi observado. Essa lacuna fotográfica não significa que a entrevista registrada em F01 não ocorreu.
 3. Registrar que os volumes reais são **desconhecidos**; não usar a hipótese descartada de 12 pedidos/hora como dado observado. Se não for possível obter números, justificar a massa fictícia com cenários de demonstração, sem atribuir escala operacional real.
 4. Conferir a duplicidade de sexta-feira no cardápio F03 (Peixe e Rabada), o significado de “COM.”, data de vigência dos preços e horários de oferta; definir com a equipe como modelar modalidades e dias. Confirmar também unidades de estoque.
 5. Validar com o responsável a decisão de pagamento no ato e único (RN15), definir o momento exato da cobrança e tratamento de cancelamento antes do preparo (RN14), sem confundir com a exceção de pedido errado.
