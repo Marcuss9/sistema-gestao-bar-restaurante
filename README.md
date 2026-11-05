@@ -87,7 +87,7 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
 * **Proprietário e responsável entrevistado: Ceará.** Ele se identifica por esse nome, conforme esclarecimento do integrante em 04/11/2026. As respostas da entrevista realizada estão em [perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt); não se presume outro nome civil.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a comprovação da entrevista ainda estão pendentes. O cardápio semanal fornecido nesta revisão foi [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md), mas **a imagem original do cardápio ainda não foi incluída nesta branch**. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
+**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a **fotografia específica exigida como evidência complementar** ainda estão pendentes; a entrevista em si foi realizada com Ceará e documentada em anotações. O cardápio semanal fornecido nesta revisão foi [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md), mas **a imagem original do cardápio ainda não foi incluída nesta branch**. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
 
 ##### Relato da entrevista e fontes do levantamento
 
@@ -1067,6 +1067,19 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Resposta produzida | Inclusão das nove colunas de Despesa no HTML, incluindo FK opcional de Compra, regras de quitação e despesas pendentes, relacionamento Origina, fluxos, índices e rastreabilidade; esclarecimento sobre impossibilidade de quantificar clientes |
 | Limites e validação | Não foi inferido número de clientes nem percentual de movimento; tipos VARCHAR físicos e CHECK condicionais permanecem propostas, não DDL executado. README preserva ausência de script SQL na main |
 | Reflexão crítica | A informação do proprietário foi repassada pelo integrante, sem transcrição direta de entrevista; a concordância entre documentação e modelo lógico deve ser novamente conferida após a versão final do SQL |
+
+---
+
+### Correção da identificação do responsável e do relato da entrevista — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — retificação documental de interpretação anterior |
+| Esclarecimento do integrante | “Ele literalmente se identifica como Ceará”; “A entrevista foi feita também” |
+| Correção adotada | Registrar **Ceará** como nome de identificação do proprietário e responsável entrevistado; declarar que a entrevista foi realizada e está documentada em `levantamento/fontes/perguntas-e-respostas.txt` |
+| Trecho anterior rejeitado | Tratar ausência de nome civil ou fotografia específica como ausência de identificação ou entrevista não confirmada |
+| Limitação conservada | Data, participantes, local exato e foto específica não identificados nos materiais disponíveis; a ausência desses metadados não invalida o relato da entrevista |
+| Reflexão crítica | É necessário distinguir **realização da entrevista**, **identidade usada pelo entrevistado** e **comprovação documental adicional** exigida pelo enunciado |
 
 ---
 
