@@ -1083,6 +1083,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ---
 
+### Apoio do ChatGPT à documentação da normalização — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| **Ferramenta e etapa** | ChatGPT — apoio à explicação do processo de normalização do banco de dados, considerando a Primeira, Segunda e Terceira Formas Normais (1FN, 2FN e 3FN). |
+| **Motivação** | Compreender e descrever de maneira clara como o modelo lógico do Bar e Restaurante Esquina dos Amigos evita grupos repetitivos, dependências parciais e dependências transitivas, utilizando exemplos das tabelas do projeto. |
+| **Prompt sugerido (exemplo ilustrativo, não transcrição literal)** | “Estou documentando a normalização do banco de dados do Bar e Restaurante Esquina dos Amigos. O modelo possui nove tabelas: Pedido, Pagamento, Produto, Compra, Fornecedor, Movimentacao_Estoque, Despesa, Contem e Adquire. Com base nas chaves e atributos descritos no meu documento, me ajude a explicar, de forma simples e aplicada ao projeto, como as tabelas atendem à 1FN, à 2FN e à 3FN. Use exemplos de itens de pedidos e compras, dependências funcionais e separação de dados de fornecedores e produtos. Não invente tabelas anteriores nem altere o modelo.” |
+| **Resposta possível da IA (exemplo ilustrativo)** | “Na **1FN**, os itens de pedidos e compras são representados em registros individuais nas tabelas `Contem` e `Adquire`, evitando listas de produtos em uma única coluna. Na **2FN**, os atributos `quantidade_pedido` e `preco_unitario_pedido` dependem da chave composta (`id_pedido`, `id_produto`), enquanto `quantidade_comprada` e `preco_unitario_compra` dependem de (`id_compra`, `id_produto`). Na **3FN**, dados como `nome_fornecedor` e `tipo_fornecedor` ficam em `Fornecedor`, sem serem repetidos em `Compra`; o mesmo ocorre com os dados cadastrais de `Produto`, separados de `Movimentacao_Estoque`. Com base nas dependências documentadas, a estrutura busca reduzir redundâncias e anomalias de atualização, inserção e exclusão.” |
+| **Fontes consultadas e verificadas** | Estrutura, atributos, chaves e exemplos apresentados no `README.md` da branch `main` e requisitos de normalização do Esqueleto da Entrega 2. O README também cita o material didático da disciplina como referência teórica; não se atribui à IA uma verificação independente desse material. |
+| **Trechos rejeitados ou corrigidos** | A explicação foi limitada às tabelas e dependências descritas no projeto. Exemplos de estruturas não normalizadas foram tratados como situações hipotéticas, sem afirmar que o grupo chegou a criar uma tabela universal anterior. Não foram propostas novas entidades nem mudanças na modelagem. |
+| **Justificativa da escolha final** | Utilizar exemplos do próprio banco para fundamentar a aplicação de 1FN, 2FN e 3FN, mantendo a estrutura relacional adotada pelo grupo e a distinção entre explicações teóricas e decisões efetivas de modelagem. |
+| **Reflexão crítica** | A IA pode facilitar a compreensão das formas normais e a redação de exemplos, mas a conclusão sobre normalização depende das chaves e dependências funcionais efetivamente válidas. A explicação não substitui a validação técnica do modelo e das regras de negócio. |
+
+---
+
 ## 7. Apresentação Corporativa Final
 
 **Pendente — apresentação do grupo.** Preparar um pitch de **8 minutos**, com slides de leitura visual clara, na ordem exigida:
