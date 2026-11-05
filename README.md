@@ -956,13 +956,35 @@ Nas tabelas associativas, as FKs também compõem as PKs. O `id_compra` de `Desp
 
 ## 3. Script SQL Completo
 
-**Arquivo `.sql` ainda não adicionado à branch `main`.** A versão corrigida preparada para a Entrega 2 foi projetada para **MySQL 8.0.16+**, com **9 tabelas, 8 FKs** e a nova tabela `Despesa`. Para cumprir o esqueleto, o arquivo deve ser versionado no repositório (preferencialmente `docs/script.sql`) e vinculado aqui somente quando esse caminho existir.
+O script completo da Entrega 2 está disponível na branch `main`, no arquivo **[docs/script.sql](docs/script.sql)**. O arquivo utiliza sintaxe de **MySQL 8.0.16 ou superior**, com tabelas `InnoDB` e codificação `utf8mb4`. A presença do arquivo no repositório foi confirmada; **sua execução integral no MySQL Workbench ainda não foi comprovada por testes nesta revisão**.
 
-**Estrutura prevista do script, na ordem do esqueleto:** `CREATE DATABASE`, `CREATE TABLE`, constraints, `INSERT INTO`, `SELECT` com `JOIN`, `UPDATE`, `DELETE`, consultas gerenciais e de auditoria. O arquivo corrigido em preparação contém **J01–J03** (junções), **G01–G12** (gerenciais), **A01–A05** (auditoria vinculada a RNxx) e **D01–D10** (diagnósticos complementares associados a requisitos/consistência).
+**Organização e conteúdo do script, seguindo a ordem lógica exigida pelo esqueleto:**
 
-**Função da nova tabela:** `Despesa` contém `id_despesa` (PK), `id_compra` (FK opcional), categoria, descrição, valor, vencimento, status, data de pagamento e forma de pagamento. A categoria `compra` exige um vínculo com `Compra`; as categorias `conta` e `outra` representam despesas independentes. A regra de `paga` exige data e modalidade; `pendente` não tem esses campos preenchidos.
+| Ordem | Elemento obrigatório | Implementação encontrada em `docs/script.sql` |
+|---|---|---|
+| 1 | `CREATE DATABASE` | Criação da base `esquina_dos_amigos` e seleção com `USE` |
+| 2 | `CREATE TABLE` | Criação das nove tabelas: `Pedido`, `Pagamento`, `Produto`, `Compra`, `Fornecedor`, `Movimentacao_Estoque`, `Contem`, `Adquire` e `Despesa` |
+| 3 | Restrições de integridade | Nove chaves primárias (sete simples e duas compostas), oito chaves estrangeiras, `NOT NULL`, `UNIQUE`, `CHECK` e índices, definidos nas instruções de criação das tabelas |
+| 4 | `INSERT INTO` | Massa inteiramente fictícia, com **120 registros finais previstos**, distribuídos pelas nove tabelas, após os exemplos de `UPDATE` e `DELETE` |
+| 5 | `SELECT` com `JOIN` | Consultas `J01`–`J03`: itens dos pedidos, compras por fornecedor e pagamentos associados a pedidos |
+| 6 | `UPDATE` | Atualização de um pedido fictício (`id_pedido = 4`) de `em_preparo` para `concluido` |
+| 7 | `DELETE` | Inserção e exclusão demonstrativa de um produto temporário (`id_produto = 99`), sem vínculos com outras tabelas |
+| 8 | Consultas gerenciais | `G01`–`G16`, com perguntas e vínculos a problemas/requisitos documentados |
+| 9 | Consultas de auditoria | `A01`–`A05`, associadas às RN01, RN06, RN13, RN15 e RN09; além dos diagnósticos complementares `D01`–`D10` |
 
-**Restrições e validações pendentes:** o script apaga tabelas de um **banco de teste** antes de recriá-las; não deve ser executado em um banco com dados reais. O grupo deve testá-lo integralmente no MySQL Workbench a partir de banco vazio, verificar as contagens e as consultas e documentar evidências de execução. A criação do diagrama e o preparo do texto SQL **não comprovam** sua execução.
+**Consultas gerenciais e rastreabilidade.** As consultas `G01`–`G12` são as referências principais da análise gerencial documentada na seção 1.6. As consultas `G13`–`G16` são complementares e não substituem os códigos anteriores. As consultas abordam:
+
+- **P1 — Vendas e recebimentos:** totais recebidos, modalidades de pagamento, itens vendidos, ticket médio e pedidos concluídos, entre outras análises (`G01`, `G02`, `G05`, `G07`, `G09`, `G13`, `G15`, `G16`).
+- **P2 — Compras e fluxo financeiro:** valores adquiridos, obrigações pagas e pendentes, saídas por categoria e fluxo diário de entradas e saídas (`G03`, `G08`–`G12`, `G14`).
+- **P3 — Estoque:** produtos com saldo zero e histórico agregado de entradas e saídas (`G04` e `G06`). **`G04` não implementa o alerta por estoque mínimo da RN07**, pois esse atributo ainda não está no modelo.
+
+As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento (RN01), identificação do fornecedor (RN06), saldos negativos (RN13, proposta), pedidos concluídos sem pagamento (RN15, decisão do projeto) e identificação única de pedidos (RN09). Os diagnósticos `D01`–`D10` complementam a conferência de itens obrigatórios, endereços de entrega, quantidades, totais e obrigações, mas **não devem ser apresentados como regras de negócio `RNxx` já validadas quando ainda não possuem esse vínculo**.
+
+**Decisões de integridade e limites da implementação.** `Pagamento.id_pedido` possui `UNIQUE`, limitando a um pagamento por pedido sem obrigar, por si só, a existência de pagamento para todos os pedidos. `Despesa.id_compra` é uma FK opcional: despesas da categoria `compra` exigem compra vinculada, enquanto `conta` e `outra` não possuem essa referência. Restrições `CHECK` tratam domínios, valores e a coerência entre situação, data e modalidade de quitação da despesa. Ainda dependem de complementação a RN07 (estoque mínimo e alerta), a RN08 (divergências no recebimento), a conciliação de estoque com saldo inicial e a garantia de pelo menos um item por pedido/compra. A simples existência de consultas de auditoria não prova o cumprimento dessas regras.
+
+**Massa de dados e execução.** Os registros são **simulados**, não representam volumes, valores ou resultados observados no restaurante. O arquivo contém verificações de contagem e indica como resultados esperados 120 linhas após as operações demonstrativas, além de consultas de auditoria/diagnóstico sem ocorrências. Esses resultados **ainda precisam ser confirmados mediante execução integral no MySQL**, com registro de evidências; não são apresentados como testes já realizados.
+
+**Atenção ao ambiente de testes:** antes do `CREATE TABLE`, o script executa `DROP TABLE IF EXISTS` para as nove tabelas, apagando seus dados caso já existam na base selecionada. **Executar somente em banco de testes, nunca sobre dados reais ou ambiente de produção.**
 
 ---
 
