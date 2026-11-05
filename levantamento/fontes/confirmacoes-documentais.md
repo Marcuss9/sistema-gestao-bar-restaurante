@@ -32,10 +32,19 @@ Fonte: informações fornecidas pelo integrante nas conversas de revisão docume
 | Volumes | “Os volumes nao da pra saber.” | **Nenhuma média real de pedidos, compras, vendas ou entregas está disponível.** Descartar a hipótese anterior de 12 pedidos/hora para caracterização |
 | RN16 — cardápio semanal | Imagem de cardápio anexada pelo integrante nesta conversa | Fonte transcrita em [cardapio-semanal-transcricao.md](cardapio-semanal-transcricao.md). A imagem apresenta segunda a sábado, **duas entradas de sexta-feira** e colunas PF/COM.; vigência, significado de COM. e erro gráfico ainda incertos |
 
-Estas decisões deverão ser refletidas em RF/RN e revisadas pelos responsáveis pelos modelos e SQL. **Não foram implantadas nem confirmadas em entrevista.** A transcrição não substitui o arquivo original do cardápio, que ainda precisa ser incluído no repositório como evidência.
+Estas decisões deverão ser refletidas em RF/RN e revisadas pelos responsáveis pelos modelos e SQL. **Não foram implantadas nem confirmadas em entrevista.** O cardápio transcrito está visível na fotografia já versionada [Image04.jpeg](../../docs/imagens/Image04.jpeg), conforme conferência visual nesta auditoria.
 
 A adoção do limite de dez minutos não define raio em quilômetros nem uma integração de mapas. Os demais dados desconhecidos permanecem pendentes no levantamento.
 
 ## Esclarecimento sobre a entrevista — 04/11/2026
 
-O integrante confirmou que **Ceará é o nome com o qual o proprietário se apresenta** e que a **entrevista foi realizada com ele**. As respostas coletadas estão preservadas em [perguntas-e-respostas.txt](perguntas-e-respostas.txt). A falta de data, lista de participantes ou fotografia específica nos registros disponíveis é uma pendência de comprovação documental, **não ausência de entrevista**. Não foram criados nome civil, datas ou participantes por suposição.
+O integrante confirmou que **Ceará é o nome com o qual o proprietário se apresenta** e que a **entrevista foi realizada com ele**. As respostas coletadas estão preservadas em [perguntas-e-respostas.txt](perguntas-e-respostas.txt). A auditoria posterior retifica a afirmação de ausência genérica de data, participantes e fotos: a data foi confirmada pelo integrante e a equipe e as imagens já estavam no repositório, conforme registro abaixo.
+
+## Auditoria das fontes e confirmação da data — 04/11/2026
+
+- **Data da entrevista: 07/09/2026.** Fonte: confirmação expressa do integrante na solicitação desta revisão, que informa “data 07/09/2026”. A data não está escrita em `perguntas-e-respostas.txt` e não foi deduzida de metadados de imagem ou de commits.
+- **Entrevistado: Ceará, proprietário**, nome pelo qual se identifica, conforme esclarecimento anterior do integrante. F01 preserva as respostas.
+- **Participantes do projeto já identificados:** Cauã Francisco Gomes da Silva, João Pedro Liberato de Oliveira, Marcus Vinicius dos Santos Cruz e João Vitor Gonçalves de Oliveira. Fontes: [README, seção Integrantes](../../README.md#integrantes), com RGM/GitHub, e [issue #1, Integrantes](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1). A presença individual de cada integrante em 07/09 não é discriminada nesses registros; não se transforma a composição conhecida da equipe em lista de presença presumida.
+- **Fotos já existentes:** [Image01.jpeg](../../docs/imagens/Image01.jpeg), [Image02.jpeg](../../docs/imagens/Image02.jpeg), [Image03.jpeg](../../docs/imagens/Image03.jpeg) e [Image04.jpeg](../../docs/imagens/Image04.jpeg), também vinculadas no README. A issue #1, critério 3.2, reconhece “visita presencial com fotos no repositório” e observa que nenhuma mostra Ceará. A inspeção visual identifica em Image04 o levantamento no balcão, notebook e o mesmo cardápio semanal transcrito. Isso corrige a declaração de que faltava uma imagem do cardápio no repositório. Não se afirma que o anexo da conversa e a fotografia sejam o mesmo arquivo binário.
+
+O horário, a autoria das fotos e a identificação nominal das pessoas fotografadas não foram comprovados. Isso não torna a entrevista, a equipe ou o conjunto fotográfico inexistentes. A extensão `.jpeg` corresponde ao formato JPEG e não prova inadequação do arquivo por si só.

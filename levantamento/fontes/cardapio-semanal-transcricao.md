@@ -1,6 +1,6 @@
 # Transcrição do cardápio semanal — Esquina dos Amigos
 
-**Origem:** imagem de cardápio semanal fornecida pelo integrante em 02/11/2026 na conversa de revisão documental. A imagem original foi anexada à conversa, **mas não foi adicionada como arquivo binário ao repositório nesta revisão**; este documento é apenas uma transcrição textual. Data de publicação e período de vigência do cardápio não informados. A fonte não comprova vendas realizadas nem frequência dos pedidos.
+**Origem:** imagem de cardápio semanal fornecida pelo integrante em 02/11/2026 na conversa de revisão documental. O mesmo cardápio semanal já está fotografado em [Image04.jpeg](../../docs/imagens/Image04.jpeg), no balcão do estabelecimento, conforme inspeção visual desta auditoria: sete entradas, duas sextas-feiras e colunas PF/COM. O anexo da conversa e a foto não foram declarados arquivos binários idênticos; este documento preserva a transcrição textual. Data de publicação e período de vigência do cardápio não informados. A fonte não comprova vendas realizadas nem frequência dos pedidos.
 
 ## Pratos, acompanhamentos e valores
 
@@ -20,7 +20,7 @@
 2. As colunas são literalmente **“PF”** e **“COM.”**. O significado comercial de “COM.” e a diferença entre as modalidades não foram explicitados na imagem; não inferir quantidade, peso ou formato.
 3. O cardápio documenta oferta anunciada por dia e preço impresso, **não comprova prática efetiva, atualização de preço, disponibilidade permanente ou horário da oferta**.
 4. O modelo lógico atual tem apenas um `preco_venda_produto` por Produto e não possui campos explícitos para dia de disponibilidade ou modalidade PF/COM. A equipe técnica deve decidir como representar variantes e dias (por exemplo, produtos distintos ou evolução da modelagem), sem considerar automaticamente implementada a RN16.
-5. Para tornar a imagem uma evidência rastreável no repositório, o grupo ainda deve adicionar o **arquivo original do cardápio** em `docs/imagens/` ou outro caminho de evidências e vinculá-lo aqui. A transcrição não substitui a fotografia.
+5. **Evidência fotográfica já versionada:** [docs/imagens/Image04.jpeg](../../docs/imagens/Image04.jpeg). O cardápio semanal está visível no primeiro plano; não há pendência de inexistência de fotografia desse cardápio.
 
 ## Aplicação documental
 

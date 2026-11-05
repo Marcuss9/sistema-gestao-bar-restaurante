@@ -1,14 +1,14 @@
 # Levantamento — Bar e Restaurante Esquina dos Amigos
 
-Revisão documental inicial: 28/10/2026; decisões complementares de 02/11/2026; esclarecimento do integrante sobre a entrevista em 04/11/2026. **A entrevista com Ceará, proprietário, foi realizada** e suas respostas constam em F01. Este texto organiza as fontes e separa o relato do estabelecimento das decisões posteriores do projeto. Metadados e foto específica são requisitos adicionais de comprovação, não condição para reconhecer a entrevista realizada.
+Revisão documental inicial: 28/10/2026; decisões complementares de 02/11/2026; esclarecimento do integrante sobre a entrevista em 04/11/2026. **A entrevista com Ceará, proprietário, foi realizada** e suas respostas constam em F01. Este texto organiza as fontes e separa o relato do estabelecimento das decisões posteriores do projeto. A data **07/09/2026** foi confirmada pelo integrante. A equipe já está identificada no README/issue #1 e as quatro fotos da visita já pertencem ao repositório; ver o índice de evidências.
 
 ## 1. Fontes e situação
 
 | Fonte | Uso e limite |
 |---|---|
-| [F01 — Anotações originais](fontes/perguntas-e-respostas.txt) | Material fornecido pelo integrante como anexo “Perguntas e respostas”; preservado sem reescrita. Data de coleta e autoria não informadas |
-| [F02 — Confirmações e decisões complementares](fontes/confirmacoes-documentais.md) | Informações fornecidas pelo integrante em 28/10 e 02/11/2026; não equivalem a nova entrevista com o restaurante |
-| [F03 — Cardápio semanal transcrito](fontes/cardapio-semanal-transcricao.md) | Transcrição de imagem anexada pelo integrante à conversa em 02/11/2026, com pratos, acompanhamentos, preços e limites de interpretação; a imagem original ainda não foi versionada no repositório |
+| [F01 — Anotações originais](fontes/perguntas-e-respostas.txt) | Material fornecido pelo integrante como anexo “Perguntas e respostas”; preservado sem reescrita. Data da entrevista: 07/09/2026, confirmada posteriormente pelo integrante em F02; autoria individual não discriminada |
+| [F02 — Confirmações e decisões complementares](fontes/confirmacoes-documentais.md) | Informações fornecidas pelo integrante em 28/10, 02/11 e 04/11/2026; não equivalem a nova entrevista com o restaurante |
+| [F03 — Cardápio semanal transcrito](fontes/cardapio-semanal-transcricao.md) | Transcrição de imagem anexada pelo integrante à conversa em 02/11/2026, com pratos, acompanhamentos, preços e limites de interpretação; o mesmo cardápio está fotografado em [Image04.jpeg](../docs/imagens/Image04.jpeg) |
 | [README da E1](../README.md) | Documento anterior do grupo, com informações adicionais e decisões de modelagem; não resolve sozinho divergências com F01 |
 | [Avaliação da E1, issue #1](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1) | Correção do professor e descrição das evidências existentes |
 | Esqueleto 00-d_Esqueleto_Entrega_2.md | Anexo da atividade usado para conferir exigências; não comprova fatos sobre o restaurante |
@@ -27,12 +27,12 @@ O integrante esclareceu em 02/11/2026 que **não dispõe de volumes operacionais
 
 | Metadado | Situação |
 |---|---|
-| Data e horário da entrevista | Não informados nas fontes |
+| Data e horário da entrevista | **07/09/2026**, confirmação do integrante em F02; horário não informado |
 | Entrevistado | **Ceará**, proprietário e nome pelo qual se identifica; entrevista realizada, com respostas registradas em F01 |
-| Integrantes presentes | Não informados |
-| Local exato da entrevista | Entrevista realizada no levantamento do estabelecimento; endereço comercial conhecido, mas local exato da conversa não consta de F01 |
+| Participantes do projeto | Cauã Francisco Gomes da Silva; João Pedro Liberato de Oliveira; Marcus Vinicius dos Santos Cruz; João Vitor Gonçalves de Oliveira. Fonte: [README, Integrantes](../README.md#integrantes) e issue #1; não há discriminação de presença individual na entrevista |
+| Local do levantamento | Estabelecimento na R. Inês Monteiro, 157; visita presencial reconhecida na issue #1 e fotografada em Image01.jpeg–Image04.jpeg |
 | Vínculo dos integrantes com a organização | Não informado |
-| Foto da entrevista | Pendente; a avaliação informa que as fotos existentes não mostram o responsável |
+| Fotos do levantamento | **Existentes:** Image01.jpeg–Image04.jpeg; Image04 mostra notebook e cardápio no balcão. A issue #1 observa que Ceará não aparece identificado nas fotos |
 
 ### Informações relatadas
 
@@ -78,7 +78,7 @@ A RN10 foi **reafirmada em 02/11/2026**: ingredientes da cozinha **não serão c
 
 São anotados gastos de fornecedores, supermercados e contas do estabelecimento. O relato indica fechamento mensal com uso de extratos e gastos anotados, sem vendas individualizadas por dia.
 
-Não se pode afirmar que o modelo atual resolve toda a movimentação financeira: contas e datas de desembolso não estão plenamente representadas. Também não se pode apresentar a diferença entre recebimentos e gastos como lucro apurado sem levantamento dos componentes necessários. A observação de F01 sobre bebidas alcoólicas é percepção relatada, sem cálculo de margem demonstrado.
+Não se pode afirmar que o modelo atual resolve toda a movimentação financeira: `Despesa` já representa contas, vencimento e quitação no modelo lógico e no dicionário; procedimentos reais e implementação SQL ainda não foram validados. Também não se pode apresentar a diferença entre recebimentos e gastos como lucro apurado sem levantamento dos componentes necessários. A observação de F01 sobre bebidas alcoólicas é percepção relatada, sem cálculo de margem demonstrado.
 
 ### 4.7 Pedido errado
 
@@ -88,11 +88,11 @@ F01 informa duas alternativas: funcionários consomem o prato errado e o estabel
 
 | Problema | Processos e RF | Pendência técnica |
 |---|---|---|
-| P1 — Ausência de registro individual das vendas e visão dos recebimentos diários | 4.1 e 4.3; RF02–RF06 | Quantidade/preço por item e consultas Gxx |
-| P2 — Entradas e saídas dispersas em papel e extratos | 4.3, 4.4 e 4.6; RF07 e RF14 | Contas, desembolsos e consultas por período |
+| P1 — Ausência de registro individual das vendas e visão dos recebimentos diários | 4.1 e 4.3; RF02–RF06 | Quantidade/preço já estão em Contem no lógico; faltam atributos no DER e SQL/consultas Gxx versionados e testados |
+| P2 — Entradas e saídas dispersas em papel e extratos | 4.3, 4.4 e 4.6; RF07 e RF14 | Despesa já está no lógico/dicionário; faltam validação operacional e SQL/consultas por período |
 | P3 — Estoque/reposição visual | 4.4 e 4.5; RF09–RF12 | Incorporar estoque mínimo e alertas (RN07); unidades, saldo inicial, origem das movimentações e consultas de estoque |
 
-Os vínculos finais com tabelas e consultas Gxx/Axx devem ser preenchidos com os responsáveis pelo modelo lógico e SQL. Esta tabela não afirma que essas consultas existem.
+Os vínculos com tabelas e consultas propostas já estão na seção 1.6 do README; a comprovação das consultas Gxx/Axx depende do SQL versionado e testado. Esta tabela não afirma que essas consultas existem.
 
 ## 6. Origem e situação das RN01–RN20
 
@@ -123,8 +123,8 @@ A presença das RN17–RN20 não certifica conformidade do estabelecimento nem i
 
 ## 7. Pendências para retorno ao responsável
 
-1. **Entrevista e identificação já estabelecidas:** o entrevistado é **Ceará**, proprietário que se identifica por esse nome. Complementar, se disponíveis, data/horário, participantes e local exato da conversa, que não constam das anotações. Esclarecer se os quatro funcionários informados incluem o proprietário.
-2. Localizar ou acrescentar a foto específica da entrevista solicitada pelo esqueleto, além de distinguir o que foi relatado do que foi observado. Essa lacuna fotográfica não significa que a entrevista registrada em F01 não ocorreu.
+1. **Entrevista e identificação já estabelecidas:** o entrevistado é **Ceará**, proprietário que se identifica por esse nome. A data é **07/09/2026** (F02); equipe e fotos estão documentadas no README/issue #1 e no índice de evidências. Horário e presença individual não foram inferidos. Esclarecer se os quatro funcionários informados incluem o proprietário.
+2. Preservar as quatro fotos já existentes, com as descrições do índice de evidências, distinguindo o que foi relatado do que foi observado. Não há ausência de fotografias; a identificação nominal de Ceará nas imagens não está comprovada.
 3. Registrar que os volumes reais são **desconhecidos**; não usar a hipótese descartada de 12 pedidos/hora como dado observado. Se não for possível obter números, justificar a massa fictícia com cenários de demonstração, sem atribuir escala operacional real.
 4. Conferir a duplicidade de sexta-feira no cardápio F03 (Peixe e Rabada), o significado de “COM.”, data de vigência dos preços e horários de oferta; definir com a equipe como modelar modalidades e dias. Confirmar também unidades de estoque.
 5. Validar com o responsável a decisão de pagamento no ato e único (RN15), definir o momento exato da cobrança e tratamento de cancelamento antes do preparo (RN14), sem confundir com a exceção de pedido errado.
