@@ -23,7 +23,7 @@ Esta seção apresenta a revisão da **mesma organização real utilizada na Ent
 
 **Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
 
-**Situação:** os diagramas publicados nesta branch incluem a entidade conceitual `Despesa` e a nona tabela homônima no modelo lógico, ligada a `Compra` pelo relacionamento `Origina`. `Contem` e `Adquire` permanecem relacionamentos N:N no DER sem seus atributos desenhados por decisão do grupo, o que diverge da orientação do Esqueleto 2; no lógico, são tabelas associativas com quantidade e preço. O dicionário HTML já cobre as nove tabelas; o SQL ainda precisa ser versionado e testado no MySQL. **A entrevista com Ceará, proprietário, foi realizada e documentada nas perguntas e respostas originais.** Permanecem apenas lacunas de metadados/evidência fotográfica específica da entrevista, volumes reais não quantificados pelo proprietário, estoque mínimo (RN07), recebimentos (RN08) e validação da operação financeira.
+**Situação:** os diagramas publicados nesta branch incluem a entidade conceitual `Despesa` e a nona tabela homônima no modelo lógico, ligada a `Compra` pelo relacionamento `Origina`. `Contem` e `Adquire` permanecem relacionamentos N:N no DER sem seus atributos desenhados por decisão do grupo, o que diverge da orientação do Esqueleto 2; no lógico, são tabelas associativas com quantidade e preço. O dicionário HTML já cobre as nove tabelas; o SQL ainda precisa ser versionado e testado no MySQL. **A entrevista com Ceará, proprietário, foi realizada e documentada nas perguntas e respostas originais.** A entrevista ocorreu em **07/09/2026**, conforme confirmação do integrante. A equipe está identificada na seção Integrantes e as quatro fotos da visita já estão em `docs/imagens/`, reconhecidas na issue #1. Permanecem limitações de volumes reais não quantificados pelo proprietário, estoque mínimo (RN07), recebimentos (RN08) e validação da operação financeira.
 
 #### Caracterização da Organização
 
@@ -87,21 +87,21 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
 * **Proprietário e responsável entrevistado: Ceará.** Ele se identifica por esse nome, conforme esclarecimento do integrante em 04/11/2026. As respostas da entrevista realizada estão em [perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt); não se presume outro nome civil.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-**Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a **fotografia específica exigida como evidência complementar** ainda estão pendentes; a entrevista em si foi realizada com Ceará e documentada em anotações. O cardápio semanal fornecido nesta revisão foi [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md), mas **a imagem original do cardápio ainda não foi incluída nesta branch**. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
+**Evidências existentes e alcance:** `Image01.jpeg` mostra a fachada; `Image02.jpeg`, o cardápio físico; `Image03.jpeg`, o consumo à mesa; e `Image04.jpeg`, o levantamento no balcão com notebook e cardápio semanal. A [issue #1, critério 3.2](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1) reconhece a visita presencial com fotos e observa que nenhuma mostra Ceará. As fotos já estão disponíveis em formato JPEG; a extensão `.jpeg` não constitui ausência de evidência. O cardápio semanal [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md) também está visível em `Image04.jpeg`. Ver [fontes e limites da conferência](levantamento/evidencias.md).
 
 ##### Relato da entrevista e fontes do levantamento
 
-A **entrevista com Ceará, proprietário do restaurante, foi realizada**, conforme esclarecimento do integrante em 04/11/2026. Suas respostas foram documentadas nas [anotações originais de perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt). O [levantamento organizado](levantamento/levantamento.md) sintetiza esse material, as [complementações posteriores](levantamento/fontes/confirmacoes-documentais.md) e o [cardápio semanal transcrito](levantamento/fontes/cardapio-semanal-transcricao.md). As decisões posteriores discutidas com o integrante não constituem uma segunda entrevista.
+A **entrevista com Ceará, proprietário do restaurante, foi realizada em 07/09/2026**, conforme confirmação expressa do integrante nesta revisão documental de 04/11/2026. Suas respostas foram documentadas nas [anotações originais de perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt). O [levantamento organizado](levantamento/levantamento.md) sintetiza esse material, as [complementações posteriores](levantamento/fontes/confirmacoes-documentais.md) e o [cardápio semanal transcrito](levantamento/fontes/cardapio-semanal-transcricao.md). As decisões posteriores discutidas com o integrante não constituem uma segunda entrevista.
 
-| Informação exigida | Registro comprovável e pendência |
+| Informação | Registro e fonte |
 |---|---|
 | Proprietário e entrevistado | **Ceará**, nome pelo qual se apresenta e é identificado; entrevista realizada e respostas registradas em `levantamento/fontes/perguntas-e-respostas.txt` |
 | Contato do responsável | Telefone comercial informado na caracterização; contato específico a confirmar |
-| Data e horário | Não informados nas fontes |
-| Local da entrevista | A entrevista foi realizada como parte do levantamento do estabelecimento; local exato e data não constam das anotações disponibilizadas |
-| Integrantes presentes | A confirmar |
+| Data e horário | **07/09/2026**, conforme confirmação expressa do integrante registrada em [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md); horário não informado |
+| Local da entrevista | Levantamento presencial do estabelecimento, na R. Inês Monteiro, 157; visita reconhecida na issue #1 e documentada em `Image01.jpeg`–`Image04.jpeg` |
+| Participantes do projeto | Cauã Francisco Gomes da Silva; João Pedro Liberato de Oliveira; Marcus Vinicius dos Santos Cruz; João Vitor Gonçalves de Oliveira; nomes, RGMs e usuários na seção Integrantes e nomes na issue #1. Esses registros identificam a equipe; não discriminam a presença individual em 07/09/2026 |
 | Vínculo de integrante com o estabelecimento | A declarar, se houver |
-| Evidência fotográfica da entrevista | **Pendente**; as fotos disponíveis não mostram o responsável segundo a Issue #1 |
+| Evidência fotográfica do levantamento | **Existente:** `docs/imagens/Image01.jpeg` a `Image04.jpeg`, já vinculadas acima; `Image04.jpeg` mostra o registro no balcão. Não se identifica Ceará nas imagens, conforme observação da issue #1 |
 
 **Informações relatadas:** registro de pedidos em papel e comunicação verbal com a cozinha; ausência de mesa/comanda; estoque acompanhado visualmente; anotações de gastos e contas; compras com distribuidores e supermercados; entrega local e pagamento pelo cliente de transporte solicitado por aplicativo; tratamento de pedidos errados. O conteúdo detalhado, organizado por processo e com seus limites, está no levantamento Markdown.
 
@@ -109,7 +109,7 @@ A **entrevista com Ceará, proprietário do restaurante, foi realizada**, confor
 
 **Confirmações após a Entrega 1:** um integrante confirmou em 28/10/2026 o aceite de vale-refeição, a ausência de frete próprio e que o cliente solicita e paga o transporte por aplicativo. O limite de até dez minutos a pé é **estimativa adotada como critério do projeto**, não uma medição ou confirmação formal do responsável.
 
-**Complementações documentais da entrevista já realizada:** registrar data e horário, integrantes presentes, local exato, contato utilizado e foto específica da entrevista exigida pelo enunciado, se disponíveis. O responsável **já está identificado como Ceará**, nome com que se apresenta. Os **volumes reais de clientes e pedidos não puderam ser informados com segurança pelo proprietário**; isso é uma limitação do levantamento, não indício de entrevista não realizada. Não atribuir médias artificiais à organização.
+**Documentação da entrevista já realizada:** data **07/09/2026** confirmada pelo integrante; equipe identificada na seção Integrantes e na issue #1; fotos da visita já versionadas em `docs/imagens/Image01.jpeg`–`Image04.jpeg`. A entrevista realizada, a equipe identificada e as fotos existentes são reconhecidas nas respectivas fontes. Horário, presença individual e identificação das pessoas nas fotos não são inferidos. O responsável **já está identificado como Ceará**, nome com que se apresenta. Os **volumes reais de clientes e pedidos não puderam ser informados com segurança pelo proprietário**; isso é uma limitação do levantamento, não indício de entrevista não realizada. Não atribuir médias artificiais à organização.
 
 ##### Tratamento dos apontamentos da Entrega 1
 
@@ -125,9 +125,9 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 | **Pedido–Pagamento 1:1 impede pagamento dividido** | **Decisão de projeto RN15:** pagamento único no ato, sem fiado nem divisão; a FK `Pagamento.id_pedido` deverá ser `UNIQUE` no MySQL, mas isso não obriga todo pedido a estar pago | Manter a cardinalidade máxima e distinguir pedidos cancelados/em preparo, conforme RN14, da conclusão com pagamento |
 | **Movimentações sem referência direta à origem** | **Pendente:** permanece `motivo_movimentacao` textual, sem FK para Pedido ou Compra | Rastreabilidade da operação pode exigir vínculos adicionais |
 | **Cobertura de despesas, contas e desembolsos** | **Revisão gráfica:** `Despesa` incluída no DER e no lógico, com `Origina` associado a `Compra` e campos de vencimento, situação e pagamento. O SQL corrigido correspondente ainda está fora do repositório | Diferenciar compras, obrigações a pagar e saídas efetivamente pagas para P2 |
-| **Documentação da entrevista e volumes operacionais** | **Entrevista realizada com Ceará**, respostas preservadas no arquivo de perguntas e respostas; metadados e foto específica ainda não identificados na documentação. O proprietário não conseguiu quantificar o movimento de clientes/pedidos | Distinguir a realização do levantamento da documentação fotográfica exigida e justificar a massa fictícia sem inventar médias |
+| **Documentação da entrevista e volumes operacionais** | **Entrevista realizada com Ceará**, respostas preservadas no arquivo de perguntas e respostas; data 07/09/2026 confirmada pelo integrante, equipe identificada no README e na issue #1 e quatro fotos da visita já versionadas. O proprietário não conseguiu quantificar o movimento de clientes/pedidos | Distinguir a realização do levantamento da documentação fotográfica exigida e justificar a massa fictícia sem inventar médias |
 
-**Resultado:** o DER e o lógico foram atualizados com `Despesa`; o grupo decidiu manter `Contem` e `Adquire` apenas como **relacionamentos** no conceitual (e **tabelas** no lógico). Os atributos de quantidade e preço, ausentes dos losangos, permanecem uma **diferença em relação ao Esqueleto 2**, registrada sem afirmar atendimento integral. O dicionário, o SQL versionado e as evidências ainda requerem conclusão e validação.
+**Resultado:** o DER e o lógico foram atualizados com `Despesa`; o grupo decidiu manter `Contem` e `Adquire` apenas como **relacionamentos** no conceitual (e **tabelas** no lógico). Os atributos de quantidade e preço, ausentes dos losangos, permanecem uma **diferença em relação ao Esqueleto 2**, registrada sem afirmar atendimento integral. O dicionário já cobre nove tabelas; o SQL ainda precisa ser versionado e validado. As evidências existentes estão indexadas em `levantamento/evidencias.md`.
 
 
 ---
@@ -952,15 +952,15 @@ Este repositório reúne os artefatos da Entrega 2; o professor avaliará exclus
 |---|---|---|
 | Relatório Técnico Final | [README.md](README.md) | Estrutura 1.1–1.6 e 2–7 atualizada para sete entidades e nove tabelas |
 | Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 9 tabelas, 46 colunas, incluindo Despesa e Origina; PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
-| DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
-| Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
-| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Entrevista com Ceará realizada e respostas documentadas; metadados/fotografia específica a complementar, volumes reais desconhecidos, validação financeira pendente |
-| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Respostas da entrevista existentes; a foto específica solicitada não foi identificada nas imagens disponíveis. Fotos atuais têm extensão `.jpeg` |
+| DER conceitual | [docs/imagens/DER_entrega_02.png](docs/imagens/DER_entrega_02.png) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
+| Modelo lógico | [docs/imagens/modelo_logico_02.png](docs/imagens/modelo_logico_02.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
+| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Entrevista com Ceará em 07/09/2026; respostas, equipe e fotos referenciadas; volumes reais desconhecidos e validação financeira pendente |
+| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Respostas e quatro fotos da visita existentes; cardápio semanal visível em Image04.jpeg; equipe identificada no README/issue #1 |
 | Script SQL MySQL | Arquivo `.sql` a adicionar e vincular | **Pendente na `main`**; arquivo corrigido foi elaborado fora do repositório |
 | Massa de dados fictícia | Integrada ao futuro arquivo SQL | **Pendente na `main`**; previsão de 120 registros na proposta corrigida |
 | Apresentação final | Arquivo e link a inserir | Pendente |
 
-Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável. **O entrevistado foi Ceará, proprietário que se apresenta por esse nome; a entrevista foi realizada.** Permanecem como documentação complementar data, participantes, local exato, contato específico (se exigido) e foto da entrevista no ambiente da organização, além de validações de modelagem e adequação das imagens existentes.
+Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável. **O entrevistado foi Ceará, proprietário que se apresenta por esse nome; a entrevista foi realizada.** A data é **07/09/2026**, conforme confirmação do integrante; participantes do projeto e fotos da visita já estão registrados nas fontes indicadas. Horário, presença individual e identidade das pessoas fotografadas não são deduzidos. Permanecem as validações de modelagem e SQL.
 
 ---
 
@@ -1078,7 +1078,7 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Esclarecimento do integrante | “Ele literalmente se identifica como Ceará”; “A entrevista foi feita também” |
 | Correção adotada | Registrar **Ceará** como nome de identificação do proprietário e responsável entrevistado; declarar que a entrevista foi realizada e está documentada em `levantamento/fontes/perguntas-e-respostas.txt` |
 | Trecho anterior rejeitado | Tratar ausência de nome civil ou fotografia específica como ausência de identificação ou entrevista não confirmada |
-| Limitação conservada | Data, participantes, local exato e foto específica não identificados nos materiais disponíveis; a ausência desses metadados não invalida o relato da entrevista |
+| Retificação após auditoria | Data 07/09/2026 confirmada pelo integrante; equipe identificada no README/issue #1 e fotos existentes em Image01.jpeg–Image04.jpeg. A declaração anterior de ausência genérica de participantes/fotos foi corrigida; não se infere presença individual nem identificação de Ceará nas fotos |
 | Reflexão crítica | É necessário distinguir **realização da entrevista**, **identidade usada pelo entrevistado** e **comprovação documental adicional** exigida pelo enunciado |
 
 ---
@@ -1095,6 +1095,21 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | **Trechos rejeitados ou corrigidos** | A explicação foi limitada às tabelas e dependências descritas no projeto. Exemplos de estruturas não normalizadas foram tratados como situações hipotéticas, sem afirmar que o grupo chegou a criar uma tabela universal anterior. Não foram propostas novas entidades nem mudanças na modelagem. |
 | **Justificativa da escolha final** | Utilizar exemplos do próprio banco para fundamentar a aplicação de 1FN, 2FN e 3FN, mantendo a estrutura relacional adotada pelo grupo e a distinção entre explicações teóricas e decisões efetivas de modelagem. |
 | **Reflexão crítica** | A IA pode facilitar a compreensão das formas normais e a redação de exemplos, mas a conclusão sobre normalização depende das chaves e dependências funcionais efetivamente válidas. A explicação não substitui a validação técnica do modelo e das regras de negócio. |
+
+---
+
+### Auditoria das fontes da entrevista — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | Codex — auditoria documental da main e PRs antes da correção |
+| Motivação | Corrigir afirmações contraditórias sobre entrevista, participantes, fotos e disponibilidade do cardápio |
+| Solicitação | Auditar primeiro README, levantamento, evidências, fontes, imagens e issues; registrar 07/09/2026 e Ceará; corrigir apenas erros comprovados e realizar squash em um único commit |
+| Resultado | Fontes exatas e limites registrados em levantamento/evidencias.md; correção dos links ativos dos diagramas e das afirmações de ausência de fotos/cardápio/equipe |
+| Fontes conferidas | Main b75afd758581568d406ca0b6e5d29a34e06830ef; PRs #4–#8; issue #1 e comentários; cinco documentos de levantamento/fontes; quatro fotos e dois diagramas; dicionário HTML |
+| Inferências rejeitadas | Deduzir presença individual a partir da equipe, identificar Ceará nas fotos, inferir horário ou tratar arquivo JPEG como foto ausente |
+| Escolha final | Data conforme confirmação do integrante; anotações, imagens, modelos, HTML e registros de IA dos colaboradores preservados |
+| Reflexão crítica | Evidência existente e limite de identificação devem ser descritos separadamente; a auditoria documental não comprova execução SQL nem aceitação da E2 |
 
 ---
 
