@@ -64,7 +64,7 @@ Entre as principais necessidades identificadas estão:
 * registrar movimentações de entrada e saída do estoque.
 
 **Volumes operacionais**
-As fontes originais informam aproximadamente 20 anos de funcionamento e o integrante informou **quatro funcionários**. Em 02/11/2026, o integrante esclareceu que **não dispõe de volumes operacionais verificáveis**: pedidos por dia/hora/semana, entregas e compras por período, produtos ativos e movimento real não foram quantificados. A hipótese anterior de 12 pedidos/hora **não será utilizada como dado do estabelecimento, nem como média ou pico informado pela organização**. Para a massa fictícia da Entrega 2, escolher cenários simulados e identificá-los explicitamente como tais, sem atribuí-los à entrevista.
+As fontes originais informam aproximadamente 20 anos de funcionamento e o integrante informou **quatro funcionários**. **Volume de clientes e movimento operacional:** segundo informação complementar transmitida pelo integrante responsável pelo levantamento em 04/11/2026, o proprietário do estabelecimento, conhecido como **“Ceará”**, **não conseguiu informar com segurança a média de clientes atendidos nem a quantidade de pedidos realizados por dia, semana ou mês**. Também não há volumes confirmados de entregas, compras por período ou produtos ativos. Assim, não existe volume real aferido ou estimado com confiabilidade para caracterizar o movimento do restaurante. A hipótese anterior de 12 pedidos/hora **não será utilizada como dado do estabelecimento**, nem como média ou pico atribuído à organização. Para a massa fictícia da Entrega 2, utilizar cenários simulados e identificá-los explicitamente como tais, sem atribuí-los à entrevista.
 
 **Escopo do sistema e abrangência da organização**
 O sistema proposto reúne cadastro e preços de produtos, pedidos presenciais e para entrega, composição dos pedidos, recebimentos, compras, fornecedores, movimentações de estoque e **obrigações financeiras** (`Despesa`: compras parceladas, contas e outros desembolsos). A venda é representada por Pedido e seus itens, sem entidade Venda separada. O modelo atual não dispõe de cadastros independentes de mesas/comandas, clientes ou funcionários, por decisões anteriores cuja justificativa ainda depende de validação.
@@ -118,7 +118,7 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 | Apontamento da correção da E1 | O que mudou no trabalho / situação | Por quê |
 |---|---|---|
 | **Critério 8 — regras de negócio** insuficientes e sem restrições legais, fiscais e sanitárias | **Revisão documental realizada:** RN13–RN20 acrescentadas, distinguindo práticas descritas, propostas e obrigações; validação de algumas regras continua pendente | Regras precisam ser verificáveis e relacionadas ao funcionamento e às obrigações aplicáveis |
-| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Parcial:** HTML existente detalha as 8 tabelas anteriores e 37 colunas, incluindo `Contem`/`Adquire`; a nova tabela `Despesa` (9 colunas) **ainda precisa entrar no arquivo HTML**, com suas restrições e relacionamentos | O dicionário físico final deve corresponder às 9 tabelas / 46 colunas da versão lógica, sem confundir proposta com SQL executado |
+| **Critério 9 — dicionário de dados** limitado a tabelas simples de atributos | **Atualização documental realizada:** HTML sincronizado com as **9 tabelas e 46 colunas** do modelo lógico, incluindo `Despesa` (9 colunas), PK/FK opcional, nulidade, domínios e CHECK propostos | As restrições do dicionário ainda precisam ser confrontadas com o SQL efetivamente versionado/testado; não se confundem com constraints implementadas |
 | **Critério 10 — Pedido–Produto N:N sem quantidade/preço por item** | **Parcial / decisão do grupo:** `Contem` permanece um losango N:N sem esses atributos no DER; `quantidade_pedido` e `preco_unitario_pedido` estão na tabela lógica `Contem` | A conversão física preserva os itens vendidos, mas a representação conceitual difere da notação de atributos dos relacionamentos prevista no Esqueleto 2 |
 | **Critério 10 — Compra–Produto N:N sem quantidade/preço por item** | **Parcial / decisão do grupo:** `Adquire` permanece um losango N:N sem esses atributos no DER; `quantidade_comprada` e `preco_unitario_compra` estão na tabela lógica `Adquire` | Preserva quantidade e custo no lógico, mas não representa esses atributos no losango conceitual conforme o esqueleto |
 | **Critério 5 — processos de cardápio, recebimento, contas e reposição parcialmente descritos** | **Parcial:** descrições ampliadas com base no levantamento; horários de pratos especiais, recebimentos parciais, pagamentos de contas e critérios de reposição seguem sem validação | Evitar inventar rotinas e reconhecer dados não cobertos pelo modelo |
@@ -332,7 +332,7 @@ Por decisões de escopo, a modelagem desta entrega não prevê cadastro independ
 
 #### Dicionário de Dados Conceitual
 
-Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.html). **Situação do arquivo atual:** documenta as 8 tabelas anteriores, com 37 colunas e restrições físicas propostas; **ainda não documenta a nona tabela `Despesa` e suas 9 colunas**. A versão final deverá conter **9 tabelas / 46 colunas**, incluindo as chaves, nulidade, domínios, `CHECK`, `UNIQUE`, valores padrão e referências de `Despesa`. Os valores monetários são representados como `FLOAT` no brModelo e deverão utilizar `DECIMAL(12,2)` no SQL MySQL. As tabelas abaixo sintetizam **as sete entidades conceituais** do novo DER; não substituem o dicionário HTML atualizado.
+Consulte o [Dicionário de Dados HTML da Entrega 2](dicionario_dados_conceitual.html), **atualizado para as 9 tabelas e 46 colunas** do modelo lógico vigente. A seção `Despesa` documenta suas 9 colunas, a FK opcional `id_compra`, nulidade, chaves, domínios, `CHECK` propostos, `UNIQUE` e ausência de valores padrão presumidos. Os valores monetários são representados como `FLOAT` no brModelo e descritos como `DECIMAL(12,2)` para o SQL MySQL. As tabelas abaixo sintetizam **as sete entidades conceituais** do DER; não substituem o dicionário HTML relacional. **Essa documentação não comprova a execução das restrições no banco.**
 
 
 ##### Produto
@@ -700,7 +700,7 @@ As PKs identificam cada registro. As chaves compostas de `Contem` e `Adquire` im
 
 As FKs de `Pagamento`, `Compra`, `Movimentacao_Estoque` e as componentes das PKs de `Contem`/`Adquire` são obrigatórias. **A FK `Despesa.id_compra` admite NULL** para contas e outras despesas independentes; para `categoria_despesa = 'compra'`, a implementação proposta exige referência válida a uma compra. A FK `Pagamento.id_pedido` requer ainda `UNIQUE` para implementar a cardinalidade máxima 1:1 da RN15, sem garantir sozinha pagamento obrigatório para pedidos concluídos.
 
-**Restrições complementares:** a lógica de situações e datas em `Despesa` (`paga` exige data e forma; `pendente` não as preenche), os valores positivos, o vínculo condicional da categoria `compra`, a existência de itens e a conferência dos totais devem ser especificados no dicionário e implementados/testados no MySQL. O HTML atual ainda precisa ser atualizado com a nona tabela.
+**Restrições complementares:** a lógica de situações e datas em `Despesa` (`paga` exige data e forma; `pendente` não as preenche), os valores positivos, o vínculo condicional da categoria `compra`, a existência de itens e a conferência dos totais **estão agora especificados como propostas no dicionário HTML** e ainda deverão ser implementados/testados no MySQL. O dicionário não substitui a validação de regras financeiras com a organização.
 
 ### 1.4 Processo de Normalização (1FN, 2FN e 3FN)
 
@@ -905,7 +905,7 @@ Nas tabelas associativas, as FKs também compõem as PKs. O `id_compra` de `Desp
 
 **Limitação do aplicativo:** a cardinalidade da ligação `Compra–Despesa` no modelo lógico foi mantida como o brModelo Web a gerou, pois o grupo informou que o aplicativo não permite ajustá-la manualmente. O desenho reflete a posição da FK, mas não codifica a sua nulidade opcional. A regra conceitual `Origina` está no DER e será implementada pela FK opcional no MySQL. Também para `Pedido–Pagamento`, a figura pode mostrar uma ligação 1:N, embora `UNIQUE` limite a associação a 1:1 na implementação.
 
-**Restrições de integridade adicionais** (`NOT NULL`, `UNIQUE`, `CHECK`, valores padrão e regras condicionais) não aparecem no modelo lógico gráfico. O [dicionário HTML](dicionario_dados_conceitual.html) precisa ser sincronizado com a nona tabela `Despesa`; o SQL corrigido precisa ser disponibilizado na `main` e testado antes de ser declarado implementado. Não foram incorporados aos diagramas, até aqui, o atributo de estoque mínimo (RN07) nem o registro completo de divergências no recebimento (RN08).
+**Restrições de integridade adicionais** (`NOT NULL`, `UNIQUE`, `CHECK`, valores padrão e regras condicionais) não aparecem no modelo lógico gráfico. O [dicionário HTML](dicionario_dados_conceitual.html) agora descreve as **9 tabelas**, incluindo a FK opcional de `Despesa` e seus CHECK condicionais propostos; o SQL corrigido ainda precisa ser disponibilizado na `main` e testado antes de ser declarado implementado. Não foram incorporados aos diagramas, até aqui, o atributo de estoque mínimo (RN07) nem o registro completo de divergências no recebimento (RN08).
 
 ---
 
@@ -940,7 +940,7 @@ A massa de dados da versão corrigida **ainda não versionada** é inteiramente 
 
 Inclui pedidos concluídos, em preparo e cancelados; diferentes formas de recebimento; contas e parcelas pagas/pendentes; fornecedores sem compras; produtos com saldo zero; e dados em datas distintas. Essas situações apoiam consultas Gxx e Axx/Dxx, mas o teste definitivo no MySQL ainda precisa ser registrado.
 
-**Justificativa e limite de volume:** os volumes operacionais reais **não foram informados** pelo responsável e não podem ser inferidos. Assim, o tamanho da massa demonstra relacionamentos, situações e variedade de processos, **não uma proporção estatística comprovada do movimento do restaurante**. Antes da avaliação, o grupo deverá obter números reais de referência se possível e justificar a escolha sem atribuir médias fictícias à organização, como orienta a seção 1.1 do Esqueleto 2.
+**Justificativa e limite de volume:** segundo informação complementar repassada pelo integrante, o proprietário **não conseguiu afirmar uma média confiável de clientes ou pedidos** por dia, semana ou mês. Os volumes operacionais reais, portanto, **não foram quantificados** e não podem ser inferidos. Assim, o tamanho da massa demonstra relacionamentos, situações e variedade de processos, **não uma proporção estatística comprovada do movimento do restaurante**. Caso não seja possível obter números reais de referência, justificar o uso de dados sintéticos explicitamente como cenários simulados, sem atribuir médias fictícias à organização.
 
 ---
 
@@ -951,7 +951,7 @@ Este repositório reúne os artefatos da Entrega 2; o professor avaliará exclus
 | Artefato exigido | Localização | Situação atual |
 |---|---|---|
 | Relatório Técnico Final | [README.md](README.md) | Estrutura 1.1–1.6 e 2–7 atualizada para sete entidades e nove tabelas |
-| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Desatualizado:** descreve 8 tabelas/37 colunas; faltam `Despesa`, sua FK opcional e suas restrições (total previsto 9/46) |
+| Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 9 tabelas, 46 colunas, incluindo Despesa e Origina; PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
 | DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
 | Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
 | Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Disponível, com limites de entrevista e volumes documentados; precisa incorporar eventual validação da nova modelagem financeira |
@@ -1054,6 +1054,19 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 | Resposta produzida | Atualização das seções 1.1–1.6 e 2–5 para sete entidades conceituais, nove tabelas lógicas, nova FK opcional, análise de normalização e rastreabilidade de P2 |
 | Correções, limites e escolha final | Não foram acrescentadas entidades `Contem`/`Adquire` ao DER nem alterada a cardinalidade gráfica automática do lógico. Foi registrada a divergência entre atributos não desenhados nos losangos e a orientação do esqueleto. O dicionário e o SQL ainda não foram alterados na `main` |
 | Reflexão crítica | A documentação não deve presumir teste de SQL, conclusão do dicionário ou confirmação das práticas financeiras em campo. A escolha gráfica do grupo pode não atender integralmente ao requisito de notação conceitual |
+
+---
+
+### Atualização do Dicionário de Despesas e esclarecimento dos volumes — 04/11/2026
+
+| Item | Registro |
+|---|---|
+| Ferramenta e etapa | ChatGPT — conferência da main, inclusão de Despesa no HTML e correção do relato de volumes no README |
+| Solicitação do integrante | “adiciona no dicionario html a parte de despesas, ja ta no readme certinho. Tb esclarecer no readme que o dono do estabelecimento não conseguia afirmar o volume de clientes. Faz isso e prepara pra mandar pra main, mas antes me mostre explicitamente, em texto, como q tu adicionou isso” |
+| Fontes verificadas | README atual (seções 1.1 a 2, incluindo nova entidade Despesa), dicionário HTML anterior e estado da main em 04/11/2026; esclarecimento do integrante sobre a informação do proprietário |
+| Resposta produzida | Inclusão das nove colunas de Despesa no HTML, incluindo FK opcional de Compra, regras de quitação e despesas pendentes, relacionamento Origina, fluxos, índices e rastreabilidade; esclarecimento sobre impossibilidade de quantificar clientes |
+| Limites e validação | Não foi inferido número de clientes nem percentual de movimento; tipos VARCHAR físicos e CHECK condicionais permanecem propostas, não DDL executado. README preserva ausência de script SQL na main |
+| Reflexão crítica | A informação do proprietário foi repassada pelo integrante, sem transcrição direta de entrevista; a concordância entre documentação e modelo lógico deve ser novamente conferida após a versão final do SQL |
 
 ---
 
