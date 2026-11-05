@@ -797,7 +797,53 @@ Por exemplo, uma alteração em `nome_fornecedor` ocorre em `Fornecedor`, sem ex
 Portanto, **o modelo lógico atual é compatível com a 1FN, a 2FN e a 3FN quanto às dependências funcionais analisadas**, mantendo sete tabelas provenientes das entidades conceituais e duas tabelas associativas. Não foi necessário criar novas tabelas exclusivamente para essa normalização. A verificação definitiva deverá considerar as regras de negócio ainda pendentes, as restrições implementadas no MySQL e os testes com os dados do sistema.
 
 ### 1.5 Justificativas Técnicas das Decisões
+ 1. Justificativa das decisões de banco de dados
 
+Chaves Primárias (PK)
+
+Foram utilizadas chaves primárias para identificar cada registro de forma única, evitando duplicidade e facilitando a consulta dos dados. Nas tabelas principais, foram utilizadas chaves do tipo "INT AUTO_INCREMENT", como em Pedido, Produto, Fornecedor, Pagamento, Compra e Despesa.
+
+Nas tabelas associativas Contem e Adquire, foram utilizadas chaves primárias compostas, formadas pelos identificadores dos dois registros relacionados. Essa escolha impede que o mesmo produto seja cadastrado duas vezes no mesmo pedido ou na mesma compra.
+
+Chaves Estrangeiras (FK)
+
+As chaves estrangeiras foram utilizadas para garantir a integridade referencial entre as tabelas. Elas impedem que sejam registrados pagamentos para pedidos inexistentes, compras sem fornecedores cadastrados ou movimentações de estoque vinculadas a produtos inexistentes.
+
+Relacionamentos
+
+O banco de dados utiliza relacionamentos de um para muitos (1:N) e muitos para muitos (N:N).
+
+- Um fornecedor pode possuir várias compras.
+- Um pedido pode possuir vários produtos.
+- Um produto pode aparecer em vários pedidos.
+- Uma compra pode possuir vários produtos.
+- Um produto pode participar de várias compras.
+- Um produto pode possuir várias movimentações de estoque.
+- Um pedido pode possuir um pagamento, conforme a restrição UNIQUE aplicada em Pagamento.
+
+As tabelas Contem e Adquire foram criadas para representar os relacionamentos entre pedidos, produtos, compras e produtos, armazenando também quantidades e preços unitários.
+
+Restrições de integridade
+
+Foram utilizadas restrições "NOT NULL", "UNIQUE", "CHECK" e "FOREIGN KEY" para manter a consistência dos dados.
+
+Essas regras impedem, por exemplo, quantidades negativas, preços abaixo de zero, modalidades de pagamento não permitidas e registros com relacionamentos inválidos.
+
+Decisões de arquitetura
+
+O banco foi desenvolvido utilizando MySQL 8.0.16 ou superior e o mecanismo InnoDB, que oferece suporte a transações e chaves estrangeiras.
+
+Também foram criados índices para facilitar consultas por datas e relacionamentos. A tabela Despesa foi adicionada como uma extensão para permitir o controle de obrigações financeiras pagas e pendentes, inclusive despesas que não estão relacionadas a compras.
+
+2. Implementação e auditoria
+
+O script SQL contempla a criação do banco de dados, das tabelas, das restrições de integridade e a inserção de dados fictícios para testes.
+
+Foram desenvolvidas consultas com "SELECT" e "JOIN", comandos "UPDATE" e "DELETE", além de consultas gerenciais e auditorias para verificar possíveis inconsistências.
+
+As auditorias A01 a A05 verificam regras relacionadas aos pagamentos, fornecedores, estoque e identificação dos pedidos. Já os diagnósticos D01 a D10 verificam situações como pedidos sem produtos, compras sem itens e divergências entre valores registrados.
+
+Observação: a tabela Despesa é uma extensão proposta e precisa ser incluída no DER, no modelo lógico e no dicionário de dados para manter a documentação alinhada ao banco implementado.
 **Chaves primárias.** As sete tabelas correspondentes a entidades conceituais utilizam identificadores simples `INT`, que permitem referência estável aos registros. As tabelas `Contem` e `Adquire` utilizam PKs compostas, pois cada combinação identifica um item de pedido ou de compra no modelo adotado.
 
 **Chaves estrangeiras e relacionamentos.** As oito FKs preservam a integridade referencial entre pedidos/pagamentos, compras/fornecedores, produtos/movimentações, itens e origens de despesas. `Despesa.id_compra` é **opcional**: obrigações da categoria `compra` referenciam a compra correspondente; contas de energia e outras despesas operacionais podem não ter origem em `Compra`. O campo foi inserido somente no lógico, respeitando a distinção entre DER e modelo relacional. `Pagamento.id_pedido` será `UNIQUE` conforme a decisão RN15 de não dividir pagamentos; ainda é necessário distinguir pedidos concluídos e cancelados.
