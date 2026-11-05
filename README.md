@@ -843,7 +843,6 @@ Foram desenvolvidas consultas com "SELECT" e "JOIN", comandos "UPDATE" e "DELETE
 
 As auditorias A01 a A05 verificam regras relacionadas aos pagamentos, fornecedores, estoque e identificação dos pedidos. Já os diagnósticos D01 a D10 verificam situações como pedidos sem produtos, compras sem itens e divergências entre valores registrados.
 
-Observação: a tabela Despesa é uma extensão proposta e precisa ser incluída no DER, no modelo lógico e no dicionário de dados para manter a documentação alinhada ao banco implementado.
 **Chaves primárias.** As sete tabelas correspondentes a entidades conceituais utilizam identificadores simples `INT`, que permitem referência estável aos registros. As tabelas `Contem` e `Adquire` utilizam PKs compostas, pois cada combinação identifica um item de pedido ou de compra no modelo adotado.
 
 **Chaves estrangeiras e relacionamentos.** As oito FKs preservam a integridade referencial entre pedidos/pagamentos, compras/fornecedores, produtos/movimentações, itens e origens de despesas. `Despesa.id_compra` é **opcional**: obrigações da categoria `compra` referenciam a compra correspondente; contas de energia e outras despesas operacionais podem não ter origem em `Compra`. O campo foi inserido somente no lógico, respeitando a distinção entre DER e modelo relacional. `Pagamento.id_pedido` será `UNIQUE` conforme a decisão RN15 de não dividir pagamentos; ainda é necessário distinguir pedidos concluídos e cancelados.
