@@ -23,7 +23,7 @@ Esta seção apresenta a revisão da **mesma organização real utilizada na Ent
 
 **Documentos de apoio:** [levantamento organizado](levantamento/levantamento.md), [evidências e pendências](levantamento/evidencias.md), [perguntas e respostas originais](levantamento/fontes/perguntas-e-respostas.txt), [confirmações documentais](levantamento/fontes/confirmacoes-documentais.md) e [dicionário de dados em HTML](dicionario_dados_conceitual.html).
 
-**Situação:** os diagramas publicados nesta branch foram atualizados para incluir a entidade conceitual `Despesa` e a nona tabela homônima no modelo lógico, ligada a `Compra` pelo relacionamento `Origina`. `Contem` e `Adquire` permanecem como **relacionamentos N:N** no DER (sem entidades conceituais homônimas e sem atributos próprios desenhados, por decisão do grupo), mas se transformam em **tabelas associativas com quantidade e preço unitário** no lógico. Essa opção deixa uma divergência explícita com a orientação do Esqueleto 2 sobre os atributos de relacionamentos. O dicionário HTML ainda documenta oito tabelas e precisa ser atualizado para incluir `Despesa`; o SQL revisado também ainda precisa ser versionado e validado no MySQL. Permanecem as pendências de entrevistas, evidências, volumes reais, estoque mínimo (RN07), conferência de recebimentos (RN08) e validação da operação financeira. A RN15 é decisão documental do projeto: pagamento único, no ato, sem fiado.
+**Situação:** os diagramas publicados nesta branch incluem a entidade conceitual `Despesa` e a nona tabela homônima no modelo lógico, ligada a `Compra` pelo relacionamento `Origina`. `Contem` e `Adquire` permanecem relacionamentos N:N no DER sem seus atributos desenhados por decisão do grupo, o que diverge da orientação do Esqueleto 2; no lógico, são tabelas associativas com quantidade e preço. O dicionário HTML já cobre as nove tabelas; o SQL ainda precisa ser versionado e testado no MySQL. **A entrevista com Ceará, proprietário, foi realizada e documentada nas perguntas e respostas originais.** Permanecem apenas lacunas de metadados/evidência fotográfica específica da entrevista, volumes reais não quantificados pelo proprietário, estoque mínimo (RN07), recebimentos (RN08) e validação da operação financeira.
 
 #### Caracterização da Organização
 
@@ -84,21 +84,21 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
   ![Fotos da visita](docs/imagens/Image04.jpeg)
 * Endereço: R. Inês Monteiro, 157 - Artur Alvim, São Paulo - SP, 03568-030
 * Telefone: (11) 98109-1622
-* Proprietário identificado somente pelo apelido **“Ceará”**, conforme informação complementar do integrante em 02/11/2026; **nome civil não informado**. Ainda falta comprovar se ele foi o entrevistado e registrar os metadados da entrevista.
+* **Proprietário e responsável entrevistado: Ceará.** Ele se identifica por esse nome, conforme esclarecimento do integrante em 04/11/2026. As respostas da entrevista realizada estão em [perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt); não se presume outro nome civil.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
 **Limites das evidências:** as quatro fotos existentes permanecem no repositório como arquivos `.jpeg`; o Esqueleto 2 solicita **JPG ou PNG** e **ao menos uma foto da entrevista no estabelecimento**. A adequação das extensões e a comprovação da entrevista ainda estão pendentes. O cardápio semanal fornecido nesta revisão foi [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md), mas **a imagem original do cardápio ainda não foi incluída nesta branch**. O telefone publicado acima é do estabelecimento; ainda não foi confirmado se é também o contato do responsável entrevistado. Também falta confirmar um link oficial de perfil da organização no Google, se existente.
 
 ##### Relato da entrevista e fontes do levantamento
 
-O [levantamento organizado](levantamento/levantamento.md) é o documento Markdown separado requerido pelo Esqueleto 2. Ele sintetiza as [anotações originais](levantamento/fontes/perguntas-e-respostas.txt), as [complementações de 28/10 e 02/11/2026](levantamento/fontes/confirmacoes-documentais.md) e a [transcrição do cardápio semanal fornecido pelo integrante](levantamento/fontes/cardapio-semanal-transcricao.md). O envio do cardápio e as informações do integrante não constituem nova entrevista com o restaurante.
+A **entrevista com Ceará, proprietário do restaurante, foi realizada**, conforme esclarecimento do integrante em 04/11/2026. Suas respostas foram documentadas nas [anotações originais de perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt). O [levantamento organizado](levantamento/levantamento.md) sintetiza esse material, as [complementações posteriores](levantamento/fontes/confirmacoes-documentais.md) e o [cardápio semanal transcrito](levantamento/fontes/cardapio-semanal-transcricao.md). As decisões posteriores discutidas com o integrante não constituem uma segunda entrevista.
 
 | Informação exigida | Registro comprovável e pendência |
 |---|---|
-| Proprietário / responsável | Conhecido pelo apelido **“Ceará”**, identificado como proprietário pelo integrante; nome completo desconhecido e condição de entrevistado a comprovar |
+| Proprietário e entrevistado | **Ceará**, nome pelo qual se apresenta e é identificado; entrevista realizada e respostas registradas em `levantamento/fontes/perguntas-e-respostas.txt` |
 | Contato do responsável | Telefone comercial informado na caracterização; contato específico a confirmar |
 | Data e horário | Não informados nas fontes |
-| Local da entrevista | Visita ao estabelecimento documentada, mas local e contexto exatos da entrevista a confirmar |
+| Local da entrevista | A entrevista foi realizada como parte do levantamento do estabelecimento; local exato e data não constam das anotações disponibilizadas |
 | Integrantes presentes | A confirmar |
 | Vínculo de integrante com o estabelecimento | A declarar, se houver |
 | Evidência fotográfica da entrevista | **Pendente**; as fotos disponíveis não mostram o responsável segundo a Issue #1 |
@@ -109,7 +109,7 @@ O [levantamento organizado](levantamento/levantamento.md) é o documento Markdow
 
 **Confirmações após a Entrega 1:** um integrante confirmou em 28/10/2026 o aceite de vale-refeição, a ausência de frete próprio e que o cliente solicita e paga o transporte por aplicativo. O limite de até dez minutos a pé é **estimativa adotada como critério do projeto**, não uma medição ou confirmação formal do responsável.
 
-**Pendências para completar a entrevista:** nome civil do proprietário/entrevistado, confirmação de quem participou da entrevista, telefone de contato, data, integrantes presentes, local, observações presenciais, eventual vínculo com o estabelecimento e foto da entrevista no local. **Volumes reais indisponíveis** foram registrados como limitação documental, sem números inferidos. Se for necessária nova visita, registrar data, participantes e alterações em relação à Entrega 1.
+**Complementações documentais da entrevista já realizada:** registrar data e horário, integrantes presentes, local exato, contato utilizado e foto específica da entrevista exigida pelo enunciado, se disponíveis. O responsável **já está identificado como Ceará**, nome com que se apresenta. Os **volumes reais de clientes e pedidos não puderam ser informados com segurança pelo proprietário**; isso é uma limitação do levantamento, não indício de entrevista não realizada. Não atribuir médias artificiais à organização.
 
 ##### Tratamento dos apontamentos da Entrega 1
 
@@ -125,7 +125,7 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 | **Pedido–Pagamento 1:1 impede pagamento dividido** | **Decisão de projeto RN15:** pagamento único no ato, sem fiado nem divisão; a FK `Pagamento.id_pedido` deverá ser `UNIQUE` no MySQL, mas isso não obriga todo pedido a estar pago | Manter a cardinalidade máxima e distinguir pedidos cancelados/em preparo, conforme RN14, da conclusão com pagamento |
 | **Movimentações sem referência direta à origem** | **Pendente:** permanece `motivo_movimentacao` textual, sem FK para Pedido ou Compra | Rastreabilidade da operação pode exigir vínculos adicionais |
 | **Cobertura de despesas, contas e desembolsos** | **Revisão gráfica:** `Despesa` incluída no DER e no lógico, com `Origina` associado a `Compra` e campos de vencimento, situação e pagamento. O SQL corrigido correspondente ainda está fora do repositório | Diferenciar compras, obrigações a pagar e saídas efetivamente pagas para P2 |
-| **Comprovação da entrevista e volumes operacionais** | **Pendente:** faltam dados do entrevistado, foto específica, datas e números do movimento | A Entrega 2 exige comprovação da entrevista e volumes para fundamentar a massa de dados |
+| **Documentação da entrevista e volumes operacionais** | **Entrevista realizada com Ceará**, respostas preservadas no arquivo de perguntas e respostas; metadados e foto específica ainda não identificados na documentação. O proprietário não conseguiu quantificar o movimento de clientes/pedidos | Distinguir a realização do levantamento da documentação fotográfica exigida e justificar a massa fictícia sem inventar médias |
 
 **Resultado:** o DER e o lógico foram atualizados com `Despesa`; o grupo decidiu manter `Contem` e `Adquire` apenas como **relacionamentos** no conceitual (e **tabelas** no lógico). Os atributos de quantidade e preço, ausentes dos losangos, permanecem uma **diferença em relação ao Esqueleto 2**, registrada sem afirmar atendimento integral. O dicionário, o SQL versionado e as evidências ainda requerem conclusão e validação.
 
@@ -954,13 +954,13 @@ Este repositório reúne os artefatos da Entrega 2; o professor avaliará exclus
 | Dicionário de Dados | [dicionario_dados_conceitual.html](dicionario_dados_conceitual.html) | **Atualizado:** 9 tabelas, 46 colunas, incluindo Despesa e Origina; PK/FK, nulidade, UNIQUE, CHECK e DEFAULT documentados; validar contra SQL após implementação |
 | DER conceitual | [docs/imagens/DER_esquina_dos_amigos_v2.jpg](docs/imagens/DER_esquina_dos_amigos_v2.jpg) | Atualizado com `Despesa`/`Origina`; `Contem` e `Adquire` permanecem losangos sem atributos por decisão do grupo, diferente da orientação do esqueleto |
 | Modelo lógico | [docs/imagens/ModeloLogicoRelacional.png](docs/imagens/ModeloLogicoRelacional.png) | Atualizado com a nona tabela `Despesa`; cardinalidade gráfica automática do brModelo não expressa a nulidade opcional da FK |
-| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Disponível, com limites de entrevista e volumes documentados; precisa incorporar eventual validação da nova modelagem financeira |
-| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Evidência da entrevista ainda pendente; fotografias atuais têm extensão `.jpeg` |
+| Levantamento de requisitos | [levantamento/levantamento.md](levantamento/levantamento.md) | Entrevista com Ceará realizada e respostas documentadas; metadados/fotografia específica a complementar, volumes reais desconhecidos, validação financeira pendente |
+| Fontes e evidências | [levantamento/evidencias.md](levantamento/evidencias.md), [levantamento/fontes/](levantamento/fontes/), [docs/imagens/](docs/imagens/) | Respostas da entrevista existentes; a foto específica solicitada não foi identificada nas imagens disponíveis. Fotos atuais têm extensão `.jpeg` |
 | Script SQL MySQL | Arquivo `.sql` a adicionar e vincular | **Pendente na `main`**; arquivo corrigido foi elaborado fora do repositório |
 | Massa de dados fictícia | Integrada ao futuro arquivo SQL | **Pendente na `main`**; previsão de 120 registros na proposta corrigida |
 | Apresentação final | Arquivo e link a inserir | Pendente |
 
-Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável dos integrantes. Permanecem pendentes nome civil/contato do entrevistado, data e comprovação fotográfica da entrevista no ambiente da organização, adequação do formato das fotos exigidas e validação das decisões de escopo e do novo relacionamento financeiro.
+Além dos artefatos, o histórico de commits deve evidenciar participação equilibrada e identificável. **O entrevistado foi Ceará, proprietário que se apresenta por esse nome; a entrevista foi realizada.** Permanecem como documentação complementar data, participantes, local exato, contato específico (se exigido) e foto da entrevista no ambiente da organização, além de validações de modelagem e adequação das imagens existentes.
 
 ---
 
