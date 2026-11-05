@@ -21,8 +21,8 @@ A imagem repete a legenda **SEXTA-FEIRA** em Peixe com purê e Rabada; não se c
 
 ## Comprovações pendentes
 
-- A correção informa que nenhuma das fotos existentes mostra o responsável. Obter foto da entrevista no ambiente da organização, com contexto e participantes identificados, conforme a E2.
-- Completar nome/função do entrevistado, data, local e participantes.
+- **A entrevista foi realizada com Ceará** e suas respostas constam em [perguntas-e-respostas.txt](fontes/perguntas-e-respostas.txt). A avaliação da E1 indica que as quatro fotos já disponíveis não mostram o responsável durante a entrevista; a foto específica exigida na E2 ainda precisa ser localizada ou acrescentada. Isso não invalida a realização da entrevista.
+- **Entrevistado identificado:** Ceará, proprietário, conforme esclarecimento do integrante. Complementar apenas os metadados não registrados em F01: data, horário, local exato e participantes.
 - Acrescentar link do perfil oficial da organização, se localizado e validado pelo grupo; não foi confirmado nesta revisão.
 - Conferir com o grupo o formato de entrega das imagens: o esqueleto cita JPG/PNG e os arquivos atuais são JPEG com extensão .jpeg. Não houve conversão ou alteração das imagens neste PR.
 
@@ -33,4 +33,4 @@ A imagem repete a legenda **SEXTA-FEIRA** em Peixe com purê e Rabada; não se c
 - [Levantamento organizado](levantamento.md).
 - [DER existente](../docs/imagens/DER_esquina_dos_amigos_v2.jpg) e [fluxograma existente](../docs/imagens/fluxograma.jpeg): artefatos do projeto, não provas da entrevista.
 
-A fonte textual preservada não substitui a evidência fotográfica exigida.
+As respostas escritas registram a entrevista realizada, mas não substituem a fotografia específica que o enunciado exige como evidência complementar.

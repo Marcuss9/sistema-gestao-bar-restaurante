@@ -28,10 +28,14 @@ Fonte: informações fornecidas pelo integrante nas conversas de revisão docume
 
 | Referência | Informação recebida | Uso documental |
 |---|---|---|
-| Identificação | “Identificação que temos é apenas o 'Ceará', apelido do proprietário.” | Proprietário conhecido apenas pelo apelido “Ceará”; **nome civil não informado** e condição de entrevistado não comprovada |
+| Identificação | “Identificação que temos é apenas o 'Ceará', apelido do proprietário.”; em 04/11/2026, o integrante esclareceu que ele próprio se identifica como Ceará e foi entrevistado | **Responsável entrevistado: Ceará, proprietário.** Nome de uso informado pelo próprio responsável; não tratar falta de outro nome civil como ausência de identificação ou dúvida sobre a entrevista |
 | Volumes | “Os volumes nao da pra saber.” | **Nenhuma média real de pedidos, compras, vendas ou entregas está disponível.** Descartar a hipótese anterior de 12 pedidos/hora para caracterização |
 | RN16 — cardápio semanal | Imagem de cardápio anexada pelo integrante nesta conversa | Fonte transcrita em [cardapio-semanal-transcricao.md](cardapio-semanal-transcricao.md). A imagem apresenta segunda a sábado, **duas entradas de sexta-feira** e colunas PF/COM.; vigência, significado de COM. e erro gráfico ainda incertos |
 
 Estas decisões deverão ser refletidas em RF/RN e revisadas pelos responsáveis pelos modelos e SQL. **Não foram implantadas nem confirmadas em entrevista.** A transcrição não substitui o arquivo original do cardápio, que ainda precisa ser incluído no repositório como evidência.
 
 A adoção do limite de dez minutos não define raio em quilômetros nem uma integração de mapas. Os demais dados desconhecidos permanecem pendentes no levantamento.
+
+## Esclarecimento sobre a entrevista — 04/11/2026
+
+O integrante confirmou que **Ceará é o nome com o qual o proprietário se apresenta** e que a **entrevista foi realizada com ele**. As respostas coletadas estão preservadas em [perguntas-e-respostas.txt](perguntas-e-respostas.txt). A falta de data, lista de participantes ou fotografia específica nos registros disponíveis é uma pendência de comprovação documental, **não ausência de entrevista**. Não foram criados nome civil, datas ou participantes por suposição.
