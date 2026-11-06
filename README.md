@@ -1015,6 +1015,8 @@ A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos 
 
 Os pedidos, recebimentos, compras e movimentações estão distribuídos em *diferentes dias de outubro de 2026. Algumas despesas possuem vencimento em **novembro de 2026, permitindo representar compromissos futuros. Isso **não comprova sazonalidade ou comportamento mensal real*; as datas foram escolhidas para conferir a lógica das consultas.
 
+## 4.3 Consistência, integridade e variedade dos cenários
+
 
 
 ## 5. Repositório GitHub
