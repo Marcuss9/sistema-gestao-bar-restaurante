@@ -1013,7 +1013,7 @@ A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos 
 | Despesa | 11 | Oito obrigações vinculadas às compras e três despesas independentes; situações paga e pendente, com vencimentos e datas/formas de quitação quando aplicáveis. |
 | *Total* | *120* | Contagem final esperada para demonstrar o modelo com nove tabelas. |
 
-
+Os pedidos, recebimentos, compras e movimentações estão distribuídos em *diferentes dias de outubro de 2026. Algumas despesas possuem vencimento em **novembro de 2026, permitindo representar compromissos futuros. Isso **não comprova sazonalidade ou comportamento mensal real*; as datas foram escolhidas para conferir a lógica das consultas.
 
 
 
