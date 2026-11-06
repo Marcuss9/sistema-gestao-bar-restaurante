@@ -1017,6 +1017,8 @@ Os pedidos, recebimentos, compras e movimentações estão distribuídos em *dif
 
 ## 4.3 Consistência, integridade e variedade dos cenários
 
+Os comandos INSERT INTO foram estruturados para respeitar os relacionamentos do modelo lógico: cada Pagamento referencia um Pedido; cada Compra referencia um Fornecedor; itens em Contem e Adquire referenciam os cadastros correspondentes; cada Movimentacao_Estoque referencia um Produto; e cada despesa da categoria compra referencia uma compra existente. Despesas das categorias conta e outra não exigem vínculo a uma compra.
+
 
 
 ## 5. Repositório GitHub
