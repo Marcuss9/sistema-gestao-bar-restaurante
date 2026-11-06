@@ -1000,6 +1000,21 @@ A organização não informou números verificáveis de pedidos por dia, vendas 
 
 A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos de UPDATE e DELETE. As quantidades foram conferidas nos comandos de carga, mas ainda precisam ser comprovadas pela execução no MySQL:
 
+| Tabela | Registros finais previstos | Cenários representados e justificativa técnica |
+|---|---:|---|
+| Fornecedor | 5 | Fornecedores do tipo distribuidora, supermercado e hortifruti; um fornecedor permanece sem compras para conferir consultas com LEFT JOIN. |
+| Produto | 10 | Bebidas, lanches, porção, refeição e sobremesa; diferentes preços e saldos, inclusive um produto com estoque zerado para a G04. |
+| Pedido | 14 | Doze pedidos concluídos e pagos, um cancelado e um ainda em preparo, com atendimento presencial e por entrega; situações necessárias para RN14/RN15 e G05. |
+| Pagamento | 12 | Um recebimento para cada pedido concluído; dinheiro, crédito, débito, vale-refeição e Pix, permitindo G01, G02 e G07. |
+| Compra | 8 | Compras em diferentes fornecedores e datas, com valores distintos, para G03, G08 e G12. |
+| Contem | 26 | Itens de pedidos com quantidade e preço efetivamente praticado, incluindo preço histórico diferente do cadastro do produto. |
+| Adquire | 18 | Itens de compra com quantidades e preços de aquisição, permitindo confrontar itens e total das compras. |
+| Movimentacao_Estoque | 16 | Entradas e saídas, datas e motivos diversos, suficientes para consultar movimentos na G06, sem pressupor conciliação histórica completa. |
+| Despesa | 11 | Oito obrigações vinculadas às compras e três despesas independentes; situações paga e pendente, com vencimentos e datas/formas de quitação quando aplicáveis. |
+| *Total* | *120* | Contagem final esperada para demonstrar o modelo com nove tabelas. |
+
+
+
 
 
 ## 5. Repositório GitHub
