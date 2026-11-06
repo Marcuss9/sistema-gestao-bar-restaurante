@@ -162,6 +162,7 @@ Atualmente, as vendas não são registradas individualmente em um sistema. A sol
 
 PN4 — Entrega de pedidos nas proximidades O estabelecimento realiza entregas apenas nas proximidades. Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário. Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente. Não existe um funcionário exclusivamente responsável pelas entregas. Não é cobrado frete próprio para as entregas locais, conforme confirmação complementar do integrante. Para delimitar as proximidades, o projeto adota trajetos de até dez minutos a pé a partir do estabelecimento na R. Inês Monteiro, 157. Esse critério foi estimado e aceito pelo integrante; não resulta de medição em campo.
 
+PN5 — Controle de produtos em estoque Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema. A quantidade dos produtos comercializados é acompanhada de maneira informal e visual. A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída. O controle estruturado não abrange ingredientes utilizados na cozinha, conforme decisão de escopo RN10 reafirmada pelo integrante em 02/11/2026. Trata-se de uma delimitação do sistema, não de evidência de que o estabelecimento não compre ingredientes; os gastos correspondentes continuam relevantes para o acompanhamento financeiro.
 
 ##### Cardápio e preços
 
