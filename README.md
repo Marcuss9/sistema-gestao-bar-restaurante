@@ -1021,6 +1021,8 @@ Os comandos INSERT INTO foram estruturados para respeitar os relacionamentos do 
 
 Os valores históricos dos itens permanecem em Contem.preco_unitario_pedido e Adquire.preco_unitario_compra. Os pedidos concluídos utilizados nas consultas de venda possuem pagamento correspondente; o pedido cancelado e o pedido em preparo permanecem sem pagamento para demonstrar a distinção entre *pedido registrado* e *venda concluída/recebida*. O UNIQUE de Pagamento.id_pedido impede pagamentos duplicados por pedido, mas não torna automaticamente obrigatório um pagamento para todo pedido cadastrado.
 
+Os cenários foram planejados para demonstrar os três problemas identificados no levantamento e as consultas oficiais da seção 1.6:
+
 
 ## 5. Repositório GitHub
 
