@@ -151,6 +151,14 @@ PN1 — Atendimento e registro de pedidos O cliente realiza o pedido diretamente
 
 PN2 — Preparação e entrega dos pedidos A cozinha prepara o pedido com base na comunicação realizada pelo funcionário. Quando o pedido fica pronto, os funcionários comunicam verbalmente que ele está disponível. Um funcionário pode realizar a entrega do prato ao cliente, porém não existe uma pessoa exclusivamente responsável por essa atividade. Todos os funcionários podem executar as tarefas necessárias conforme a demanda.
 
+PN3 — Venda e recebimento do pagamento O estabelecimento aceita:
+
+dinheiro;
+cartão de crédito;
+cartão de débito;
+vale refeição.
+Pix.
+Atualmente, as vendas não são registradas individualmente em um sistema. A solução proposta deverá permitir registrar cada operação comercial e relacioná-la ao respectivo pedido e pagamento.
 
 
 ##### Cardápio e preços
