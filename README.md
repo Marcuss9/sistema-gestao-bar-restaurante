@@ -863,36 +863,51 @@ Permanecem incompletos: **RN07** (atributo de estoque mínimo e alerta), **RN08*
 
 ### 1.6 Proposta de Arquitetura Analítica para BI e IA
 
-**Objetivo analítico.** A estrutura permite propor indicadores para vendas, recebimentos, despesas pagas e pendentes, volume de compras e situação do estoque, com consultas gerenciais do script SQL corrigido. O banco relacional poderá alimentar relatórios e dashboards (BI); aplicações de IA, como previsão de demanda, dependem de histórico suficiente, dados confiáveis e validação das limitações do processo real. Os dados demonstrativos são fictícios e não representam desempenho real do estabelecimento.
+**Objetivo analítico.** O modelo relacional permite acompanhar vendas, recebimentos, compras, despesas pagas e pendentes e movimentos dos produtos controlados em estoque. As consultas de [`docs/script.sql`](docs/script.sql) servem de base para relatórios e painéis gerenciais (BI), com dados simulados nesta entrega. Indicadores reais e metas dependem de registros operacionais confiáveis do estabelecimento.
 
-**Indicadores propostos (metas a definir com o responsável):**
+#### Indicadores gerenciais (KPIs) calculados no SQL
 
-| KPI | Fórmula / unidade | Período | Consulta prevista |
+Os quatro indicadores abaixo possuem **consultas que calculam diretamente as medidas propostas**, conforme o requisito de rastreabilidade do Esqueleto da Entrega 2. As metas não foram definidas pela organização.
+
+| KPI | Fórmula e unidade | Período | Consulta SQL |
 |---|---|---|---|
-| Recebimento diário | `SUM(preco_total_pagamento)` / R$ | Dia da quitação | G01 |
-| Ticket médio recebido | `SUM(preco_total_pagamento) / COUNT(pagamentos)` / R$ | Dia do recebimento | G07 |
-| Saldo de caixa diário | Recebimentos menos despesas efetivamente pagas / R$ | Dia | G09 |
-| Total de obrigações pendentes | `SUM(valor_despesa)` em despesas `pendente` / R$ | Posição na data da consulta | G10 (lista; total pode ser calculado somando os registros) |
-| Desembolso por categoria | `SUM(valor_despesa)` das despesas `paga` / R$ | Mês de pagamento | G11 |
-| Produtos com saldo zero | Contagem dos produtos com `quantidade_estoque_produto = 0` / unidades cadastradas | Posição na data da consulta | G04 (lista; total por contagem) |
+| **Recebimento diário** | `SUM(preco_total_pagamento)` — R$ | Dia do recebimento | **G01** |
+| **Ticket médio recebido** | `AVG(preco_total_pagamento)` — R$ por pagamento | Dia do recebimento | **G07** |
+| **Saldo de caixa diário** | Total recebido menos despesas efetivamente pagas — R$ | Dia da movimentação financeira | **G09** |
+| **Desembolso por categoria** | `SUM(valor_despesa)` das despesas `paga` — R$ | Mês do pagamento e categoria | **G11** |
 
-**Nota:** os indicadores que dependem de somar/contar resultados de consultas de listagem (G04 e G10) precisam ser explicitados como consulta agregada se o professor exigir que cada KPI seja retornado **diretamente** em uma linha de SQL. A RN07 exige **estoque mínimo configurável e alerta quando saldo ≤ mínimo**, mas o atributo ainda não está no modelo; G04 identifica somente saldo igual a zero, **não substitui** o indicador completo de estoque baixo.
+O saldo diário de `G09` expressa somente o fluxo líquido de recebimentos e pagamentos registrados no período; **não é lucro contábil**. A consulta `G07` calcula a média dos pagamentos registrados, e não necessariamente de todos os pedidos cadastrados.
 
-**Rastreabilidade dos problemas e indicadores aos dados:**
+#### Consultas operacionais de apoio (não classificadas como KPIs agregados)
 
-| Problema ou KPI | Tabelas que dão suporte | Consulta gerencial prevista no SQL corrigido |
+| Informação gerencial | Consulta | Resultado efetivamente produzido |
 |---|---|---|
-| P1 — registro de vendas/recebimentos | `Pedido`, `Contem`, `Produto`, `Pagamento` | G01, G02, G05, G07 |
-| P2 — entradas, saídas e obrigações | `Pagamento`, `Despesa`, `Compra`, `Fornecedor` | G09, G10, G11, G12 (G03/G08 mostram compras, não pagamentos) |
-| P3 — estoque e reposição | `Produto`, `Movimentacao_Estoque` | G04 e G06; falta consulta de estoque mínimo configurável exigido pela RN07 |
-| KPI de recebimentos diários | `Pagamento` | G01 |
-| KPI de ticket médio por recebimento | `Pagamento` | G07 |
-| KPI de saldo de caixa diário | `Pagamento`, `Despesa` | G09 |
-| KPI de despesas pendentes | `Despesa` | G10, com soma agregada pendente de explicitação |
-| KPI de desembolso por categoria | `Despesa` | G11 |
-| KPI de produtos sem estoque | `Produto` | G04, com contagem pendente de explicitação |
+| **Despesas e obrigações pendentes** | **G10** | Lista as obrigações com status `pendente`; **não** retorna diretamente a soma de seus valores. |
+| **Produtos com estoque zerado** | **G04** | Lista os produtos com `quantidade_estoque_produto = 0`; **não** retorna diretamente a quantidade total de produtos nessa condição. |
 
-**Validação da implementação:** as consultas gerenciais G01–G12 estão documentadas no arquivo [docs/script.sql](docs/script.sql), disponível na branch main, e correspondem aos indicadores e problemas apresentados nesta seção. O script também contém as consultas complementares G13–G16, as auditorias A01–A05 e os diagnósticos D01–D10. O grupo realizou a execução e os testes do script no MySQL Workbench, verificando a criação das tabelas, a inserção dos dados, as consultas e as operações previstas. A massa de dados utilizada é fictícia, destinada exclusivamente à demonstração acadêmica, uma vez que não foram disponibilizados volumes operacionais reais verificáveis do estabelecimento. Dessa forma, os resultados demonstram o funcionamento das consultas sobre os dados simulados, sem representar indicadores reais do restaurante.
+Essas duas consultas apoiam a gestão, mas **não são apresentadas como KPIs numéricos calculados diretamente**. A RN07 prevê alerta quando o saldo for menor ou igual a um estoque mínimo configurável; esse atributo e o respectivo alerta **ainda não estão implementados** no modelo atual. Portanto, `G04` não substitui o controle completo de estoque mínimo.
+
+#### Rastreabilidade entre problemas, indicadores e consultas
+
+| Problema, KPI ou informação | Tabelas envolvidas | Consulta do script |
+|---|---|---|
+| **P1 — Registros de vendas e recebimentos** | `Pedido`, `Contem`, `Produto`, `Pagamento` | G01, G02, G05, G07 |
+| **P2 — Compras, desembolsos e obrigações** | `Pagamento`, `Despesa`, `Compra`, `Fornecedor`, `Adquire` | G03, G08, G09, G10, G11, G12 |
+| **P3 — Estoque e reposição** | `Produto`, `Movimentacao_Estoque` | G04, G06 (**cobertura parcial** da RN07) |
+| KPI — Recebimento diário | `Pagamento` | G01 |
+| KPI — Ticket médio recebido | `Pagamento` | G07 |
+| KPI — Saldo de caixa diário | `Pagamento`, `Despesa` | G09 |
+| KPI — Desembolso por categoria | `Despesa` | G11 |
+| Consulta de apoio — Obrigações pendentes | `Despesa` | G10 (listagem) |
+| Consulta de apoio — Produtos com estoque zero | `Produto` | G04 (listagem) |
+
+#### Potencial para BI e aplicações de IA
+
+**BI:** os dados de `Pedido`, `Pagamento`, `Contem`, `Compra`, `Despesa` e `Movimentacao_Estoque` podem alimentar painéis de recebimentos por data e modalidade, composição das vendas, compras por fornecedor, obrigações pendentes e evolução dos movimentos de estoque. As consultas `G01`–`G12` sustentam essas análises; `G13`–`G16` são consultas gerenciais complementares.
+
+**IA e análises preditivas:** com histórico operacional suficiente e validado, seria possível investigar padrões de demanda por produto e período ou apoiar o planejamento de reposição. Trata-se de **potencial de evolução**, não de funcionalidade de IA implementada ou validada nesta entrega. A massa atual é fictícia e não permite afirmar precisão preditiva ou comportamento real do restaurante.
+
+**Validação da implementação:** o arquivo [`docs/script.sql`](docs/script.sql) está versionado na branch `main` e contém as consultas `G01`–`G16`, as auditorias `A01`–`A05` e os diagnósticos `D01`–`D10`. **Conforme informado pelo grupo, o script foi executado e testado no MySQL Workbench.** Essa informação refere-se à execução relatada pelos integrantes; os indicadores, contagens e conclusões apresentados aqui são relativos à estrutura e à massa simulada, não a resultados reais da organização.
 
 ## 2. Modelo Lógico Relacional
 
@@ -986,77 +1001,78 @@ As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento 
 ---
 
 ## 4. Massa de Dados
-A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo da seção 3, disponível em [docs/script.sql](docs/script.sql) **já versionado na branch main*. O script contém os comandos INSERT INTO das nove tabelas, seguidos de exemplos de UPDATE e DELETE; não é necessário criar um segundo arquivo de carga nem executar um programa Python para a entrega.
 
-## 4.1 Origem, privacidade e volume adotado
-**Todos os dados são fictícios e destinados exclusivamente à demonstração acadêmica.**
-Os nomes dos fornecedores são ilustrativos, os endereços usados nos pedidos são fictícios e os valores e datas não correspondem a faturamento, contas ou vendas reais da organização.A massa foi preparada para o sistema do **Bar e Restaurante Esquina dos Amigos**, sem incorporar dados pessoais reais de clientes ou funcionários.
+A massa de dados fictícia da Entrega 2 está **integrada ao script SQL completo da seção 3**, disponível em [`docs/script.sql`](docs/script.sql), **já versionado na branch `main`**. O arquivo contém os comandos `INSERT INTO` das nove tabelas, além de exemplos de `UPDATE`, `DELETE` e consultas gerenciais e de auditoria. Não há arquivo de carga separado.
 
-**Limitação expressa do levantamento**
+### 4.1 Origem, privacidade e volume adotado
 
-A organização não informou números verificáveis de pedidos por dia, vendas por mês, produtos ativos, compras ou movimentações de estoque. O integrante confirmou essa indisponibilidade na revisão documental de 02/11/2026. Assim, **não é possível demonstrar a relação quantitativa entre o movimento real e as 120 linhas simuladas, exigida pelo esqueleto**. Os 120 registros foram escolhidos como volume **demonstrativo** para exercitar os relacionamentos, as regras e as consultas; não representam uma média observada, nem foram artificialmente apresentados como estimativa do estabelecimento.Para atender integralmente ao requisito de justificativa pelo volume real, o grupo precisará obter e registrar dados operacionais verificáveis com o responsável, quando disponíveis.
+**Todos os dados são fictícios e destinados exclusivamente à demonstração acadêmica.** Os nomes de fornecedores, endereços de entrega, datas, preços, recebimentos e despesas apresentados na carga são ilustrativos; não correspondem a registros pessoais, vendas ou despesas reais da organização.
+
+**Limite do levantamento:** segundo os esclarecimentos documentados pelo integrante, o proprietário não conseguiu fornecer volumes verificáveis de pedidos, vendas, compras, entregas ou produtos ativos por período. Portanto, **não é possível comprovar uma proporção entre a movimentação real e os 120 registros simulados**. O grupo adotou 120 registros finais como uma amostra didática de pequena escala, suficiente para percorrer as nove tabelas, seus relacionamentos e diferentes situações operacionais, sem apresentar essa quantidade como média observada.
+
+O Esqueleto da Entrega 2 exige justificar a quantidade de registros em relação ao volume real da organização. A falta de uma referência quantitativa confirmada permanece **limitação documental**, explicitada aqui em vez de substituída por estimativas inventadas.
 
 ### 4.2 Distribuição dos registros por tabela
 
-A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos de UPDATE e DELETE. As quantidades foram conferidas nos comandos de carga, mas ainda precisam ser comprovadas pela execução no MySQL:
+A tabela apresenta as **quantidades finais descritas no script**, após o exemplo de `UPDATE` e a exclusão do produto temporário. A execução do SQL foi relatada pelo grupo; os números abaixo refletem a carga documentada no arquivo.
 
-| Tabela | Registros finais previstos | Cenários representados e justificativa técnica |
+| Tabela | Registros finais | Cenários e justificativa |
 |---|---:|---|
-| Fornecedor | 5 | Fornecedores do tipo distribuidora, supermercado e hortifruti; um fornecedor permanece sem compras para conferir consultas com LEFT JOIN. |
-| Produto | 10 | Bebidas, lanches, porção, refeição e sobremesa; diferentes preços e saldos, inclusive um produto com estoque zerado para a G04. |
-| Pedido | 14 | Doze pedidos concluídos e pagos, um cancelado e um ainda em preparo, com atendimento presencial e por entrega; situações necessárias para RN14/RN15 e G05. |
-| Pagamento | 12 | Um recebimento para cada pedido concluído; dinheiro, crédito, débito, vale-refeição e Pix, permitindo G01, G02 e G07. |
-| Compra | 8 | Compras em diferentes fornecedores e datas, com valores distintos, para G03, G08 e G12. |
-| Contem | 26 | Itens de pedidos com quantidade e preço efetivamente praticado, incluindo preço histórico diferente do cadastro do produto. |
-| Adquire | 18 | Itens de compra com quantidades e preços de aquisição, permitindo confrontar itens e total das compras. |
-| Movimentacao_Estoque | 16 | Entradas e saídas, datas e motivos diversos, suficientes para consultar movimentos na G06, sem pressupor conciliação histórica completa. |
-| Despesa | 11 | Oito obrigações vinculadas às compras e três despesas independentes; situações paga e pendente, com vencimentos e datas/formas de quitação quando aplicáveis. |
-| *Total* | *120* | Contagem final esperada para demonstrar o modelo com nove tabelas. |
+| `Fornecedor` | 5 | Distribuidoras, supermercados e hortifruti; inclui fornecedor sem compras para consultas com `LEFT JOIN`. |
+| `Produto` | 10 | Bebidas, lanches, porções, refeições e sobremesa, com diferentes preços e saldos, inclusive estoque igual a zero. |
+| `Pedido` | 14 | Atendimento presencial e por entrega; após o `UPDATE`, 12 pedidos concluídos, um cancelado e um em preparo. |
+| `Pagamento` | 12 | Recebimentos vinculados a pedidos, nas modalidades dinheiro, crédito, débito, vale-refeição e Pix. |
+| `Compra` | 8 | Aquisições de diferentes fornecedores e datas, com valores variados. |
+| `Contem` | 26 | Itens de pedidos com quantidades e preços unitários praticados, incluindo preço histórico distinto do cadastro atual. |
+| `Adquire` | 18 | Itens de compras com quantidades e preços unitários de aquisição. |
+| `Movimentacao_Estoque` | 16 | Entradas e saídas de produtos em diferentes datas, com motivos registrados. |
+| `Despesa` | 11 | Oito obrigações vinculadas a compras e três independentes, pagas ou pendentes. |
+| **Total** | **120** | **Registros finais da massa fictícia descrita no SQL.** |
 
-Os pedidos, recebimentos, compras e movimentações estão distribuídos em *diferentes dias de outubro de 2026. Algumas despesas possuem vencimento em **novembro de 2026**, permitindo representar compromissos futuros. Isso **não comprova sazonalidade ou comportamento mensal real**; as datas foram escolhidas para conferir a lógica das consultas.
+Os pedidos, pagamentos, compras e movimentos têm datas distribuídas em **outubro de 2026**; algumas despesas vencem em **novembro de 2026**. Essas datas foram escolhidas para ilustrar consultas por período, sem representar sazonalidade ou movimentação mensal efetiva do restaurante.
 
-## 4.3 Consistência, integridade e variedade dos cenários
+### 4.3 Consistência, integridade e variedade dos cenários
 
-Os comandos INSERT INTO foram estruturados para respeitar os relacionamentos do modelo lógico: cada Pagamento referencia um Pedido; cada Compra referencia um Fornecedor; itens em Contem e Adquire referenciam os cadastros correspondentes; cada Movimentacao_Estoque referencia um Produto; e cada despesa da categoria compra referencia uma compra existente. Despesas das categorias conta e outra não exigem vínculo a uma compra.
+A carga foi organizada respeitando os relacionamentos documentados: `Pagamento` referencia `Pedido`; `Compra` referencia `Fornecedor`; `Contem` e `Adquire` vinculam produtos a pedidos e compras; `Movimentacao_Estoque` referencia `Produto`; e `Despesa` admite uma referência opcional a `Compra`.
 
-Os valores históricos dos itens permanecem em Contem.preco_unitario_pedido e Adquire.preco_unitario_compra. Os pedidos concluídos utilizados nas consultas de venda possuem pagamento correspondente; o pedido cancelado e o pedido em preparo permanecem sem pagamento para demonstrar a distinção entre *pedido registrado* e *venda concluída/recebida*. O UNIQUE de Pagamento.id_pedido impede pagamentos duplicados por pedido, mas não torna automaticamente obrigatório um pagamento para todo pedido cadastrado.
+Os registros de `Contem.preco_unitario_pedido` e `Adquire.preco_unitario_compra` preservam o valor praticado em cada operação. Por exemplo, o pedido 9 registra um produto a **R$ 8,50**, enquanto o preço de venda atual desse produto em `Produto` é **R$ 9,00**.
 
-Os cenários foram planejados para demonstrar os três problemas identificados no levantamento e as consultas oficiais da seção 1.6:
+Os 12 pedidos concluídos possuem pagamento vinculado; o pedido cancelado e o pedido em preparo permanecem sem pagamento. Esse conjunto demonstra a diferença entre pedido cadastrado e recebimento realizado. A restrição `UNIQUE` em `Pagamento.id_pedido` impede dois registros de pagamento para o mesmo pedido, mas não obriga o pagamento de todo pedido registrado.
 
-| Problema | Casos demonstrados na massa | Consultas SQL correspondentes |
+| Problema | Casos presentes na massa | Consultas correspondentes |
 |---|---|---|
-| *P1 — Vendas e recebimentos* | Pedidos e itens individuais, preços praticados, cinco formas de pagamento, valores e datas de recebimento, estados concluído/cancelado/em preparo | *G01, G02, G05, G07* |
-| *P2 — Entradas e saídas financeiras* | Compras por fornecedor e por produto, obrigações pagas, parcelas e contas pendentes, despesas independentes de compras | *G03, G08, G09, G10, G11, G12* |
-| *P3 — Estoque e reposição* | Produto com saldo zero e diferentes movimentos de entrada e saída, inclusive saldo disponível de outros produtos | *G04, G06* — cobertura parcial da RN07 |
+| **P1 — Vendas e recebimentos** | Itens de pedidos, valores praticados, modalidades de pagamento, datas de recebimento e situações dos pedidos | **G01, G02, G05, G07** |
+| **P2 — Compras e fluxo financeiro** | Compras por fornecedor e produto, contas, obrigações quitadas e pendentes, despesas independentes | **G03, G08, G09, G10, G11, G12** |
+| **P3 — Estoque e reposição** | Produto com saldo zero e movimentações de entrada e saída | **G04, G06** — atendimento parcial à RN07 |
 
-**Padronização dos códigos:** os identificadores abaixo seguem a versão atual de [docs/script.sql](docs/script.sql), também utilizada pela seção 1.6: G03 refere-se a compras por fornecedor, G04 a produtos com estoque zerado, G06 às movimentações de estoque, G07 ao ticket médio de recebimentos e G09 ao fluxo financeiro diário. Os códigos de arquivos antigos de BI/IA não devem substituir os identificadores do script vigente.
+**Padronização dos códigos:** a numeração segue a versão atual de [`docs/script.sql`](docs/script.sql) e da seção 1.6. `G03` consulta compras por fornecedor; `G04` lista produtos com saldo zero; `G06` apresenta movimentos de estoque; `G07` calcula ticket médio de recebimentos; e `G09` apresenta o fluxo financeiro diário. Códigos de versões anteriores não substituem essas referências.
 
-**Limitações de representação:** o script ainda não possui o atributo de estoque mínimo por produto nem um mecanismo de alerta correspondente (RN07); a conferência detalhada de quantidades esperadas e recebidas (RN08) também não está integralmente modelada. As movimentações demonstrativas não formam uma trilha completa e conciliada desde um saldo inicial comprovado. A inexistência de uma consulta de produtos *abaixo do mínimo* não deve ser mascarada por um exemplo de produto com saldo zero. Também não há dados reais suficientes para comprovar volumes de operação ou treinar modelos de IA.
+**Limitações dos cenários:** a RN07 requer estoque mínimo configurável e alerta, não representados integralmente no modelo; a RN08 requer informações de recebimento e divergência ainda não modeladas por completo. As movimentações fictícias representam parte do histórico, sem saldo inicial comprovado nem conciliação completa. O exemplo de produto com saldo zero **não comprova** o alerta abaixo do estoque mínimo.
 
-## 4.4 Conferência da carga e resultados esperados
+### 4.4 Conferência da carga e resultados demonstrativos
 
-O arquivo da seção 3 inclui, após a carga fictícia, comandos SELECT com JOIN, um exemplo de UPDATE sobre o pedido 4 e a inserção seguida da exclusão do produto temporário 99. O produto temporário **não integra a contagem final; o pedido 4 passa de em_preparo para concluido, restando ao final do teste** 12 pedidos concluídos, 1 cancelado e 1 em preparo*.
+O script inclui consultas `SELECT` com `JOIN`, um `UPDATE` que altera o pedido `id_pedido = 4` de `em_preparo` para `concluido` e a inserção seguida da exclusão do produto temporário `id_produto = 99`. O produto temporário **não integra a contagem final** de dez produtos. Ao final, o SQL apresenta uma consulta `SELECT` para conferir a quantidade de registros em cada tabela.
 
+As consultas **`A01`–`A05`** verificam situações vinculadas a regras de negócio (`RNxx`), enquanto **`D01`–`D10`** são diagnósticos complementares de integridade e consistência. Na versão atual, `A01` verifica modalidades de pagamento e `A04` verifica pedidos **concluídos** sem pagamento. Portanto, o pedido cancelado e o pedido em preparo não são classificados como irregularidades pela `A04`.
 
-Ao final, o script inclui um SELECT de contagem por tabela para conferir os *120 registros previstos. As consultas **A01–A05* são auditorias associadas a regras de negócio (RNxx); as consultas *D01–D10* são diagnósticos complementares de integridade e consistência, sem que todas correspondam a uma RNxx previamente validada. A versão atual usa *A01* para conferir modalidades de pagamento e **A04** para localizar *pedidos concluídos sem pagamento. Assim, o pedido cancelado e o pedido ainda em preparo, que não possuem pagamento, não deveriam aparecer como inconsistências na A04. A expectativa de **zero linhas de inconsistência** nessas consultas ainda depende de teste real no MySQL; não é um resultado comprovado.
+Os seguintes valores são obtidos **pela leitura e soma dos registros fictícios inseridos no SQL**:
 
-A verificação dos valores *esperados*, com base nos INSERT INTO do SQL atual, é:
-
-| Medida demonstrativa | Valor esperado | Origem |
+| Medida demonstrativa | Valor calculado a partir da carga | Tabela |
 |---|---:|---|
-| Recebimentos dos pedidos com pagamento | *R$ 331,00* | Pagamento |
-| Valor das compras registradas | *R$ 1.945,00* | Compra |
-| Despesas efetivamente pagas | *R$ 1.715,00* | Despesa com status paga |
-| Obrigações ainda pendentes | *R$ 495,00* | Despesa com status pendente |
+| Recebimentos dos pedidos com pagamento | **R$ 331,00** | `Pagamento` |
+| Valor total das compras | **R$ 1.945,00** | `Compra` |
+| Despesas efetivamente pagas | **R$ 1.715,00** | `Despesa` (`status_despesa = 'paga'`) |
+| Obrigações pendentes | **R$ 495,00** | `Despesa` (`status_despesa = 'pendente'`) |
 
-A diferença entre os recebimentos e as despesas pagas (*−R$ 1.384,00 no cenário fictício) representa apenas o fluxo líquido registrado na amostra, **não lucro nem prejuízo contábil*. Também não deve ser apresentada como resultado real do restaurante.
+A diferença entre recebimentos e despesas pagas no conjunto fictício é de **−R$ 1.384,00**. Esse saldo representa somente a diferença entre entradas e saídas financeiras da amostra; **não constitui lucro, prejuízo contábil ou resultado real do restaurante**.
 
-*Validação obrigatória antes da entrega:* executar o arquivo docs/script.sql *por inteiro, em banco exclusivo de testes, com MySQL 8.0.16+, conferir as contagens e os resultados das consultas G01–G16, A01–A05 e D01–D10, e registrar evidências da execução. A revisão de consistência do material e testes ilustrativos em outra ferramenta **não substituem** o teste exigido no MySQL. O script contém DROP TABLE e apaga dados das tabelas do banco de teste; *não deve ser executado sobre dados reais ou de produção*.
+**Execução e verificação:** conforme informado pelo grupo, o arquivo [`docs/script.sql`](docs/script.sql) já foi executado e testado no **MySQL Workbench**. A documentação do repositório contém o SQL e a consulta de conferência das contagens; os valores acima decorrem da massa descrita no arquivo, e **não são apresentados como transcrição de capturas ou relatórios de testes não fornecidos**. O script contém `DROP TABLE IF EXISTS`, que exclui tabelas e dados existentes; por isso, sua utilização é apropriada somente em base exclusiva de testes.
 
-### 4.5 Registro do uso de IA
+### 4.5 Registro do uso de Inteligência Artificial
 
-O uso de IA no apoio à geração e à revisão acadêmica do SQL e da massa deve ser registrado conforme as etapas efetivamente realizadas. *Esse uso deve ser documentado na seção 6 do README*, com ferramenta e etapa, motivação, prompt(s), resposta, fontes verificadas, correções realizadas, justificativa e reflexão crítica, conforme o Esqueleto da Entrega 2. O integrante deverá registrar os prompts e as etapas efetivamente utilizados, sem atribuir à IA validação em MySQL ou comprovação de volumes reais não realizada.0
+A seção **6 — Uso de Inteligência Artificial** reúne os registros documentados de apoio de IA ao projeto. A eventual participação de IA na elaboração ou revisão desta massa deve ser descrita com os **prompts, respostas, fontes, correções e decisões efetivamente utilizados**, conforme o Esqueleto da Entrega 2, sem inventar interações nem atribuir à IA testes em MySQL realizados pelos integrantes.
 
+---
 
 ## 5. Repositório GitHub
 
