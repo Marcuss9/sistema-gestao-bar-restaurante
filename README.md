@@ -160,6 +160,8 @@ vale refeição.
 Pix.
 Atualmente, as vendas não são registradas individualmente em um sistema. A solução proposta deverá permitir registrar cada operação comercial e relacioná-la ao respectivo pedido e pagamento.
 
+PN4 — Entrega de pedidos nas proximidades O estabelecimento realiza entregas apenas nas proximidades. Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário. Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente. Não existe um funcionário exclusivamente responsável pelas entregas. Não é cobrado frete próprio para as entregas locais, conforme confirmação complementar do integrante. Para delimitar as proximidades, o projeto adota trajetos de até dez minutos a pé a partir do estabelecimento na R. Inês Monteiro, 157. Esse critério foi estimado e aceito pelo integrante; não resulta de medição em campo.
+
 
 ##### Cardápio e preços
 
