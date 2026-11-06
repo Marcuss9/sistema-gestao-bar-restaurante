@@ -164,6 +164,12 @@ PN4 — Entrega de pedidos nas proximidades O estabelecimento realiza entregas a
 
 PN5 — Controle de produtos em estoque Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema. A quantidade dos produtos comercializados é acompanhada de maneira informal e visual. A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída. O controle estruturado não abrange ingredientes utilizados na cozinha, conforme decisão de escopo RN10 reafirmada pelo integrante em 02/11/2026. Trata-se de uma delimitação do sistema, não de evidência de que o estabelecimento não compre ingredientes; os gastos correspondentes continuam relevantes para o acompanhamento financeiro.
 
+PN6 — Reposição, recebimento e conferência de produtos
+
+A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. Para o sistema proposto, o integrante decidiu cadastrar estoque mínimo por produto comercializado, alertar quando o saldo for menor ou igual ao mínimo e registrar diferenças entre quantidades esperadas e recebidas para resolução com o fornecedor. Essas decisões não comprovam uma rotina informatizada atual; unidades, valores mínimos iniciais e entregas parciais ainda precisam de detalhamento.
+
+Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. O alerta por estoque mínimo e o registro de divergências são requisitos futuros; o modelo lógico vigente ainda não contém todos os campos ou vínculos necessários e deverá ser revisado pelos responsáveis técnicos.
+
 ##### Cardápio e preços
 
 O estabelecimento possui cardápio físico com produtos e valores. Comercializa PFs, porções, lanches, pratos especiais por dia da semana, bebidas alcoólicas e refrigerantes. Uma imagem de **cardápio semanal enviada pelo integrante em 02/11/2026** traz os pratos e valores abaixo. A [transcrição integral, incluindo acompanhamentos e ressalvas](levantamento/fontes/cardapio-semanal-transcricao.md) foi registrada separadamente; a imagem original ainda precisa ser adicionada ao repositório.
