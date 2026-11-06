@@ -991,8 +991,14 @@ A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo 
 ## 4.1 Origem, privacidade e volume adotado
 **Todos os dados são fictícios e destinados exclusivamente à demonstração acadêmica.**
 Os nomes dos fornecedores são ilustrativos, os endereços usados nos pedidos são fictícios e os valores e datas não correspondem a faturamento, contas ou vendas reais da organização.A massa foi preparada para o sistema do **Bar e Restaurante Esquina dos Amigos**, sem incorporar dados pessoais reais de clientes ou funcionários.
-**Limitação expressa do levantamento:**
-a organização não informou números verificáveis de pedidos por dia, vendas por mês, produtos ativos, compras ou movimentações de estoque. O integrante confirmou essa indisponibilidade na revisão documental de 02/11/2026. Assim, **não é possível demonstrar a relação quantitativa entre o movimento real e as 120 linhas simuladas, exigida pelo esqueleto**. Os 120 registros foram escolhidos como volume **demonstrativo** para exercitar os relacionamentos, as regras e as consultas; não representam uma média observada, nem foram artificialmente apresentados como estimativa do estabelecimento.Para atender integralmente ao requisito de justificativa pelo volume real, o grupo precisará obter e registrar dados operacionais verificáveis com o responsável, quando disponíveis.
+
+**Limitação expressa do levantamento**
+
+A organização não informou números verificáveis de pedidos por dia, vendas por mês, produtos ativos, compras ou movimentações de estoque. O integrante confirmou essa indisponibilidade na revisão documental de 02/11/2026. Assim, **não é possível demonstrar a relação quantitativa entre o movimento real e as 120 linhas simuladas, exigida pelo esqueleto**. Os 120 registros foram escolhidos como volume **demonstrativo** para exercitar os relacionamentos, as regras e as consultas; não representam uma média observada, nem foram artificialmente apresentados como estimativa do estabelecimento.Para atender integralmente ao requisito de justificativa pelo volume real, o grupo precisará obter e registrar dados operacionais verificáveis com o responsável, quando disponíveis.
+
+### 4.2 Distribuição dos registros por tabela
+
+A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos de UPDATE e DELETE. As quantidades foram conferidas nos comandos de carga, mas ainda precisam ser comprovadas pela execução no MySQL:
 
 
 
