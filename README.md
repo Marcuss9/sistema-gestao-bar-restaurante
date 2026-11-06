@@ -1019,6 +1019,7 @@ Os pedidos, recebimentos, compras e movimentações estão distribuídos em *dif
 
 Os comandos INSERT INTO foram estruturados para respeitar os relacionamentos do modelo lógico: cada Pagamento referencia um Pedido; cada Compra referencia um Fornecedor; itens em Contem e Adquire referenciam os cadastros correspondentes; cada Movimentacao_Estoque referencia um Produto; e cada despesa da categoria compra referencia uma compra existente. Despesas das categorias conta e outra não exigem vínculo a uma compra.
 
+Os valores históricos dos itens permanecem em Contem.preco_unitario_pedido e Adquire.preco_unitario_compra. Os pedidos concluídos utilizados nas consultas de venda possuem pagamento correspondente; o pedido cancelado e o pedido em preparo permanecem sem pagamento para demonstrar a distinção entre *pedido registrado* e *venda concluída/recebida*. O UNIQUE de Pagamento.id_pedido impede pagamentos duplicados por pedido, mas não torna automaticamente obrigatório um pagamento para todo pedido cadastrado.
 
 
 ## 5. Repositório GitHub
