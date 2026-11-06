@@ -989,6 +989,7 @@ As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento 
 A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo da seção 3, disponível em [docs/script.sql](docs/script.sql) **já versionado na branch main*. O script contém os comandos INSERT INTO das nove tabelas, seguidos de exemplos de UPDATE e DELETE; não é necessário criar um segundo arquivo de carga nem executar um programa Python para a entrega.
 
 ## 4.1 Origem, privacidade e volume adotado
+*Todos os dados são fictícios e destinados exclusivamente à demonstração acadêmica.*
 
 
 
