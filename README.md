@@ -987,44 +987,7 @@ As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento 
 
 ## 4. Massa de Dados
 
-A massa de dados **já está incluída** no arquivo [`docs/script.sql`](docs/script.sql), versionado na branch `main`, na etapa `INSERT INTO`. **Não há segundo arquivo de carga:** o mesmo script cria as tabelas, insere os registros fictícios e executa os exemplos de `SELECT`, `UPDATE` e `DELETE` previstos na seção 3. Nenhum registro representa observação real da operação do restaurante.
 
-#### Quantidades previstas por tabela
-
-| Tabela | Registros finais previstos | Papel na demonstração |
-|---|---:|---|
-| `Pedido` | 14 | Pedidos presenciais e de entrega, concluídos, em preparo e cancelado |
-| `Pagamento` | 12 | Recebimentos em diferentes modalidades, associados aos pedidos com pagamento |
-| `Produto` | 10 | Cadastro com categorias, preços e saldos variados, incluindo um produto com estoque zero |
-| `Compra` | 8 | Aquisições em datas e fornecedores distintos |
-| `Fornecedor` | 5 | Distribuidores, supermercados e fornecedor cadastrado sem compras |
-| `Movimentacao_Estoque` | 16 | Exemplos de entradas e saídas em datas diferentes |
-| `Contem` | 26 | Itens dos pedidos, com quantidade e preço unitário praticado |
-| `Adquire` | 18 | Itens das compras, com quantidade e custo unitário |
-| `Despesa` | 11 | Obrigações de compras e contas independentes, pagas ou pendentes |
-| **Total** | **120** | **Contagem final esperada após o `UPDATE` e o `DELETE`** |
-
-O script também insere temporariamente um produto de teste (`id_produto = 99`) e o exclui por `DELETE`; ele **não integra os dez produtos finais**. A operação `UPDATE` modifica o status do pedido 4 e não altera a quantidade de linhas. A consulta de conferência ao final de `docs/script.sql` permite comparar as contagens obtidas com as previstas acima. **Esses números foram conferidos no texto do script, não por execução do banco.**
-
-#### Variedade e coerência dos cenários
-
-Os registros foram construídos para permitir consultas sobre **P1** (vendas e recebimentos), **P2** (compras, despesas e caixa) e **P3** (estoque). A massa contém, entre outros cenários, pedidos de entrega com endereço, pedido cancelado e pedido em preparo sem pagamento, modalidades dinheiro/crédito/débito/Pix/vale-refeição, obrigações `paga` e `pendente`, contas não vinculadas a `Compra` e fornecedores sem compras.
-
-Para testar preços históricos, o pedido 9 registra `preco_unitario_pedido = 8,50` para um produto cujo preço atual cadastrado é `9,00`. A carga inclui itens associados a pedidos e compras por meio de `Contem`/`Adquire`, e despesas vinculadas ou não a compras. As datas de vendas e compras fictícias concentram-se em **outubro de 2026**, havendo vencimentos de obrigações em novembro. As consultas `Gxx`, `Axx` e `Dxx` foram previstas para explorar essa variedade e verificar inconsistências.
-
-**Limites de coerência operacional:** as movimentações de estoque representam apenas parte do histórico; não existe saldo inicial documentado que permita reconstruir o saldo atual exclusivamente pela soma de entradas e saídas. A RN07 e a RN08 não estão integralmente modeladas, de modo que essa massa **não demonstra** alerta por estoque mínimo configurável nem o registro completo de divergências de recebimento.
-
-#### Justificativa do dimensionamento e origem dos dados
-
-O estabelecimento é descrito como de pequeno porte, e o integrante informou quatro funcionários, com pendência sobre a inclusão do proprietário nessa contagem. Conforme o [levantamento documentado](levantamento/levantamento.md), **o proprietário não conseguiu informar volumes verificáveis** de clientes, pedidos, entregas, compras ou produtos ativos. Portanto, **120 registros foram escolhidos como cenário didático de pequena escala**, suficiente para ilustrar as nove tabelas, os relacionamentos e diferentes situações de operação; **não há fundamento para afirmar equivalência proporcional ao movimento real**. A quantidade de registros por tabela é uma decisão de demonstração e deverá ser comparada a volumes reais caso a organização consiga fornecê-los.
-
-Todos os nomes de fornecedores usados na massa, endereços de entrega, valores, datas e movimentações são **fictícios**. A origem e os limites de eventuais sugestões de IA para a massa devem permanecer documentados na seção 6, sem atribuir dados sintéticos à entrevista.
-
-#### Conferência necessária antes da entrega
-
-É preciso executar o arquivo completo **somente em uma base MySQL de testes**, começando pela criação das tabelas, registrar o resultado da consulta final de contagens, demonstrar resultados relevantes das consultas `Jxx`/`Gxx` e verificar as auditorias `Axx`/`Dxx`. O próprio script usa `DROP TABLE IF EXISTS` e pode apagar dados existentes da base selecionada. **A disponibilização do SQL e a contagem textual não comprovam execução, retorno não vazio das consultas gerenciais nem ausência efetiva de inconsistências.**
-
----
 
 ## 5. Repositório GitHub
 
