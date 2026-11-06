@@ -986,7 +986,7 @@ As auditorias `A01`–`A05` verificam, respectivamente, modalidade de pagamento 
 ---
 
 ## 4. Massa de Dados
-
+A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo da seção 3, disponível em [docs/script.sql](docs/script.sql) **já versionado na branch main*. 
 
 
 ## 5. Repositório GitHub
