@@ -892,7 +892,7 @@ Permanecem incompletos: **RN07** (atributo de estoque mínimo e alerta), **RN08*
 | KPI de desembolso por categoria | `Despesa` | G11 |
 | KPI de produtos sem estoque | `Produto` | G04, com contagem pendente de explicitação |
 
-**Limitação de entrega:** as referências Gxx apontam para a versão corrigida do script **ainda não versionada nesta branch**. Para o esqueleto, a rastreabilidade só estará comprovada após o `.sql` existir no repositório, ser executado no MySQL e retornar os resultados correspondentes. As metas e os volumes reais não foram informados; portanto, não foram inventados.
+**Validação da implementação:** as consultas gerenciais G01–G12 estão documentadas no arquivo [docs/script.sql](docs/script.sql), disponível na branch main, e correspondem aos indicadores e problemas apresentados nesta seção. O script também contém as consultas complementares G13–G16, as auditorias A01–A05 e os diagnósticos D01–D10. O grupo realizou a execução e os testes do script no MySQL Workbench, verificando a criação das tabelas, a inserção dos dados, as consultas e as operações previstas. A massa de dados utilizada é fictícia, destinada exclusivamente à demonstração acadêmica, uma vez que não foram disponibilizados volumes operacionais reais verificáveis do estabelecimento. Dessa forma, os resultados demonstram o funcionamento das consultas sobre os dados simulados, sem representar indicadores reais do restaurante.
 
 ## 2. Modelo Lógico Relacional
 
@@ -1013,7 +1013,7 @@ A tabela apresenta a *contagem final prevista no SQL*, considerando os exemplos 
 | Despesa | 11 | Oito obrigações vinculadas às compras e três despesas independentes; situações paga e pendente, com vencimentos e datas/formas de quitação quando aplicáveis. |
 | *Total* | *120* | Contagem final esperada para demonstrar o modelo com nove tabelas. |
 
-Os pedidos, recebimentos, compras e movimentações estão distribuídos em *diferentes dias de outubro de 2026. Algumas despesas possuem vencimento em **novembro de 2026, permitindo representar compromissos futuros. Isso **não comprova sazonalidade ou comportamento mensal real*; as datas foram escolhidas para conferir a lógica das consultas.
+Os pedidos, recebimentos, compras e movimentações estão distribuídos em *diferentes dias de outubro de 2026. Algumas despesas possuem vencimento em **novembro de 2026**, permitindo representar compromissos futuros. Isso **não comprova sazonalidade ou comportamento mensal real**; as datas foram escolhidas para conferir a lógica das consultas.
 
 ## 4.3 Consistência, integridade e variedade dos cenários
 
@@ -1022,6 +1022,40 @@ Os comandos INSERT INTO foram estruturados para respeitar os relacionamentos do 
 Os valores históricos dos itens permanecem em Contem.preco_unitario_pedido e Adquire.preco_unitario_compra. Os pedidos concluídos utilizados nas consultas de venda possuem pagamento correspondente; o pedido cancelado e o pedido em preparo permanecem sem pagamento para demonstrar a distinção entre *pedido registrado* e *venda concluída/recebida*. O UNIQUE de Pagamento.id_pedido impede pagamentos duplicados por pedido, mas não torna automaticamente obrigatório um pagamento para todo pedido cadastrado.
 
 Os cenários foram planejados para demonstrar os três problemas identificados no levantamento e as consultas oficiais da seção 1.6:
+
+| Problema | Casos demonstrados na massa | Consultas SQL correspondentes |
+|---|---|---|
+| *P1 — Vendas e recebimentos* | Pedidos e itens individuais, preços praticados, cinco formas de pagamento, valores e datas de recebimento, estados concluído/cancelado/em preparo | *G01, G02, G05, G07* |
+| *P2 — Entradas e saídas financeiras* | Compras por fornecedor e por produto, obrigações pagas, parcelas e contas pendentes, despesas independentes de compras | *G03, G08, G09, G10, G11, G12* |
+| *P3 — Estoque e reposição* | Produto com saldo zero e diferentes movimentos de entrada e saída, inclusive saldo disponível de outros produtos | *G04, G06* — cobertura parcial da RN07 |
+
+**Padronização dos códigos:** os identificadores abaixo seguem a versão atual de [docs/script.sql](docs/script.sql), também utilizada pela seção 1.6: G03 refere-se a compras por fornecedor, G04 a produtos com estoque zerado, G06 às movimentações de estoque, G07 ao ticket médio de recebimentos e G09 ao fluxo financeiro diário. Os códigos de arquivos antigos de BI/IA não devem substituir os identificadores do script vigente.
+
+**Limitações de representação:** o script ainda não possui o atributo de estoque mínimo por produto nem um mecanismo de alerta correspondente (RN07); a conferência detalhada de quantidades esperadas e recebidas (RN08) também não está integralmente modelada. As movimentações demonstrativas não formam uma trilha completa e conciliada desde um saldo inicial comprovado. A inexistência de uma consulta de produtos *abaixo do mínimo* não deve ser mascarada por um exemplo de produto com saldo zero. Também não há dados reais suficientes para comprovar volumes de operação ou treinar modelos de IA.
+
+## 4.4 Conferência da carga e resultados esperados
+
+O arquivo da seção 3 inclui, após a carga fictícia, comandos SELECT com JOIN, um exemplo de UPDATE sobre o pedido 4 e a inserção seguida da exclusão do produto temporário 99. O produto temporário **não integra a contagem final; o pedido 4 passa de em_preparo para concluido, restando ao final do teste** 12 pedidos concluídos, 1 cancelado e 1 em preparo*.
+
+
+Ao final, o script inclui um SELECT de contagem por tabela para conferir os *120 registros previstos. As consultas **A01–A05* são auditorias associadas a regras de negócio (RNxx); as consultas *D01–D10* são diagnósticos complementares de integridade e consistência, sem que todas correspondam a uma RNxx previamente validada. A versão atual usa *A01* para conferir modalidades de pagamento e **A04** para localizar *pedidos concluídos sem pagamento. Assim, o pedido cancelado e o pedido ainda em preparo, que não possuem pagamento, não deveriam aparecer como inconsistências na A04. A expectativa de **zero linhas de inconsistência** nessas consultas ainda depende de teste real no MySQL; não é um resultado comprovado.
+
+A verificação dos valores *esperados*, com base nos INSERT INTO do SQL atual, é:
+
+| Medida demonstrativa | Valor esperado | Origem |
+|---|---:|---|
+| Recebimentos dos pedidos com pagamento | *R$ 331,00* | Pagamento |
+| Valor das compras registradas | *R$ 1.945,00* | Compra |
+| Despesas efetivamente pagas | *R$ 1.715,00* | Despesa com status paga |
+| Obrigações ainda pendentes | *R$ 495,00* | Despesa com status pendente |
+
+A diferença entre os recebimentos e as despesas pagas (*−R$ 1.384,00 no cenário fictício) representa apenas o fluxo líquido registrado na amostra, **não lucro nem prejuízo contábil*. Também não deve ser apresentada como resultado real do restaurante.
+
+*Validação obrigatória antes da entrega:* executar o arquivo docs/script.sql *por inteiro, em banco exclusivo de testes, com MySQL 8.0.16+, conferir as contagens e os resultados das consultas G01–G16, A01–A05 e D01–D10, e registrar evidências da execução. A revisão de consistência do material e testes ilustrativos em outra ferramenta **não substituem** o teste exigido no MySQL. O script contém DROP TABLE e apaga dados das tabelas do banco de teste; *não deve ser executado sobre dados reais ou de produção*.
+
+### 4.5 Registro do uso de IA
+
+O uso de IA no apoio à geração e à revisão acadêmica do SQL e da massa deve ser registrado conforme as etapas efetivamente realizadas. *Esse uso deve ser documentado na seção 6 do README*, com ferramenta e etapa, motivação, prompt(s), resposta, fontes verificadas, correções realizadas, justificativa e reflexão crítica, conforme o Esqueleto da Entrega 2. O integrante deverá registrar os prompts e as etapas efetivamente utilizados, sem atribuir à IA validação em MySQL ou comprovação de volumes reais não realizada.0
 
 
 ## 5. Repositório GitHub
