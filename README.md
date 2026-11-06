@@ -82,12 +82,27 @@ Esse cenário permite modelar uma solução que não pretende substituir a exper
   ![Fotos da visita](docs/imagens/Image02.jpeg)
   ![Fotos da visita](docs/imagens/Image03.jpeg)
   ![Fotos da visita](docs/imagens/Image04.jpeg)
+  
+**Registro fotográfico da entrevista com o proprietário**
+
+A entrevista foi realizada em 07/09/2026, no Bar e Restaurante Esquina dos Amigos, com Ceará, proprietário do estabelecimento. A fotografia abaixo documenta a entrevista presencial realizada pelo grupo.
+
+![Registro da entrevista com o proprietário Ceará](docs/imagens/foto_entrevista_ceara.png)
+
 * Endereço: R. Inês Monteiro, 157 - Artur Alvim, São Paulo - SP, 03568-030
 * Telefone: (11) 98109-1622
 * **Proprietário e responsável entrevistado: Ceará.** Ele se identifica por esse nome, conforme esclarecimento do integrante em 04/11/2026. As respostas da entrevista realizada estão em [perguntas e respostas](levantamento/fontes/perguntas-e-respostas.txt); não se presume outro nome civil.
 * [Índice das evidências e lacunas de comprovação](levantamento/evidencias.md).
 
-**Evidências existentes e alcance:** `Image01.jpeg` mostra a fachada; `Image02.jpeg`, o cardápio físico; `Image03.jpeg`, o consumo à mesa; e `Image04.jpeg`, o levantamento no balcão com notebook e cardápio semanal. A [issue #1, critério 3.2](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1) reconhece a visita presencial com fotos e observa que nenhuma mostra Ceará. As fotos já estão disponíveis em formato JPEG; a extensão `.jpeg` não constitui ausência de evidência. O cardápio semanal [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md) também está visível em `Image04.jpeg`. Ver [fontes e limites da conferência](levantamento/evidencias.md).
+
+**Evidências existentes e alcance:** `Image01.jpeg` mostra a fachada do estabelecimento; `Image02.jpeg`, o cardápio físico; `Image03.jpeg`, o consumo à mesa; e `Image04.jpeg`, o levantamento no balcão com notebook e cardápio semanal.
+A fotografia [`foto_entrevista_ceara.png`](docs/imagens/foto_entrevista_ceara.png) foi adicionada ao repositório como registro da entrevista presencial com Ceará, proprietário do Bar e Restaurante Esquina dos Amigos, realizada em 07/09/2026, conforme documentação do levantamento.
+
+A [issue #1, critério 3.2](https://github.com/Marcuss9/sistema-gestao-bar-restaurante/issues/1) registrava originalmente a ausência de uma fotografia que identificasse o proprietário. O grupo complementou a documentação com a nova imagem, preservando as quatro fotografias anteriores.
+
+As evidências fotográficas estão armazenadas diretamente no repositório, em formato JPEG ou PNG, conforme o Esqueleto da Entrega 2. O cardápio semanal [transcrito](levantamento/fontes/cardapio-semanal-transcricao.md) também está visível em `Image04.jpeg`.
+
+Para consultar os registros e as informações do levantamento, acessar [fontes e limites da conferência](levantamento/evidencias.md).
 
 ##### Relato da entrevista e fontes do levantamento
 
@@ -101,7 +116,7 @@ A **entrevista com Ceará, proprietário do restaurante, foi realizada em 07/09/
 | Local da entrevista | Levantamento presencial do estabelecimento, na R. Inês Monteiro, 157; visita reconhecida na issue #1 e documentada em `Image01.jpeg`–`Image04.jpeg` |
 | Participantes do projeto | Cauã Francisco Gomes da Silva; João Pedro Liberato de Oliveira; Marcus Vinicius dos Santos Cruz; João Vitor Gonçalves de Oliveira; nomes, RGMs e usuários na seção Integrantes e nomes na issue #1. Esses registros identificam a equipe; não discriminam a presença individual em 07/09/2026 |
 | Vínculo de integrante com o estabelecimento | A declarar, se houver |
-| Evidência fotográfica do levantamento | **Existente:** `docs/imagens/Image01.jpeg` a `Image04.jpeg`, já vinculadas acima; `Image04.jpeg` mostra o registro no balcão. Não se identifica Ceará nas imagens, conforme observação da issue #1 |
+| Evidência fotográfica do levantamento | **Existente:** `docs/imagens/Image01.jpeg` a `Image04.jpeg`, já vinculadas acima; `Image04.jpeg` mostra o registro no balcão. A fotografia [`foto_entrevista_ceara.png`](docs/imagens/foto_entrevista_ceara.png) foi adicionada ao repositório como registro da entrevista presencial com Ceará, proprietário do Bar e Restaurante Esquina dos Amigos|
 
 **Informações relatadas:** registro de pedidos em papel e comunicação verbal com a cozinha; ausência de mesa/comanda; estoque acompanhado visualmente; anotações de gastos e contas; compras com distribuidores e supermercados; entrega local e pagamento pelo cliente de transporte solicitado por aplicativo; tratamento de pedidos errados. O conteúdo detalhado, organizado por processo e com seus limites, está no levantamento Markdown.
 
