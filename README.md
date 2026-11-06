@@ -138,27 +138,33 @@ Esta tabela atende ao **Caso A** do Esqueleto 2 e registra os apontamentos da [I
 
 **Principais processos mapeados**
 A partir do levantamento realizado, foram identificados os seguintes processos principais:
-* Atendimento e registro de pedidos
-* Preparação e entrega dos pedidos
-* Venda e recebimento do pagamento
-* Entrega de pedidos nas proximidades
-* Controle de produtos em estoque
-* Reposição de produtos
-* Registro de compras
-* Acompanhamento financeiro
+* **PN1 — Atendimento e registro de pedidos**
+* **PN2 — Preparação e entrega dos pedidos**
+* **PN3 — Venda e recebimento do pagamento**
+* **PN4 — Entrega de pedidos nas proximidades**
+* **PN5 — Controle de produtos em estoque**
+* **PN6 — Reposição, recebimento e conferência de produtos**
+* **PN6 — Reposição, recebimento e conferência de produtos**
 
-**Atendimento e registro de pedidos**
+A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. **Para o sistema proposto**, o integrante decidiu cadastrar estoque mínimo por produto comercializado, alertar quando o saldo for menor ou igual ao mínimo e registrar diferenças entre quantidades esperadas e recebidas para resolução com o fornecedor. Essas decisões não comprovam uma rotina informatizada atual; unidades, valores mínimos iniciais e entregas parciais ainda precisam de detalhamento.
+
+Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. O alerta por estoque mínimo e o registro de divergências são requisitos futuros; o modelo lógico vigente ainda não contém todos os campos ou vínculos necessários e deverá ser revisado pelos responsáveis técnicos.
+
+**PN7 — Registro de compras**
+* **PN8 — Acompanhamento financeiro**
+
+**PN1 — Atendimento e registro de pedidos**
 O cliente realiza o pedido diretamente no estabelecimento ou, no caso de entregas, por meio do WhatsApp.
 No atendimento presencial, o funcionário recebe o pedido e faz uma anotação em papel, utilizada para comunicar verbalmente os itens à cozinha. Essa anotação não constitui um registro estruturado de vendas. Não são registrados número da mesa, nome do cliente ou número de comanda.
 Em seguida, o funcionário comunica verbalmente o pedido à cozinha.
 Nos pedidos destinados à entrega, o cliente informa, por meio do WhatsApp, as informações necessárias para que o pedido seja entregue.
 
-**Preparação e entrega**
+**PN2 — Preparação e entrega dos pedidos**
 A cozinha prepara o pedido com base na comunicação realizada pelo funcionário.
 Quando o pedido fica pronto, os funcionários comunicam verbalmente que ele está disponível. Um funcionário pode realizar a entrega do prato ao cliente, porém não existe uma pessoa exclusivamente responsável por essa atividade.
 Todos os funcionários podem executar as tarefas necessárias conforme a demanda.
 
-**Venda e pagamento**
+**PN3 — Venda e recebimento do pagamento**
 O estabelecimento aceita:
 * dinheiro;
 * cartão de crédito;
@@ -169,26 +175,26 @@ O estabelecimento aceita:
 Atualmente, as vendas não são registradas individualmente em um sistema.
 A solução proposta deverá permitir registrar cada operação comercial e relacioná-la ao respectivo pedido e pagamento.
 
-**Entregas**
+**PN4 — Entrega de pedidos nas proximidades**
 O estabelecimento realiza entregas apenas nas proximidades.
 Os pedidos podem ser realizados pelo WhatsApp e a entrega pode ser realizada a pé por qualquer funcionário.
 Em determinadas situações, clientes solicitam um Uber para retirada do pedido. Nesse caso, o custo do transporte é pago pelo próprio cliente.
 Não existe um funcionário exclusivamente responsável pelas entregas.
 Não é cobrado frete próprio para as entregas locais, conforme confirmação complementar do integrante. Para delimitar as proximidades, o projeto adota trajetos de até dez minutos a pé a partir do estabelecimento na R. Inês Monteiro, 157. Esse critério foi estimado e aceito pelo integrante; não resulta de medição em campo.
 
-**Controle de produtos em estoque**
+**PN5 — Controle de produtos em estoque**
 Atualmente, o estabelecimento não realiza um controle estruturado de estoque por sistema.
 A quantidade dos produtos comercializados é acompanhada de maneira informal e visual.
 A solução proposta deverá permitir registrar a quantidade disponível dos produtos comercializados e suas respectivas movimentações de entrada e saída.
 O controle estruturado **não abrange ingredientes utilizados na cozinha**, conforme decisão de escopo RN10 reafirmada pelo integrante em 02/11/2026. Trata-se de uma delimitação do sistema, não de evidência de que o estabelecimento não compre ingredientes; os gastos correspondentes continuam relevantes para o acompanhamento financeiro.
 
-**Compras**
+**PN7 — Registro de compras**
 As compras são realizadas pelos próprios funcionários, conforme a necessidade do estabelecimento.
 Os produtos comercializados podem ser adquiridos de fornecedores recorrentes, como Ambev, Heineken e Coca-Cola.
 Ingredientes utilizados na preparação dos alimentos também podem ser adquiridos diretamente em supermercados.
 Os gastos com fornecedores e supermercados são anotados manualmente. No sistema proposto, `Compra` identifica fornecedor, data e valor total, enquanto `Adquire` registra produto, quantidade comprada e preço unitário da aquisição. Esses atributos já constam do modelo lógico, mas ainda faltam no DER conceitual. A compra e seu pagamento são fatos distintos: as fontes não informam prazos nem formas de pagamento dos fornecedores, que permanecem pendentes.
 
-**Acompanhamento financeiro**
+**PN8 — Acompanhamento financeiro**
 Atualmente, os registros financeiros são realizados manualmente e posteriormente comparados com os extratos financeiros.
 A solução proposta deverá permitir maior visibilidade sobre as entradas e saídas financeiras, possibilitando consultas sobre a movimentação diária e outros períodos.
 
@@ -208,12 +214,6 @@ O estabelecimento possui cardápio físico com produtos e valores. Comercializa 
 | Sábado | Feijoada | R$ 35,00 | R$ 70,00 |
 
 **Limites:** a fonte repete **sexta-feira** e não indica domingo; não se presume qual dia seria correto para Rabada. As colunas aparecem como **PF** e **COM.**, sem significado detalhado para “COM.”. Não há data de vigência dos valores, horário de oferta ou confirmação de disponibilidade atual. O modelo lógico contém um preço atual por Produto e ainda precisa decidir como representar as duas modalidades comerciais e a disponibilidade por dia para aplicar RN16. O preço praticado em cada item já é preservado no modelo lógico como `preco_unitario_pedido`, mas falta sua representação conceitual; o preço atual do cadastro não substitui o histórico.
-
-##### Reposição, recebimento e conferência
-
-A equipe identifica visualmente a necessidade de reposição, inclusive pelo último pacote restante, e anota no caderno os produtos esperados dos fornecedores. No recebimento, compara os registros com a nota do fornecedor. **Para o sistema proposto**, o integrante decidiu cadastrar estoque mínimo por produto comercializado, alertar quando o saldo for menor ou igual ao mínimo e registrar diferenças entre quantidades esperadas e recebidas para resolução com o fornecedor. Essas decisões não comprovam uma rotina informatizada atual; unidades, valores mínimos iniciais e entregas parciais ainda precisam de detalhamento.
-
-Na solução proposta, compras identificam fornecedor, data e valor total; as movimentações de estoque registram produto, entrada/saída, quantidade, data/hora e motivo. Quantidade e preço por item já constam no modelo lógico, mas precisam ser representados no DER conceitual; o vínculo com a quantidade efetivamente recebida continua pendente. O alerta por estoque mínimo e o registro de divergências são requisitos futuros; o modelo lógico vigente ainda não contém todos os campos ou vínculos necessários e deverá ser revisado pelos responsáveis técnicos.
 
 ##### Contas e acompanhamento dos gastos
 
