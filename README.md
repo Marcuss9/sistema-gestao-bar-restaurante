@@ -991,6 +991,8 @@ A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo 
 ## 4.1 Origem, privacidade e volume adotado
 **Todos os dados são fictícios e destinados exclusivamente à demonstração acadêmica.**
 Os nomes dos fornecedores são ilustrativos, os endereços usados nos pedidos são fictícios e os valores e datas não correspondem a faturamento, contas ou vendas reais da organização.A massa foi preparada para o sistema do **Bar e Restaurante Esquina dos Amigos**, sem incorporar dados pessoais reais de clientes ou funcionários.
+**Limitação expressa do levantamento:**
+
 
 
 
