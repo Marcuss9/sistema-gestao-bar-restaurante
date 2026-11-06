@@ -149,6 +149,9 @@ A partir do levantamento realizado, foram identificados os seguintes processos p
 
 PN1 — Atendimento e registro de pedidos O cliente realiza o pedido diretamente no estabelecimento ou, no caso de entregas, por meio do WhatsApp. No atendimento presencial, o funcionário recebe o pedido e faz uma anotação em papel, utilizada para comunicar verbalmente os itens à cozinha. Essa anotação não constitui um registro estruturado de vendas. Não são registrados número da mesa, nome do cliente ou número de comanda. Em seguida, o funcionário comunica verbalmente o pedido à cozinha. Nos pedidos destinados à entrega, o cliente informa, por meio do WhatsApp, as informações necessárias para que o pedido seja entregue.
 
+PN2 — Preparação e entrega dos pedidos A cozinha prepara o pedido com base na comunicação realizada pelo funcionário. Quando o pedido fica pronto, os funcionários comunicam verbalmente que ele está disponível. Um funcionário pode realizar a entrega do prato ao cliente, porém não existe uma pessoa exclusivamente responsável por essa atividade. Todos os funcionários podem executar as tarefas necessárias conforme a demanda.
+
+
 
 ##### Cardápio e preços
 
