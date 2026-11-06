@@ -991,7 +991,8 @@ A massa de dados fictícia da Entrega 2 está *integrada ao script SQL completo 
 
 ## 5. Repositório GitHub
 
-O **`README.md` da raiz da branch `main` é o Relatório Técnico Final**, conforme o Esqueleto da Entrega 2. Os demais arquivos permanecem em seus próprios caminhos e estão vinculados abaixo. O inventário foi conferido na `main` desta revisão; a presença do arquivo não equivale à aprovação de seu conteúdo ou à execução do SQL.
+O **`README.md` da raiz da branch `main` é o Relatório Técnico Final**, conforme o Esqueleto da Entrega 2. Os demais arquivos permanecem em seus próprios caminhos e estão vinculados abaixo. O inventário foi conferido na `main` desta revisão; a presença do arquivo não equivale à aprovação de seu conteúdo ou à execução do SQL. A sequência atende à ordem estabelecida no Esqueleto da Entrega 2. A existência do arquivo na main está confirmada; a execução integral em MySQL ainda precisa ser demonstrada.
+
 
 | Artefato exigido ou de apoio | Localização na `main` | Situação verificada / pendência |
 |---|---|---|
