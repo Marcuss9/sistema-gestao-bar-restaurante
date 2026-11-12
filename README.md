@@ -1267,7 +1267,7 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 
 ## 7. Apresentação Corporativa Final
 
-**Pendente — apresentação do grupo.** Preparar um pitch de **8 minutos**, com slides de leitura visual clara, na ordem exigida:
+**apresentação do grupo.** Preparar um pitch de **8 minutos**, com slides de leitura visual clara, na ordem exigida:
 
 1. Contextualização dos problemas operacionais do estabelecimento;
 2. Solução proposta e abrangência do banco de dados;
@@ -1277,4 +1277,5 @@ O grupo utilizou ChatGPT como ferramenta de apoio durante a elaboração do trab
 6. Potencial dos dados para BI e IA;
 7. Benefícios para a tomada de decisão da organização.
 
-Inserir aqui o link da apresentação quando o arquivo estiver no repositório. Todos os integrantes deverão participar da defesa do modelo lógico, mesmo que nem todos apresentem o pitch.
+Link do video do Pitch:
+https://youtu.be/wWkkoHmWxBY
